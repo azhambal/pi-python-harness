@@ -3,11 +3,6 @@ MIT License
 Copyright (c) 2025 Mario Zechner
 Copyright (c) 2026 azhambal (Python port)
 
-This package is a Python translation of code originally published in the Pi
-project (https://github.com/earendil-works/pi), which is licensed under the
-MIT License. The original copyright notice and permission notice are
-preserved above and apply to the translated code.
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights

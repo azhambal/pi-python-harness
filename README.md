@@ -110,3 +110,9 @@ tasks. HTTP timeouts and per-response token limits do not bound an entire run.
 This is a text-first alpha project with its own session format. See
 [compatibility and scope](docs/compatibility.md) for supported features and
 differences from Pi.
+
+## License
+
+[MIT](LICENSE). pi-agent translates code originally published in
+[Pi](https://github.com/earendil-works/pi), which is also MIT licensed; the original
+copyright notice is preserved in the license file and applies to the translated code.
