@@ -1,0 +1,35 @@
+{
+  "$schema": "../src/pi_agent/schemas/settings.schema.json",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "base_url": "https://api.deepseek.com",
+  "thinking_level": "off",
+  "max_tokens": 8192,
+  "tool_execution": "parallel",
+  "max_parallel_tools": 4,
+  "tools": ["read", "bash", "edit", "write", "grep", "find", "ls"],
+  "skills": {
+    "enabled": true,
+    "include_user": true,
+    "project_trusted": false,
+    "pi_compat": false,
+    "paths": [],
+    "prompt_max_bytes": 20480
+  },
+  "compaction": {
+    "enabled": true,
+    "reserve_tokens": 16384,
+    "keep_recent_tokens": 20000
+  },
+  "retry": {
+    "enabled": true,
+    "max_retries": 3,
+    "base_delay_ms": 2000,
+    "max_delay_ms": 60000
+  },
+  "permissions": {
+    "default": "allow",
+    "read_only": false,
+    "rules": []
+  }
+}

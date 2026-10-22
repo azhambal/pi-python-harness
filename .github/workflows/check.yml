@@ -1,0 +1,20 @@
+name: Python checks
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install search backend
+        run: sudo apt-get update && sudo apt-get install --yes ripgrep
+      - run: python -m venv .venv
+      - run: .venv/bin/python -m pip install -e '.[dev,mcp-reference]'
+      - run: .venv/bin/python -m pip check
+      - run: .venv/bin/python -m ruff check src tests scripts
+      - run: .venv/bin/python -m ruff format --check src tests scripts
+      - run: .venv/bin/python -m mypy
+      - run: .venv/bin/python scripts/generate_config_reference.py --check
+      - run: .venv/bin/python -m pytest

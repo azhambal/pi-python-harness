@@ -1,0 +1,13 @@
+{
+  "provider": "sglang",
+  "model": "local-model",
+  "base_url": "http://127.0.0.1:30000/v1",
+  "context_window": 8192,
+  "max_tokens": 4096,
+  "thinking_level": "off",
+  "temperature": 0,
+  "seed": 12345,
+  "compaction": {
+    "enabled": false
+  }
+}

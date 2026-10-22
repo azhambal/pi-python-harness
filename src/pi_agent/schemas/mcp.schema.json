@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "pi-agent MCP configuration",
+  "description": "Explicit trusted direct MCP servers. Runtime validation additionally checks UTF-8 byte budgets, URL authority, reserved headers and project trust.",
+  "type": "object", "additionalProperties": false,
+  "properties": {
+    "$schema": {"type": "string", "minLength": 1, "maxLength": 8192, "description": "Editor schema reference; ignored by the runtime and never fetched."},
+    "mcpServers": {
+      "type": "object", "maxProperties": 128,
+      "propertyNames": {"pattern": "^[A-Za-z0-9_-]{1,128}$"},
+      "additionalProperties": {"oneOf": [{"$ref": "#/$defs/stdio"}, {"$ref": "#/$defs/http"}]},
+      "description": "Named servers; no process or connection is restored from journal authority."
+    }
+  },
+  "$defs": {
+    "common": {
+      "type": "object",
+      "properties": {
+        "enabled": {"type": "boolean", "default": true, "description": "Connect the server when explicitly selected by the host."},
+        "timeout": {"type": "number", "exclusiveMinimum": 0, "default": 60, "description": "Request timeout in seconds."},
+        "exposure": {"const": "direct", "description": "Required for enabled servers. Deferred and codemode exposure are unsupported."}
+      },
+      "if": {"properties": {"enabled": {"const": false}}, "required": ["enabled"]},
+      "else": {"required": ["exposure"]}
+    },
+    "reference": {"type": "string", "pattern": "^\\$\\{[A-Za-z_][A-Za-z0-9_]{0,127}\\}$"},
+    "stdio": {
+      "allOf": [{"$ref": "#/$defs/common"}],
+      "type": "object", "unevaluatedProperties": false, "required": ["command"],
+      "properties": {
+        "type": {"const": "stdio", "description": "Subprocess transport; the default when command is present."},
+        "command": {"type": "string", "minLength": 1, "maxLength": 8192, "description": "Executable from trusted configuration."},
+        "args": {"type": "array", "maxItems": 256, "items": {"type": "string", "maxLength": 8192}, "default": [], "description": "Literal process arguments."},
+        "cwd": {"type": "string", "minLength": 1, "maxLength": 8192, "description": "Working directory relative to host cwd, not the configuration file."},
+        "env": {"type": "object", "maxProperties": 128, "propertyNames": {"pattern": "^[A-Za-z_][A-Za-z0-9_]{0,127}$"}, "additionalProperties": {"$ref": "#/$defs/reference"}, "description": "Explicit whole-value environment references; literal secrets are rejected."}
+      }
+    },
+    "http": {
+      "allOf": [{"$ref": "#/$defs/common"}],
+      "type": "object", "unevaluatedProperties": false, "required": ["url"],
+      "properties": {
+        "type": {"enum": ["http", "streamable-http"], "description": "Streamable HTTP transport; OAuth and legacy SSE are unsupported."},
+        "url": {"type": "string", "minLength": 1, "maxLength": 8192, "pattern": "^https?://[^\\s]+$", "description": "Endpoint without credentials, query or fragment."},
+        "headers": {"type": "object", "maxProperties": 128, "propertyNames": {"pattern": "^[A-Za-z0-9!#$%&'*+.^_`|~-]{1,128}$"}, "additionalProperties": {"$ref": "#/$defs/reference"}, "description": "Distinct non-protocol header names mapped to whole-value environment references."}
+      }
+    }
+  }
+}

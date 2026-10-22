@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pi-agent"
+version = "0.1.0"
+description = "Python coding-agent harness with tools, sessions, compaction, skills, and optional MCP"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+authors = [{ name = "azhambal" }]
+dependencies = [
+    "jsonschema==4.26.0",
+    "httpx==0.28.1",
+    "python-dotenv==1.2.1",
+    "PyYAML==6.0.3",
+    "pathspec==1.1.1",
+]
+keywords = ["agent", "coding-agent", "llm", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.optional-dependencies]
+mcp = ["mcp==2.3.0"]
+mcp-reference = [
+    "mcp==2.3.0",
+    "mcp-server-git==2026.10.19",
+    "mcp-server-fetch==2026.10.19",
+]
+dev = [
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "ruff==0.17.0",
+    "mypy==2.4.0",
+    "types-jsonschema==4.26.0.20261006",
+    "types-PyYAML==6.0.12.20260906",
+]
+
+[project.scripts]
+pi-agent = "pi_agent.cli:main"
+
+[project.urls]
+Source = "https://github.com/azhambal/pi-python-harness"
+Issues = "https://github.com/azhambal/pi-python-harness/issues"
+Upstream = "https://github.com/earendil-works/pi"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pi_agent = ["py.typed", "schemas/*.json"]
+
+[tool.ruff]
+target-version = "py312"
+src = ["src", "tests"]
+line-length = 110
+
+[tool.ruff.lint]
+select = [
+    "E4", # pycodestyle: imports & layout whitespace errors
+    "E7", # pycodestyle: statement errors
+    "E9", # pycodestyle: runtime/parse errors
+    "F",  # pyflakes
+    "I",  # isort (import order)
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade (modernize for the target Python)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["pi_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = ["error"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src/pi_agent"]
+check_untyped_defs = true

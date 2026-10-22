@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+.env
+.env.*
+!.env.example
+.envrc
+.secrets/
+evaluation-results/
+.coverage
+htmlcov/
+cache/
+.tox/
+.nox/
+.coverage.*
+*.log
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+
+# Local agent settings
+.claude/settings.local.json

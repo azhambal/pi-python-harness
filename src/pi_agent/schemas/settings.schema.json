@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "pi-agent settings",
+  "description": "Non-secret CLI defaults. Session defaults apply to new sessions; resume retains journaled configuration. Runtime validation additionally checks cross-field and filesystem constraints.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {"type": "string", "minLength": 1, "description": "Editor schema reference; ignored by the runtime and never fetched."},
+    "provider": {"enum": ["openai", "deepseek", "anthropic", "sglang"], "default": "openai", "description": "HTTP provider family."},
+    "model": {"type": "string", "minLength": 1, "description": "Model identifier sent to the provider."},
+    "base_url": {"type": "string", "minLength": 1, "description": "Provider API root. Credentials, query strings and fragments are not supported."},
+    "http_timeout": {"type": "number", "exclusiveMinimum": 0, "default": 300, "description": "HTTP inactivity timeout in seconds, not a whole-run deadline."},
+    "thinking_level": {"enum": ["off", "minimal", "low", "medium", "high", "xhigh", "max"], "default": "off", "description": "Requested reasoning level, checked against model capabilities."},
+    "thinking_level_map": {"type": ["object", "null"], "minProperties": 1, "propertyNames": {"enum": ["off", "minimal", "low", "medium", "high", "xhigh", "max"]}, "additionalProperties": {"type": ["string", "null"], "minLength": 1}, "description": "Optional explicit native effort map. Missing or null levels are unsupported; at least one level must be supported. Persisted with model identity."},
+    "context_window": {"type": "integer", "minimum": 1, "description": "Known context window in tokens; omit when unknown."},
+    "max_tokens": {"type": "integer", "minimum": 1, "default": 8192, "description": "Maximum output tokens per response, also bounded by estimated available context."},
+    "compaction": {"$ref": "#/$defs/compaction", "description": "History compaction thresholds; these do not cap summary output."},
+    "retry": {"$ref": "#/$defs/retry", "description": "Bounded transient-error retries for conversation and summary requests."},
+    "bash_default_timeout_s": {"type": ["number", "null"], "exclusiveMinimum": 0, "default": null, "description": "Default Bash timeout in seconds; null leaves it unset."},
+    "tool_execution": {"enum": ["sequential", "parallel"], "default": "sequential", "description": "Tool batch scheduling mode."},
+    "max_parallel_tools": {"type": "integer", "minimum": 1, "default": 4, "description": "Maximum admitted concurrent tool calls in parallel mode."},
+    "permissions": {"$ref": "#/$defs/permissions", "description": "Admission policy, not an OS sandbox. Replaces the whole lower-priority policy."},
+    "tools": {"type": "array", "uniqueItems": true, "items": {"enum": ["read", "bash", "edit", "write", "grep", "find", "ls"]}, "description": "Absolute builtin selection for new sessions. An empty list disables builtins; relative edits belong in CLI --tools."},
+    "skills": {"$ref": "#/$defs/skills", "description": "Trusted Markdown skill discovery and prompt budget."},
+    "temperature": {"type": ["number", "null"], "minimum": 0, "maximum": 2, "description": "OpenAI-compatible sampling temperature; runtime-only."},
+    "seed": {"type": ["integer", "null"], "description": "OpenAI-compatible sampling seed; runtime-only."},
+    "chat_template_kwargs": {"type": ["object", "null"], "description": "OpenAI-compatible template arguments. SGLang enable_thinking follows the selected level."}
+  },
+  "$defs": {
+    "compaction": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean", "default": true, "description": "Enable threshold and overflow compaction."},
+        "reserve_tokens": {"type": "integer", "minimum": 0, "default": 16384, "description": "Start compaction when context exceeds window minus this reserve."},
+        "keep_recent_tokens": {"type": "integer", "minimum": 0, "default": 20000, "description": "Approximate recent history retained after compaction."}
+      }
+    },
+    "retry": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean", "default": true, "description": "Retry transient provider failures."},
+        "max_retries": {"type": "integer", "minimum": 0, "default": 3, "description": "Retries after the initial request."},
+        "base_delay_ms": {"type": "integer", "minimum": 1, "default": 2000, "description": "Initial exponential backoff in milliseconds."},
+        "max_delay_ms": {"type": "integer", "minimum": 1, "default": 60000, "description": "Backoff cap in milliseconds; must be at least base_delay_ms."}
+      }
+    },
+    "permissions": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "default": {"enum": ["allow", "ask", "deny"], "default": "allow", "description": "Action when no rule matches."},
+        "read_only": {"type": "boolean", "default": false, "description": "Allow only read and verified builtin search tools."},
+        "rules": {"type": "array", "default": [], "items": {"$ref": "#/$defs/rule"}, "description": "First matching rule wins, subject to read_only."}
+      }
+    },
+    "rule": {
+      "type": "object", "additionalProperties": false, "required": ["tool", "action"],
+      "properties": {
+        "tool": {"type": "string", "minLength": 1, "description": "Tool-name glob."},
+        "action": {"enum": ["allow", "ask", "deny"], "description": "Admission decision."},
+        "command": {"type": ["string", "null"], "minLength": 1, "description": "Optional Bash command glob."},
+        "path": {"type": ["string", "null"], "minLength": 1, "description": "Optional path glob; parent traversal components are rejected."},
+        "reason": {"type": ["string", "null"], "minLength": 1, "description": "Optional explanation shown to the caller."}
+      }
+    },
+    "skills": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean", "default": true, "description": "Enable skills in new CLI sessions; the core SDK defaults to false."},
+        "include_user": {"type": "boolean", "default": true, "description": "Include automatic user skill roots."},
+        "project_trusted": {"type": "boolean", "default": false, "description": "Trust project Markdown skill discovery."},
+        "pi_compat": {"type": "boolean", "default": false, "description": "Include Pi-compatible skill directories."},
+        "paths": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1}, "default": [], "description": "Explicit skill paths."},
+        "prompt_max_bytes": {"type": "integer", "minimum": 512, "maximum": 65536, "default": 20480, "description": "Maximum UTF-8 bytes for the skills prompt section."}
+      }
+    }
+  }
+}

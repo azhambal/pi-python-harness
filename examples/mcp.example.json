@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "git": {
+      "command": ".venv/bin/python",
+      "args": ["-m", "mcp_server_git", "--repository", "."],
+      "timeout": 15,
+      "exposure": "direct"
+    },
+    "fetch": {
+      "command": ".venv/bin/python",
+      "args": ["-m", "mcp_server_fetch"],
+      "timeout": 15,
+      "exposure": "direct"
+    }
+  }
+}
