@@ -1,8 +1,7 @@
 MIT License
 
 Copyright (c) 2025 Mario Zechner
-Copyright (c) 2026 azhambal
-Copyright (c) 2026 pi-python contributors (translated Python port)
+Copyright (c) 2026 azhambal (Python port)
 
 This package is a Python translation of code originally published in the Pi
 project (https://github.com/earendil-works/pi), which is licensed under the
