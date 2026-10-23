@@ -26,8 +26,11 @@ still returns four tools.
 `grep`, `find` and `ls` are line-by-line translations of pi's tools: the same
 descriptions, parameter schemas, output text and error messages, checked against
 pi in `tests/parity`. `grep` runs ripgrep (`rg --json`), `find` runs `fd --glob`,
-and `ls` sorts entries the way Node's `localeCompare` does. Like pi, the harness
-looks for `rg` and `fd` (or Debian's `fdfind`) in `~/.pi-agent/bin`, then on
+and `ls` sorts entries through ICU, the same Unicode collation engine as Node's
+`localeCompare`. The ICU runtime must be installed (`libicu-dev` on Debian/Ubuntu).
+For reproducibility across machines use the same ICU version and locale as the
+reference Node process; `PI_ICU_LIBRARY` can select its exact shared library.
+Like pi, the harness looks for `rg` and `fd` (or Debian's `fdfind`) in `~/.pi-agent/bin`, then on
 `PATH`, but never downloads them: a container image must ship both. Selection
 works without them; a call reports pi's "not available" error.
 
@@ -201,7 +204,7 @@ after a denied tool call; JSONL tool results record the denial.
 ## Dependencies and shell behavior
 
 - Runtime: Python >= 3.12 standard library plus pinned jsonschema, httpx, python-dotenv,
-  PyYAML, pathspec and Pillow (versions pinned in `pyproject.toml`); `rg` and `fd`
+  PyYAML, pathspec and Wasmtime (versions pinned in `pyproject.toml`); ICU, `rg` and `fd`
   for grep/find.
 - The `bash` tool is Linux-first: the shell is pi's choice (`/bin/bash`, then
   `bash` on PATH, then `sh`), the
@@ -216,3 +219,15 @@ after a denied tool call; JSONL tool results record the denial.
   directory and, as in pi, is not deleted when the session closes. Tool paths resolve against the session cwd (`~` and absolute
   paths supported); the cwd is a base directory, not a sandbox, and the
   process working directory is never changed.
+
+
+### Image processing parity
+
+`read` runs the exact Photon 0.3.4 WASM distributed with pi, hosted by Wasmtime
+inside Python. Decoding, EXIF orientation, Lanczos3 resizing and PNG/JPEG encoding
+therefore use the same code; Node is not required. The model's
+`input_limits.images.resize` overrides the fallback `ReadTool(resize_options=...)`
+profile. The context is scoped to each execution, so model changes and concurrent
+sessions use their own limits. `ModelInfo` preserves pi's `inputLimits` as
+`input_limits` in the journal. The image parity fixtures compare complete base64
+payloads and read-tool content, not just MIME types.

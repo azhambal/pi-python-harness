@@ -732,6 +732,8 @@ class ModelInfo:
     #: Pi's ``Model.cost`` in USD per million tokens (``input``, ``output``,
     #: ``cacheRead``, ``cacheWrite``, optional ``tiers``), or None when unknown.
     cost: dict[str, JsonValue] | None = None
+    #: Pi model.inputLimits, including the model-specific inline image resize profile.
+    input_limits: dict[str, JsonValue] | None = None
 
     @property
     def supports_images(self) -> bool:
@@ -790,6 +792,8 @@ class ModelInfo:
             data["input"] = list(self.input)
         if self.compat is not None:
             data["compat"] = deepcopy(self.compat)
+        if self.input_limits is not None:
+            data["input_limits"] = deepcopy(self.input_limits)
         if self.cost is not None:
             data["cost"] = deepcopy(self.cost)
         return data
@@ -831,6 +835,7 @@ class ModelInfo:
             input=tuple(model_input),
             compat=_parse_json_object(data.get("compat"), where=f"{where}.compat"),
             cost=_parse_json_object(data.get("cost"), where=f"{where}.cost"),
+            input_limits=_parse_json_object(data.get("input_limits"), where=f"{where}.input_limits"),
         )
 
 

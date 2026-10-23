@@ -84,6 +84,40 @@ def exchanges(count: int, size: int = 400) -> list[dict]:
 
 
 CASES = [
+    {
+        "name": "UTF16 file sort and truncation through a surrogate pair",
+        "keepRecentTokens": 5,
+        "entries": [
+            user("inspect"),
+            assistant(
+                call("utf1", "read", path="😀.txt"), call("utf2", "read", path="\ue000.txt"), stop="toolUse"
+            ),
+            result("utf1", "read", "x" * 1999 + "😀tail"),
+            result("utf2", "read", "ok"),
+            assistant("inspected"),
+            *exchanges(2, 80),
+        ],
+    },
+    {
+        "name": "multiple user and tool text blocks concatenate without separators",
+        "keepRecentTokens": 5,
+        "entries": [
+            user([{"type": "text", "text": "hello"}, {"type": "text", "text": "world"}]),
+            assistant(call("multi", "read", path="parts.txt"), stop="toolUse"),
+            {
+                "message": {
+                    "role": "toolResult",
+                    "toolCallId": "multi",
+                    "toolName": "read",
+                    "content": [{"type": "text", "text": "😀" * 999}, {"type": "text", "text": "tail"}],
+                    "isError": False,
+                    "timestamp": 3,
+                }
+            },
+            assistant("first", "second"),
+            *exchanges(2, 80),
+        ],
+    },
     {"name": "simple exchanges cut at turn start", "keepRecentTokens": 150, "entries": exchanges(4)},
     {"name": "small budget splits the last exchange", "keepRecentTokens": 10, "entries": exchanges(3)},
     {"name": "long tool turn without prior history", "keepRecentTokens": 70, "entries": tool_turn("t")},

@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from functools import partial
 
-from ._js import json_stringify, utf16_length, utf16_slice, uuidv7
+from ._js import json_stringify, utf16_length, uuidv7
 from .cancellation import Cancellation, OperationAbortedError, iterate_with_cancellation
 from .config import CompactionSettings, RetrySettings
 from .context import estimate_tokens
@@ -165,8 +165,13 @@ def extract_file_ops_from_message(message: Message, ops: FileOperations) -> None
 
 def compute_file_lists(ops: FileOperations) -> tuple[list[str], list[str]]:
     modified = ops.edited | ops.written
-    read_only = sorted(path for path in ops.read if path not in modified)
-    return read_only, sorted(modified)
+
+    # JS Array.sort compares UTF-16 code units, not Python Unicode code points.
+    def key(path: str) -> bytes:
+        return path.encode("utf-16-be", errors="surrogatepass")
+
+    read_only = sorted((path for path in ops.read if path not in modified), key=key)
+    return read_only, sorted(modified, key=key)
 
 
 def format_file_operations(read_files: Sequence[str], modified_files: Sequence[str]) -> str:
@@ -182,7 +187,12 @@ def _truncate_for_summary(text: str, max_chars: int) -> str:
     length = utf16_length(text)
     if length <= max_chars:
         return text
-    return f"{utf16_slice(text, max_chars)}\n\n[... {length - max_chars} more characters truncated]"
+    # JS slice may leave a lone surrogate at the boundary. Keep it until the
+    # provider sanitizes the prompt, exactly as Pi does.
+    prefix = text.encode("utf-16-le", errors="surrogatepass")[: max_chars * 2].decode(
+        "utf-16-le", errors="surrogatepass"
+    )
+    return f"{prefix}\n\n[... {length - max_chars} more characters truncated]"
 
 
 def serialize_conversation(messages: Sequence[Message]) -> str:
@@ -190,7 +200,7 @@ def serialize_conversation(messages: Sequence[Message]) -> str:
     parts: list[str] = []
     for message in messages:
         if isinstance(message, UserMessage):
-            content = content_text(message.content)
+            content = content_text(message.content, "")
             if content:
                 parts.append(f"[User]: {content}")
         elif isinstance(message, AssistantMessage):
@@ -206,7 +216,7 @@ def serialize_conversation(messages: Sequence[Message]) -> str:
             if calls:
                 parts.append("[Assistant tool calls]: " + "; ".join(calls))
         elif isinstance(message, ToolResultMessage):
-            content = content_text(message.content)
+            content = content_text(message.content, "")
             if content:
                 parts.append(f"[Tool result]: {_truncate_for_summary(content, TOOL_RESULT_MAX_CHARS)}")
     return "\n\n".join(parts)

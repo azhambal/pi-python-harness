@@ -13,7 +13,8 @@ from pathlib import Path
 import httpx
 import pytest
 
-from pi_agent.events import StreamDone, StreamError
+from pi_agent._js import json_stringify
+from pi_agent.events import StreamDone, StreamError, ToolCallDelta
 from pi_agent.models import find_model, model_from_pi
 from pi_agent.provider import ProviderOptions, ProviderRequest
 from pi_agent.providers import AnthropicProvider, OpenAICompatProvider
@@ -171,7 +172,20 @@ async def test_stream_matches_pi(case: dict) -> None:
     provider = _provider(case, httpx.MockTransport(answer))
     request, options = _request(case)
     final: AssistantMessage | None = None
+    tool_deltas = []
     async for event in provider.stream(request, options):
+        if isinstance(event, ToolCallDelta):
+            tool_deltas.append(
+                json.loads(
+                    json_stringify(
+                        {
+                            "contentIndex": event.content_index,
+                            "delta": event.delta,
+                            "arguments": event.partial.content[event.content_index].arguments,
+                        }
+                    )
+                )
+            )
         if isinstance(event, StreamDone):
             final = event.message
         elif isinstance(event, StreamError):
@@ -180,3 +194,4 @@ async def test_stream_matches_pi(case: dict) -> None:
     expected = dict(EXPECTED[case["name"]]["result"])
     expected.pop("durationMs", None)  # Wall-clock time of the request.
     assert _to_pi(final) == expected
+    assert tool_deltas == EXPECTED[case["name"]]["toolDeltas"]

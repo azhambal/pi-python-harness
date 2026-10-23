@@ -61,8 +61,17 @@ for (const testCase of cases) {
 		maxRetries: 0,
 		...(testCase.options ?? {}),
 	});
+	const toolDeltas = [];
+	if (testCase.sse !== undefined) {
+		for await (const event of stream) {
+			if (event.type === "toolcall_delta") {
+				toolDeltas.push(JSON.parse(JSON.stringify({contentIndex:event.contentIndex,delta:event.delta,
+					arguments:event.partial.content[event.contentIndex].arguments})));
+			}
+		}
+	}
 	const message = await stream.result();
-	const { timestamp: _timestamp, ...result } = message;
-	results.push({ name: testCase.name, request, ...(testCase.sse === undefined ? {} : { result }) });
+	const { timestamp: _timestamp, durationMs: _duration, ...result } = message;
+	results.push({ name: testCase.name, request, ...(testCase.sse === undefined ? {} : { result, toolDeltas }) });
 }
 console.log(JSON.stringify(results, null, 1));

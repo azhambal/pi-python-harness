@@ -1,79 +1,109 @@
-"""Node's ``String.prototype.localeCompare`` as a Python sort key.
+"""Node's localeCompare sort keys using the full ICU collation implementation.
 
-Pi sorts ``ls`` entries with ICU's root collation (``en-US``): punctuation
-before digits before letters, digits compared one by one (``10`` < ``9``),
-accents and case only breaking ties. ``data/collation.json`` holds per-character
-ICU ranks dumped from Node by ``scripts/pi_reference/dump_collation.ts``; the
-key compares them level by level as the Unicode Collation Algorithm does.
-Characters outside the table sort after it by code point, like ICU's implicit
-weights for unlisted scripts.
+A per-character table cannot reproduce contractions, kana or compatibility
+characters. Use the ICU C API (the same collation engine as Node's Intl), with
+its default variant sensitivity and the process locale (en-US for C/POSIX). Containers need libicui18n;
+PI_ICU_LIBRARY can select the exact ICU library version used by the reference
+Node build. No Node executable is used at runtime.
 """
 
 from __future__ import annotations
 
-import json
-import unicodedata
+import atexit
+import ctypes
+import ctypes.util
+import os
+import re
+import sys
 from functools import cache
-from importlib.resources import files
-
-_IMPLICIT_BASE = 1 << 20
 
 
-#: Offsets that keep an expansion after the letters it spells (``ae`` < ``æ``).
-_EXPANSION_TERTIARY = 1000
-_EXPANSION_SECONDARY = 1000
-
-Weight = tuple[int, int, int]
-
-
-@cache
-def _raw() -> dict:
-    return json.loads(files("pi_agent").joinpath("data/collation.json").read_text("utf-8"))
-
-
-@cache
-def _atomic() -> frozenset[str]:
-    return frozenset(chr(int(code, 16)) for code in _raw()["atomic"])
-
-
-@cache
-def _table() -> dict[int, tuple[Weight, ...]]:
-    raw = _raw()
-    weights: dict[int, Weight] = {int(code, 16): (p, s, t) for code, (p, s, t) in raw["weights"].items()}
-    table: dict[int, tuple[Weight, ...]] = {code: (weight,) for code, weight in weights.items()}
-    for code, (spelled, accented) in raw["expansions"].items():
-        own_tertiary = weights[int(code, 16)][2]
-        expanded = [
-            (p, s, t + _EXPANSION_TERTIARY + own_tertiary)
-            for p, s, t in (weights.get(ord(char), _implicit(char)) for char in spelled)
+class _Collator:
+    def __init__(self) -> None:
+        path = os.environ.get("PI_ICU_LIBRARY") or ctypes.util.find_library("icui18n")
+        if path is None:
+            raise RuntimeError("ICU collation requires libicui18n; install the ICU runtime in the container")
+        self.library = ctypes.CDLL(path)
+        match = re.search(r"(?:\.so\.|\.)(\d+)", path)
+        suffixes = [f"_{match[1]}", ""] if match else ["", *(f"_{version}" for version in range(100, 49, -1))]
+        for suffix in suffixes:
+            try:
+                open_collator = getattr(self.library, f"ucol_open{suffix}")
+                self.sort_key = getattr(self.library, f"ucol_getSortKey{suffix}")
+                break
+            except AttributeError:
+                continue
+        else:
+            raise RuntimeError(f"ICU collation API was not found in {path}")
+        open_collator.argtypes = [ctypes.c_char_p, ctypes.POINTER(ctypes.c_int32)]
+        open_collator.restype = ctypes.c_void_p
+        self.sort_key.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_void_p,
+            ctypes.c_int32,
+            ctypes.c_void_p,
+            ctypes.c_int32,
         ]
-        if accented:
-            p, s, t = expanded[0]
-            expanded[0] = (p, s + _EXPANSION_SECONDARY, t)
-        table[int(code, 16)] = tuple(expanded)
-    return table
+        self.sort_key.restype = ctypes.c_int32
+        self.lower = getattr(self.library, f"u_strToLower{suffix}")
+        self.lower.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int32,
+            ctypes.c_void_p,
+            ctypes.c_int32,
+            ctypes.c_char_p,
+            ctypes.POINTER(ctypes.c_int32),
+        ]
+        self.lower.restype = ctypes.c_int32
+        status = ctypes.c_int32(0)
+        locale = (
+            os.environ.get("LC_ALL") or os.environ.get("LC_MESSAGES") or os.environ.get("LANG") or "en_US"
+        )
+        locale = locale.split(".")[0]
+        if locale in ("C", "POSIX"):
+            locale = "en_US"
+        self.handle = open_collator(locale.encode("ascii"), ctypes.byref(status))
+        # Negative UErrorCode values are warnings (for example using the root locale).
+        if status.value > 0 or not self.handle:
+            raise RuntimeError(f"ICU could not open {locale} collation (error {status.value})")
+        close = getattr(self.library, f"ucol_close{suffix}")
+        close.argtypes = [ctypes.c_void_p]
+        close.restype = None
+        atexit.register(close, self.handle)
+
+    def key(self, text: str, *, lowercase: bool = False) -> bytes:
+        units = text.encode("utf-16-le" if sys.byteorder == "little" else "utf-16-be", errors="surrogatepass")
+        source = ctypes.create_string_buffer(units)
+        if lowercase:
+            # JS toLowerCase uses root Unicode mappings, not locale-sensitive case folding.
+            # Use ICU's Unicode version too (Python's may predate new scripts in Node).
+            status = ctypes.c_int32(0)
+            count = self.lower(None, 0, source, len(units) // 2, b"", ctypes.byref(status))
+            if status.value not in (0, 15) and status.value > 0:  # U_BUFFER_OVERFLOW_ERROR = 15
+                raise RuntimeError(f"ICU lowercase failed (error {status.value})")
+            output = ctypes.create_string_buffer((count + 1) * 2)
+            status = ctypes.c_int32(0)
+            self.lower(output, count + 1, source, len(units) // 2, b"", ctypes.byref(status))
+            if status.value > 0:
+                raise RuntimeError(f"ICU lowercase failed (error {status.value})")
+            units = output.raw[: count * 2]
+            source = ctypes.create_string_buffer(units)
+        size = self.sort_key(self.handle, source, len(units) // 2, None, 0)
+        output = ctypes.create_string_buffer(size)
+        self.sort_key(self.handle, source, len(units) // 2, output, size)
+        return output.raw
 
 
-def _implicit(char: str) -> Weight:
-    return (_IMPLICIT_BASE + ord(char), 1, 1)
+@cache
+def _collator() -> _Collator:
+    return _Collator()
 
 
-def collation_key(text: str) -> tuple[tuple[int, ...], tuple[int, ...], tuple[int, ...]]:
-    """Strings compare as ``localeCompare`` orders them; ties stay in input order."""
-    table = _table()
-    primary: list[int] = []
-    secondary: list[int] = []
-    tertiary: list[int] = []
-    atomic = _atomic()
-    # ICU compares canonically equivalent strings equally (é == e + U+0301), and
-    # sorts some precomposed letters (й) as letters of their own.
-    for composed in unicodedata.normalize("NFC", text):
-        for char in composed if composed in atomic else unicodedata.normalize("NFD", composed):
-            for p, s, t in table.get(ord(char)) or (_implicit(char),):
-                if p == 0 and s == 1 and t == 1:
-                    continue  # Completely ignorable, such as control characters.
-                if p:
-                    primary.append(p)
-                secondary.append(s)
-                tertiary.append(t)
-    return tuple(primary), tuple(secondary), tuple(tertiary)
+def collation_key(text: str) -> bytes:
+    """ICU variant sort key; Python's stable sort preserves equal entries' input order."""
+    return _collator().key(text)
+
+
+def case_insensitive_collation_key(text: str) -> bytes:
+    """Pi's ``name.toLowerCase().localeCompare(...)``, using ICU's Unicode data throughout."""
+    return _collator().key(text, lowercase=True)

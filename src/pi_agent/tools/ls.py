@@ -7,7 +7,7 @@ import stat
 from collections.abc import Mapping
 from pathlib import Path
 
-from pi_agent._collation import collation_key
+from pi_agent._collation import case_insensitive_collation_key
 from pi_agent._js import number_to_string
 from pi_agent.cancellation import Cancellation, OperationAbortedError
 from pi_agent.tools._paths import node_fs_error, path_exists, resolve_to_cwd
@@ -70,12 +70,13 @@ class LsTool(Tool):
             raise NotADirectoryError(f"Not a directory: {dir_path}")
 
         try:
-            names = os.listdir(dir_path)
+            # libuv scandir sorts raw names before Node applies its stable localeCompare sort.
+            names = sorted(os.listdir(dir_path), key=os.fsencode)
         except OSError as error:
             raise OSError(f"Cannot read directory: {node_fs_error(error, 'scandir', dir_path)}") from None
         # Node decodes names as UTF-8 with replacement characters.
         entries = [(os.fsencode(name).decode("utf-8", errors="replace"), name) for name in names]
-        entries.sort(key=lambda entry: collation_key(entry[0].lower()))
+        entries.sort(key=lambda entry: case_insensitive_collation_key(entry[0]))
 
         results: list[str] = []
         entry_limit_reached = False

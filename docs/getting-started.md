@@ -4,8 +4,9 @@
 
 ## Install
 
-Use Linux and Python 3.12 or newer. Install Git, ripgrep (`rg`) and fd (`fd`, or
-`fd-find` on Debian/Ubuntu) with your operating system's package manager, then:
+Use Linux and Python 3.12 or newer. Install Git, ripgrep (`rg`), fd (`fd`, or
+`fd-find` on Debian/Ubuntu) and the ICU runtime (`libicu-dev` on Debian/Ubuntu)
+with your operating system's package manager, then:
 
 ```bash
 git clone https://github.com/azhambal/pi-python-harness.git
@@ -14,6 +15,12 @@ python3.12 -m venv .venv
 .venv/bin/python -m pip install -e .
 cp .env.example .env
 ```
+
+For the exact Unicode sort order of the pinned pi reference, use ICU 77.1 and
+`LC_ALL=C.UTF-8` (Node's en-US default). The pinned download and checksum are in
+[the CI setup](../.github/workflows/check.yml); select that library with
+`PI_ICU_LIBRARY` and put its directory on `LD_LIBRARY_PATH`. A different ICU
+version or locale may legitimately produce a different order, just as in Node.
 
 ## Configure a model
 

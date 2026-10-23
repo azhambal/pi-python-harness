@@ -10,6 +10,7 @@ from pathlib import Path
 
 from pi_agent._js import number_to_string
 from pi_agent.cancellation import Cancellation, OperationAbortedError
+from pi_agent.tools._context import current_model
 from pi_agent.tools._images import detect_supported_image_mime_type_from_file, process_image
 from pi_agent.tools._paths import node_fs_error, resolve_read_path
 from pi_agent.tools.base import Tool, ToolResult, ToolUpdateCallback
@@ -65,16 +66,20 @@ class ReadTool(Tool):
         *,
         auto_resize_images: bool = True,
         model_supports_images: Callable[[], bool | None] | None = None,
+        resize_options: Mapping[str, JsonValue] | None = None,
     ) -> None:
         self.cwd = Path(cwd)
         self.max_lines = max_lines
         self.max_bytes = max_bytes
         self.auto_resize_images = auto_resize_images
+        self.resize_options = resize_options
         #: Reports whether the current model accepts images (Pi's ``ctx.model``);
         #: None or unknown adds no note.
         self.model_supports_images = model_supports_images
 
     def _non_vision_note(self) -> str | None:
+        if (model := current_model.get()) is not None:
+            return _NON_VISION_IMAGE_NOTE if not model.supports_images else None
         if self.model_supports_images is None:
             return None
         return _NON_VISION_IMAGE_NOTE if self.model_supports_images() is False else None
@@ -119,7 +124,17 @@ class ReadTool(Tool):
         note = self._non_vision_note()
         details: dict[str, JsonValue] | None = None
         if mime_type:
-            processed = process_image(buffer, mime_type, auto_resize=self.auto_resize_images)
+            profile = self.resize_options
+            model = current_model.get()
+            if model is not None and isinstance(model.input_limits, dict):
+                images = model.input_limits.get("images")
+                if isinstance(images, dict):
+                    resize = images.get("resize")
+                    if isinstance(resize, dict):
+                        profile = resize
+            processed = process_image(
+                buffer, mime_type, auto_resize=self.auto_resize_images, resize_options=profile
+            )
             if not processed.ok:
                 text = f"Read image file [{mime_type}]\n{processed.message}"
                 if note:

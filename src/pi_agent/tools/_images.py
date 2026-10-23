@@ -1,18 +1,24 @@
 """Image detection, conversion and resizing translated from Pi.
 
 Mirrors ``utils/mime.ts``, ``utils/image-process.ts`` and
-``utils/image-resize-core.ts``. Pi uses Photon (WASM); this module uses
-Pillow with the same strategy and limits. When Pillow cannot decode an image,
-the results match Pi's own fallbacks when Photon is unavailable.
+``utils/image-resize-core.ts``. Pi and this port execute the same Photon WASM bytes, including its image
+codecs and Lanczos3 filter. Wasmtime hosts the module without Node.js.
 """
 
 from __future__ import annotations
 
 import base64
-import io
 import math
 import struct
+from collections.abc import Mapping
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Literal
+
+from pi_agent._js import to_fixed
+from pi_agent.types import JsonValue
+
+if TYPE_CHECKING:
+    from ._photon import Photon
 
 IMAGE_TYPE_SNIFF_BYTES = 4100
 _PNG_SIGNATURE = bytes([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A])
@@ -131,33 +137,87 @@ def _normalize_supported_mime_type(mime_type: str) -> str | None:
     return None
 
 
-def _open_oriented(data: bytes):  # type: ignore[no-untyped-def]
-    from PIL import Image, ImageOps
+def _exif_orientation(data: bytes) -> int:
+    """Pi's getExifOrientation: only JPEG APP1 and WebP EXIF (not PNG/TIFF metadata)."""
+    tiff = -1
+    if data.startswith(b"\xff\xd8"):
+        offset = 2
+        while offset < len(data) - 1:
+            if data[offset] != 0xFF:
+                break
+            marker = data[offset + 1]
+            if marker == 0xFF:
+                offset += 1
+                continue
+            if marker == 0xE1 and data[offset + 4 : offset + 10] == b"Exif\0\0":
+                tiff = offset + 10
+                break
+            if offset + 4 > len(data):
+                break
+            offset += 2 + int.from_bytes(data[offset + 2 : offset + 4], "big")
+    elif data.startswith(b"RIFF") and data[8:12] == b"WEBP":
+        offset = 12
+        while offset + 8 <= len(data):
+            size = int.from_bytes(data[offset + 4 : offset + 8], "little")
+            start = offset + 8
+            if data[offset : offset + 4] == b"EXIF":
+                if start + size <= len(data):
+                    tiff = start + (6 if size >= 6 and data[start : start + 6] == b"Exif\0\0" else 0)
+                break
+            offset = start + size + size % 2
+    if tiff < 0 or tiff + 8 > len(data):
+        return 1
+    endian: Literal["little", "big"] = "little" if data[tiff : tiff + 2] == b"II" else "big"
+    directory = tiff + int.from_bytes(data[tiff + 4 : tiff + 8], endian)
+    if directory + 2 > len(data):
+        return 1
+    count = int.from_bytes(data[directory : directory + 2], endian)
+    for index in range(count):
+        entry = directory + 2 + index * 12
+        if entry + 12 > len(data):
+            return 1
+        if int.from_bytes(data[entry : entry + 2], endian) == 0x0112:
+            value = int.from_bytes(data[entry + 8 : entry + 10], endian)
+            return value if 1 <= value <= 8 else 1
+    return 1
 
-    image = Image.open(io.BytesIO(data))
-    image.load()
-    return ImageOps.exif_transpose(image)
+
+def _oriented_image(photon: Photon, data: bytes) -> int:
+    image = photon.load(data)
+    orientation = _exif_orientation(data)
+    if orientation in (2, 3):
+        photon.call("fliph", image)
+    if orientation in (3, 4):
+        photon.call("flipv", image)
+    if orientation not in (5, 6, 7, 8):
+        return image
+    width, height = photon.dimensions(image)
+    source = photon.take_bytes("photonimage_get_raw_pixels", image)
+    target = bytearray(len(source))
+    for y in range(height):
+        for x in range(width):
+            origin = (y * width + x) * 4
+            index = (x * height + height - 1 - y) if orientation in (5, 6) else ((width - 1 - x) * height + y)
+            target[index * 4 : index * 4 + 4] = source[origin : origin + 4]
+    rotated = photon.from_pixels(bytes(target), height, width)
+    photon.free(image)
+    if orientation in (5, 7):
+        photon.call("fliph", rotated)
+    return rotated
 
 
 def _convert_to_png(data: bytes) -> bytes | None:
+    from ._photon import Photon
+
     try:
-        image = _open_oriented(data)
-        out = io.BytesIO()
-        image.save(out, format="PNG")
-        return out.getvalue()
+        with Photon() as photon:
+            image = _oriented_image(photon, data)
+            try:
+                return photon.encode(image)
+            finally:
+                photon.free(image)
     except Exception:
         return None
-
-
-def _encode(image, mime_type: str, quality: int = DEFAULT_JPEG_QUALITY) -> tuple[str, int, str]:  # type: ignore[no-untyped-def]
-    out = io.BytesIO()
-    if mime_type == "image/png":
-        image.save(out, format="PNG")
-    else:
-        rgb = image if image.mode == "RGB" else image.convert("RGB")
-        rgb.save(out, format="JPEG", quality=quality)
-    data = base64.b64encode(out.getvalue()).decode("ascii")
-    return data, len(data), mime_type
 
 
 @dataclass
@@ -181,15 +241,29 @@ def resize_image(
     jpeg_quality: int = DEFAULT_JPEG_QUALITY,
 ) -> ResizedImage | None:
     """Pi's ``resizeImageInProcess``; None when the image cannot fit."""
-    try:
-        from PIL import Image
+    from ._photon import Photon
 
-        image = _open_oriented(data)
+    try:
+        with Photon() as photon:
+            return _resize_image(photon, data, mime_type, max_width, max_height, max_bytes, jpeg_quality)
     except Exception:
         return None
+
+
+def _resize_image(
+    photon: Photon,
+    data: bytes,
+    mime_type: str,
+    max_width: int,
+    max_height: int,
+    max_bytes: int,
+    jpeg_quality: int,
+) -> ResizedImage | None:
+    image = _oriented_image(photon, data)
     input_base64_size = math.ceil(len(data) / 3) * 4
-    original_width, original_height = image.size
+    original_width, original_height = photon.dimensions(image)
     if original_width <= max_width and original_height <= max_height and input_base64_size < max_bytes:
+        photon.free(image)
         return ResizedImage(
             base64.b64encode(data).decode("ascii"),
             mime_type or "image/png",
@@ -212,10 +286,15 @@ def resize_image(
     width, height = target_width, target_height
     try:
         while True:
-            resized = image.resize((width, height), Image.Resampling.LANCZOS)
-            candidates = [_encode(resized, "image/png")]
-            candidates.extend(_encode(resized, "image/jpeg", quality) for quality in qualities)
-            for encoded, size, candidate_mime in candidates:
+            resized = photon.call("resize", image, width, height, 5)  # Photon SamplingFilter.Lanczos3
+            try:
+                candidates = [(photon.encode(resized), "image/png")]
+                candidates.extend((photon.encode(resized, quality), "image/jpeg") for quality in qualities)
+            finally:
+                photon.free(resized)
+            for candidate, candidate_mime in candidates:
+                encoded = base64.b64encode(candidate).decode("ascii")
+                size = len(encoded)
                 if size < max_bytes:
                     return ResizedImage(
                         encoded, candidate_mime, original_width, original_height, width, height, True
@@ -229,6 +308,8 @@ def resize_image(
             width, height = next_width, next_height
     except Exception:
         return None
+    finally:
+        photon.free(image)
 
 
 def round_half_up(value: float) -> int:
@@ -242,11 +323,24 @@ def format_dimension_note(result: ResizedImage) -> str | None:
     scale = result.original_width / result.width
     return (
         f"[Image: original {result.original_width}x{result.original_height}, displayed at "
-        f"{result.width}x{result.height}. Multiply coordinates by {scale:.2f} to map to original image.]"
+        f"{result.width}x{result.height}. Multiply coordinates by {to_fixed(scale, 2)} to map to original image.]"
     )
 
 
-def process_image(data: bytes, mime_type: str, *, auto_resize: bool = True) -> ProcessedImage:
+def _option(options: Mapping[str, JsonValue], name: str, default: int) -> int:
+    value = options.get(name, default)
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        raise ValueError(f"Image resize {name} must be a number")
+    return int(value)
+
+
+def process_image(
+    data: bytes,
+    mime_type: str,
+    *,
+    auto_resize: bool = True,
+    resize_options: Mapping[str, JsonValue] | None = None,
+) -> ProcessedImage:
     """Pi's ``processImage``."""
     normalized_mime = _normalize_supported_mime_type(mime_type)
     converted_from: str | None = None
@@ -261,7 +355,15 @@ def process_image(data: bytes, mime_type: str, *, auto_resize: bool = True) -> P
 
     hints: list[str] = []
     if auto_resize:
-        resized = resize_image(data, normalized_mime)
+        options = resize_options or {}
+        resized = resize_image(
+            data,
+            normalized_mime,
+            max_width=_option(options, "maxWidth", DEFAULT_MAX_WIDTH),
+            max_height=_option(options, "maxHeight", DEFAULT_MAX_HEIGHT),
+            max_bytes=_option(options, "maxBytes", DEFAULT_MAX_BYTES),
+            jpeg_quality=_option(options, "jpegQuality", DEFAULT_JPEG_QUALITY),
+        )
         if resized is None:
             return ProcessedImage(
                 ok=False, message="[Image omitted: could not be resized below the inline image size limit.]"

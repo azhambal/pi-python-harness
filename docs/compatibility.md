@@ -15,7 +15,7 @@ Matches pi:
 - Tool arguments are converted and validated like pi's TypeBox schemas
   (`"2"` becomes `2`), with pi's error text. Malformed tool-call JSON becomes a
   tool error the model can retry.
-- `read` (text and images), `write`, `edit` (fuzzy matching, legacy argument
+- `read` (text and images, using pi's exact Photon WASM and model resize limits), `write`, `edit` (fuzzy matching, legacy argument
   shapes, per-file mutation queue, in-place writes), `bash` (`PI_*` session
   variables, shell lookup, timeout text, `pi-bash-*.log` full output),
   `grep`/`find`/`ls` (rg/fd, Node's sort order). Edit results carry pi's
@@ -31,7 +31,9 @@ Matches pi:
 - Provider requests and stream decoding for Anthropic Messages and OpenAI-compatible
   Chat Completions: pi's `buildParams`, `convertMessages`, compat detection, beta
   headers, caching, thinking parameters, usage and cost, stop reasons, and
-  `argumentsError` with V8's `JSON.parse` messages. The model catalog is pi's.
+  `argumentsError` with V8's `JSON.parse` messages. Intermediate arguments follow
+  partial-json 0.1.7; tool-call delta snapshots are compared with pi too. The model
+  catalog is pi's.
 - The provider history follows pi's `transformMessages`: other models' thinking and
   signatures are dropped, tool-call IDs are normalized per provider, failed or
   aborted responses are skipped, images become placeholders for text-only models,
@@ -54,6 +56,11 @@ Differs from pi:
 - pi's `<docs>` prompt section points at pi's own documentation, which this
   package does not ship, so it is left out.
 - No download of `rg`/`fd`; a container image must provide them.
+- `ls` needs the ICU runtime. As with Node, Unicode order depends on the ICU
+  version and process locale: use matching versions/locales for exact reproduction
+  (`PI_ICU_LIBRARY` can select a particular library). CI pins ICU 77.1, matching
+  Node 24.13.0 used for the fixtures. There is no approximate table
+  fallback. Image processing ships pi's Photon binary and uses Wasmtime.
 - Python task cancellation (not an abort) marks in-flight tool calls with an
   unknown-outcome result; pi has no equivalent.
 - An after hook cancelled by an abort keeps the executed result.

@@ -49,6 +49,7 @@ from .tool_hooks import (
     validate_tool_result,
 )
 from .tools import is_builtin_search
+from .tools._context import current_model
 from .tools.base import Tool, ToolResult, ToolValidationError, error_tool_result, validate_tool_arguments
 from .types import (
     AssistantMessage,
@@ -869,7 +870,14 @@ async def _execute_prepared_tool_call(
     tool, call, validated, context = prepared.tool, prepared.call, prepared.args, prepared.context
     started = time.monotonic()
     try:
-        result = await tool.execute(call.id, deepcopy(validated), cancellation, _make_update_sink(emit, call))
+        model = config.model if (config.model.provider, config.model.id) != ("unknown", "unknown") else None
+        token = current_model.set(model)
+        try:
+            result = await tool.execute(
+                call.id, deepcopy(validated), cancellation, _make_update_sink(emit, call)
+            )
+        finally:
+            current_model.reset(token)
         validate_tool_result(result)
         result = deepcopy(result)
     except asyncio.CancelledError:

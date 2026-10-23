@@ -31,8 +31,9 @@ Set your provider credentials and model in `.env`, then run:
 
 Install Git, [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`, for `grep`)
 and [fd](https://github.com/sharkdp/fd) (`fd` or Debian's `fdfind`, for `find`)
-separately; the harness never downloads them. The Python package, import and
-command names are `pi-agent`, `pi_agent` and `pi-agent`.
+separately; the harness never downloads them. `ls` also requires the ICU runtime
+(`libicu-dev` on Debian/Ubuntu) to use the same Unicode collation as Node.
+The Python package, import and command names are `pi-agent`, `pi_agent` and `pi-agent`.
 
 ## What it provides
 

@@ -1,0 +1,4401 @@
+[
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ "3str",
+ "e:its",
+ "a",
+ {},
+ {},
+ 31,
+ {},
+ "",
+ "\u0001tr",
+ "\nstr",
+ "\nétr",
+ "-tr",
+ "1str",
+ "1tr",
+ "2s9r",
+ "2str",
+ "3ét",
+ "8tr",
+ ":",
+ "Et3r",
+ "a",
+ "br",
+ "cmmand",
+ "edits",
+ "h",
+ "he",
+ "hel",
+ "hell",
+ "hello",
+ "hello",
+ "hello",
+ "hello",
+ "hello",
+ "hello",
+ "helloካ",
+ "helloካ",
+ "k",
+ "k",
+ "nstr4",
+ "path",
+ "path",
+ "path",
+ "path",
+ "path",
+ "path",
+ "r",
+ "r",
+ "s\ntrx",
+ "s\rt",
+ "s-r😀",
+ "s2r",
+ "s3r",
+ "s6tr",
+ "s8r",
+ "s8tr",
+ "s9r",
+ "s[tr😀",
+ "s]5ra",
+ "sbr",
+ "sbtr",
+ "sr",
+ "st\u0001",
+ "st\rr",
+ "st r",
+ "st r",
+ "st",
+ "st",
+ "st-",
+ "st5r",
+ "st6",
+ "stEr:",
+ "stan",
+ "stf",
+ "str",
+ "str\u0001",
+ "str",
+ "str",
+ "str",
+ "str,",
+ "str-5",
+ "str4",
+ "str6",
+ "strE",
+ "stra",
+ "stre",
+ "strn",
+ "sttr",
+ "s{",
+ "t1",
+ "t4r",
+ "tn",
+ "tr",
+ "t😀r",
+ "x",
+ "{",
+ "{stru",
+ "éstr",
+ "😀tr",
+ {},
+ {},
+ {},
+ {},
+ {},
+ -123,
+ {},
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ 1,
+ {},
+ 1,
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ 12,
+ 123,
+ 123,
+ {},
+ {},
+ 123.2,
+ 123.2,
+ 123.2,
+ 0.1232,
+ {},
+ {},
+ 129,
+ 12,
+ {},
+ {},
+ {},
+ {},
+ 13,
+ 132,
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ 2203,
+ {},
+ {},
+ {},
+ {},
+ 3123,
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ [],
+ [],
+ [],
+ [],
+ [
+  1
+ ],
+ [],
+ [
+  1
+ ],
+ [
+  1,
+  2
+ ],
+ [
+  1,
+  2
+ ],
+ [
+  1,
+  2
+ ],
+ [
+  1,
+  2,
+  "a"
+ ],
+ [
+  1,
+  2
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "\ra": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "": [
+    true,
+    5,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "1": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {
+   "a ": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": "{[true,false,null]}]"
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null,
+    7
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  },
+  3
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true
+   ]
+  },
+  false,
+  null
+ ],
+ [
+  1,
+  2,
+  {
+   "a": []
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": true
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a": true
+  }
+ ],
+ [
+  1,
+  2,
+  {},
+  false
+ ],
+ [
+  1,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {},
+  false,
+  null
+ ],
+ [
+  1,
+  2,
+  {
+   "a": true
+  }
+ ],
+ [
+  1,
+  2,
+  {},
+  false,
+  null
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {
+   "a.": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "a:": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {
+   "ta": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {
+   "}": [
+    true
+   ]
+  }
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1,
+  2,
+  {}
+ ],
+ [
+  1
+ ],
+ [
+  1,
+  2
+ ],
+ [
+  1
+ ],
+ [
+  1
+ ],
+ [
+  1
+ ],
+ [
+  1
+ ],
+ [
+  11,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  11,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [
+  12,
+  2,
+  {
+   "a": [
+    true,
+    7
+   ]
+  }
+ ],
+ [
+  12,
+  {
+   "a": [
+    true
+   ]
+  }
+ ],
+ [
+  12,
+  {
+   "a": true
+  }
+ ],
+ [
+  12,
+  {}
+ ],
+ [
+  12,
+  {}
+ ],
+ [
+  13
+ ],
+ [
+  1
+ ],
+ [],
+ [],
+ [
+  1
+ ],
+ [],
+ [
+  81,
+  2,
+  {
+   "a": [
+    true,
+    false
+   ]
+  }
+ ],
+ [
+  9,
+  2,
+  {
+   "a": [
+    true,
+    false,
+    null
+   ]
+  }
+ ],
+ [],
+ [],
+ [
+  true
+ ],
+ [
+  true
+ ],
+ [
+  true
+ ],
+ [
+  true
+ ],
+ [
+  true
+ ],
+ [
+  true,
+  false
+ ],
+ [
+  true,
+  false
+ ],
+ [
+  true,
+  false
+ ],
+ [
+  true,
+  false
+ ],
+ [
+  true,
+  false
+ ],
+ [
+  true,
+  false
+ ],
+ [
+  true,
+  false,
+  null
+ ],
+ [
+  true,
+  false,
+  null
+ ],
+ [
+  true,
+  false,
+  null
+ ],
+ [
+  true,
+  false,
+  null
+ ],
+ [
+  true,
+  false,
+  null
+ ],
+ [
+  true,
+  false,
+  null,
+  {}
+ ],
+ [
+  true,
+  false,
+  null,
+  {}
+ ],
+ [
+  true,
+  false,
+  null,
+  {}
+ ],
+ [
+  true,
+  false,
+  null,
+  {}
+ ],
+ [
+  true,
+  false,
+  null,
+  {}
+ ],
+ [
+  true,
+  false,
+  null,
+  {
+   "x": 1
+  }
+ ],
+ [
+  true,
+  false,
+  null,
+  {
+   "x": 1
+  }
+ ],
+ [
+  true,
+  false,
+  null,
+  {
+   "x": 1
+  }
+ ],
+ [],
+ [],
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ false,
+ {},
+ false,
+ false,
+ false,
+ false,
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ null,
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ true,
+ true,
+ {},
+ true,
+ true,
+ {},
+ {},
+ {},
+ {},
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  ",": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {},
+ {},
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1
+ },
+ {
+  "": 1,
+  "b": 1
+ },
+ {
+  "": 1
+ },
+ {
+  "": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "": 1,
+  "b": []
+ },
+ {},
+ {
+  "1a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  ":a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a ": 1,
+  "b": [
+   1
+  ]
+ },
+ {},
+ {},
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {},
+ {},
+ {},
+ {
+  "a": 1
+ },
+ {
+  "a": 1,
+  "\n": [
+   1
+  ]
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b2": [
+   1
+  ]
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {},
+ {},
+ {},
+ {},
+ {
+  "a": -18,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {},
+ {},
+ {},
+ {},
+ {
+  "fa": 1,
+  "b": [
+   1
+  ]
+ },
+ {},
+ {},
+ {},
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {
+  "a": 1,
+  "b": [
+   1
+  ]
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1,
+  "b": []
+ },
+ {},
+ {},
+ {},
+ {},
+ {
+  "": "пр"
+ },
+ {
+  "": "привет 😀",
+  "n": -0.25
+ },
+ {
+  "": "привет 😀",
+  "n": 0.25
+ },
+ {
+  "": {
+   "b": "c"
+  }
+ },
+ {
+  "": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {},
+ {
+  ".": "привет 😀"
+ },
+ {
+  "3edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "}],"
+   }
+  ]
+ },
+ {
+  "5path": "rc/a.y",
+  "limit": 10
+ },
+ {
+  "9ommand": "ls ]-la"
+ },
+ {
+  "[a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "[k": "ривет 😀"
+ },
+ {
+  "\\.": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {
+  "a": 2
+ },
+ {
+  "__proto__": {
+   "x": 1
+  },
+  "a": 2
+ },
+ {},
+ {},
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxx5xxx"
+   }
+  }
+ },
+ {},
+ {
+  "a": "b"
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxx1xxxxxxxxxxxx0xxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": ""
+ },
+ {
+  "a": "\t"
+ },
+ {
+  "a": "a"
+ },
+ {
+  "a": "ab"
+ },
+ {
+  "a": "abc"
+ },
+ {
+  "a": "abc"
+ },
+ {
+  "a": "b"
+ },
+ {
+  "a": "b"
+ },
+ {
+  "a": "b"
+ },
+ {
+  "a": "b"
+ },
+ {
+  "a": "ba"
+ },
+ {
+  "a": "bad"
+ },
+ {
+  "a": "bad"
+ },
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {
+  "a": "bad\tcontrol",
+  "b": "ካ"
+ },
+ {
+  "a": "x\ny"
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1,
+  "b": 0
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1
+ },
+ {
+  "a": 1,
+  "b": false
+ },
+ {
+  "a": 1,
+  "b": false
+ },
+ {
+  "a": 1,
+  "b": false
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false,
+  "d": null
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false,
+  "d": null
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false,
+  "d": null
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false,
+  "d": null
+ },
+ {
+  "a": 1,
+  "b": true,
+  "c": false,
+  "d": null
+ },
+ {},
+ {
+  "a": []
+ },
+ {
+  "a": [
+   1
+  ]
+ },
+ {
+  "a": [
+   1
+  ]
+ },
+ {
+  "a": [
+   1,
+   2
+  ]
+ },
+ {
+  "a": [
+   1,
+   2
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {}
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {}
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {}
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {}
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {}
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": ""
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "h"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "he"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hel"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hell"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\n"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nw"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nwo"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nwor"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworl"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ],
+  "x": -1
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ]
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ],
+  "x": -1.2
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ],
+  "x": -1.25
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ],
+  "x": -1.25
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ],
+  "x": -1.25
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ],
+  "x": -0.00125
+ },
+ {
+  "a": [
+   1,
+   2,
+   {
+    "b": "hello\nworld"
+   }
+  ],
+  "x": -0.00125
+ },
+ {},
+ {
+  "a": {}
+ },
+ {
+  "a": {
+   "": {}
+  }
+ },
+ {
+  "a": {
+   ".b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "]b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {}
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": "c"
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {}
+ },
+ {
+  "a": {
+   "b": "c"
+  }
+ },
+ {
+  "a": {}
+ },
+ {
+  "a": {}
+ },
+ {
+  "a": {}
+ },
+ {
+  "a": {}
+ },
+ {
+  "a": {
+   "b": {
+    "": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": ""
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xx+xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxExxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxuxxxxxxxxxxxfxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxx7xxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxnxxxxxxxxx\txxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxx\u0001xxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxx xxxxxxxxxxxnxxxxxx:xxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxx\nxxxxxxxxxxxxxxxx,xxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxx2xxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxexxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxx0xxxxxxxx:xxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxx8xxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxx[xxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxexxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxtxxx9xxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxx\txxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxtxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxx0xxxxxxxxx9xxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxx8xxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxx\txxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxx,xxxxxxxxxxx😀"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxuxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxx,xxxxxxxx\tx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxx\u0001xxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxx3xxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxx\rxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxx+xxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxx5xxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx2"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {
+    "c": "xxxxxxxxxxxxx😀xxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {
+   "b": {}
+  }
+ },
+ {
+  "a": {}
+ },
+ {
+  "a": {
+   "b": "c"
+  }
+ },
+ {
+  "a": {}
+ },
+ {
+  "a": {
+   "bt": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a": {}
+ },
+ {},
+ {},
+ {
+  "a4": {
+   "b": {
+    "c": "xxxx9xxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a9": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxx,xxxéxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a:": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "a:{": ":{"
+ },
+ {
+  "a:{": ":{"
+ },
+ {},
+ {
+  "ab": {
+   "b": {
+    "c": "xxxxxx8xxxxxxxxxxxxxxxxxxxxxxx"
+   }
+  }
+ },
+ {
+  "ath": "src/a.4py"
+ },
+ {},
+ {},
+ {
+  "cmma.d": "ls -la",
+  "timeout": 150
+ },
+ {
+  "cmmand": "ls -la"
+ },
+ {
+  "cmmand": "ls -la",
+  "tim out": 150
+ },
+ {
+  "cmmand": "ls -la",
+  "timeout": 150
+ },
+ {},
+ {
+  "co4mand": "lsn-la",
+  "timeout": 150
+ },
+ {},
+ {
+  "com0n": "ls -la",
+  "timeout": 150
+ },
+ {
+  "com2mand": "ls -la",
+  "timeout": 150
+ },
+ {
+  "comand": "ls -la"
+ },
+ {
+  "comand": "ls -la",
+  "timeout": 1500
+ },
+ {
+  "comand": "lés -la"
+ },
+ {
+  "comanéa": "ls -la",
+  "timeout": 150
+ },
+ {
+  "comfmand": "ls -la",
+  "timeout": 150
+ },
+ {
+  "comm+nd": "l -a",
+  "timeout": 150
+ },
+ {},
+ {
+  "comm3nd": "ls -la"
+ },
+ {
+  "commEand": "ls -la",
+  "tim6out": 150
+ },
+ {},
+ {
+  "comma nd": "ls -la",
+  ".t+imeout": 150
+ },
+ {
+  "comma[nd": "ls -la",
+  "tim2out": 150
+ },
+ {
+  "commad": "ls -la",
+  "timeout": 1500
+ },
+ {
+  "comman": "ls -la",
+  "imeout": 1.5
+ },
+ {
+  "command\t": "ls -la",
+  "timeout": 150
+ },
+ {},
+ {
+  "command": "ls -la"
+ },
+ {},
+ {
+  "command": "\\s 5-la",
+  "timeout": 150
+ },
+ {
+  "command": "l -la"
+ },
+ {
+  "command": "l -laE"
+ },
+ {
+  "command": "l5 -la",
+  "tmeout": 1500
+ },
+ {
+  "command": "l: -la",
+  "timeout": 1500
+ },
+ {
+  "command": "ls"
+ },
+ {},
+ {
+  "command": "ls"
+ },
+ {
+  "command": "ls -"
+ },
+ {
+  "command": "ls -"
+ },
+ {
+  "command": "ls -9a",
+  "timeout": 150
+ },
+ {
+  "command": "ls -l\u0001",
+  "timeout": 150
+ },
+ {
+  "command": "ls -l",
+  "timeut": 1500
+ },
+ {
+  "command": "ls -l,"
+ },
+ {
+  "command": "ls -lEa",
+  "timeout": 150
+ },
+ {
+  "command": "ls -la\u0001",
+  "timeout": 150
+ },
+ {
+  "command": "ls -la",
+  "timeout": 150
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la",
+  "5imeout": 150
+ },
+ {
+  "command": "ls -la",
+  "Eimeout": 1
+ },
+ {
+  "command": "ls -la",
+  "imeout": 150
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la",
+  "t2meout": 150
+ },
+ {
+  "command": "ls -la",
+  "tieoutt": 150
+ },
+ {
+  "command": "ls -la",
+  "tieoutu": 150000000000000000000
+ },
+ {
+  "command": "ls -la",
+  "tieut": 150
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la",
+  "timeot": 150
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la",
+  "timeout": 1.52
+ },
+ {
+  "command": "ls -la",
+  "timeout": 150
+ },
+ {
+  "command": "ls -la",
+  "timeout": 150
+ },
+ {
+  "command": "ls -la",
+  "timeout": 1500
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la",
+  "timeout": 14500
+ },
+ {
+  "command": "ls -la",
+  "timeout6": 150
+ },
+ {
+  "command": "ls -la",
+  "timet": 150
+ },
+ {
+  "command": "ls -la",
+  "timout": 150
+ },
+ {
+  "command": "ls -la",
+  "t😀imeout": 150
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la"
+ },
+ {
+  "command": "ls -la,"
+ },
+ {
+  "command": "ls -la,"
+ },
+ {
+  "command": "ls -la:,"
+ },
+ {
+  "command": "ls -la},"
+ },
+ {
+  "command": "ls -{la"
+ },
+ {
+  "command": "ls -éla",
+  "ti3meut": 150
+ },
+ {
+  "command": "ls 3-la",
+  "tmeout": 150
+ },
+ {
+  "command": "ls [la",
+  "timeout": 150
+ },
+ {
+  "command": "ls la",
+  "timeout": 150
+ },
+ {
+  "command": "ls la"
+ },
+ {
+  "command": "ls u-[la",
+  "tieout": 150
+ },
+ {
+  "command": "ls-la",
+  "timeout": 150
+ },
+ {
+  "command": "ls2 -la",
+  "t:meout": 150
+ },
+ {
+  "command": "ls4 -la",
+  "tEmeout": 150
+ },
+ {
+  "command": "ls7 -la",
+  "ti1meout": 150
+ },
+ {
+  "command": "lsb -la"
+ },
+ {},
+ {},
+ {},
+ {
+  "command": "ls-la",
+  "timeout": 150
+ },
+ {
+  "command": "ls -la",
+  "tieo6t": 150
+ },
+ {
+  "command,": "ls-la",
+  "timeout": 150
+ },
+ {
+  "command:bls -la": "timeout"
+ },
+ {
+  "commnd": "ls+ -la",
+  "timeout": 1.5
+ },
+ {
+  "commxand": "lsx-la",
+  "timeout": 150
+ },
+ {
+  "comnd": "ls -la",
+  "timeot": 150
+ },
+ {
+  "ctommand": "ls -la",
+  "timeout": 1.5
+ },
+ {
+  "dits": [
+   {
+    "old:Text": "a\nb",
+    "newTet": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {},
+ {
+  "edis": [
+   {
+    "olbText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edis": [
+   {},
+   "newText"
+  ]
+ },
+ {
+  "edis": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edit": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edit": ":[{"
+ },
+ {
+  "edit:s": [
+   {
+    "oldText": "a\n"
+   }
+  ]
+ },
+ {
+  "edit:s": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "editfs": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {},
+ {},
+ {},
+ {},
+ {
+  "edits": []
+ },
+ {
+  "edits": [
+   "oldText"
+  ],
+  "newText": "c"
+ },
+ {
+  "edits": [
+   "oldText"
+  ],
+  "newText": "c"
+ },
+ {
+  "edits": [],
+  "newText": "c"
+ },
+ {
+  "edits": [
+   {},
+   "a\nb",
+   "newText"
+  ]
+ },
+ {
+  "edits": [
+   {},
+   "newText"
+  ]
+ },
+ {
+  "edits": [
+   {},
+   "newText"
+  ]
+ },
+ {
+  "edits": [
+   {},
+   "a\nb",
+   "newText"
+  ]
+ },
+ {
+  "edits": [
+   {}
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldT\next": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldT xt": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldTet": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {}
+  ],
+  "newTex{t": "c"
+ },
+ {
+  "edits": [
+   {
+    "oldTex5": "a\nb",
+    "newTfxt": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldTexet": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": ""
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "0\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "7a\nb",
+    "newText": "c"
+   }
+  ],
+  "ath": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": ":\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\n"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\n",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\n0b"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\n:b",
+    "newT2ext": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "3newTex8": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newTe5xt": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newTex": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": ""
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": ""
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "2"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "5path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "\\path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "ath": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x3}"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newText": "t"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newTtext": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newTxt": "c"
+   }
+  ],
+  "pth": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newext": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "newxext": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb",
+    "new}ext": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb0",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nb7",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\nbE",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\neb",
+    "newTxt": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldText": "a\n}b",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "aanb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "ab\nb",
+    "newText": "c"
+   }
+  ],
+  "pah": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldText": "anb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {},
+   "newTextx:"
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldTextE": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "pat3h": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldTexut": "a\nb8,"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldTxt": "a\nb",
+    "ewText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldTxt": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "patu": "x"
+ },
+ {
+  "edits": [
+   {
+    "oldext": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "edits": [
+   {
+    "oldnext": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "old}ext": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {
+    "uldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edits": [
+   {}
+  ],
+  "newText": "c"
+ },
+ {
+  "edits": [
+   {}
+  ],
+  "newText": "c"
+ },
+ {
+  "edits": {
+   "oldTex": "a\nb",
+   "newText": "c"
+  }
+ },
+ {
+  "edits": {
+   "oldText": "a\b",
+   "newTexft": "c"
+  }
+ },
+ {
+  "edits": {
+   "oldText": "a\n",
+   "newText": "c"
+  }
+ },
+ {},
+ {},
+ {},
+ {
+  "edt[s": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path": "x"
+ },
+ {
+  "edts": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ],
+  "path\r": "x"
+ },
+ {
+  "eedits": [
+   {
+    "oldText": "a\nb",
+    "newText": "c"
+   }
+  ]
+ },
+ {
+  "efits": [
+   {
+    "oldText": "a\nb",
+    "newTe\\xt": "c"
+   }
+  ],
+  "p😀th": "x"
+ },
+ {
+  "e}dits": [
+   {},
+   "newText"
+  ]
+ },
+ {},
+ {},
+ {},
+ {},
+ {
+  "k": "uпривет 😀",
+  "n": -0.25
+ },
+ {
+  "k": "uпривет 😀"
+ },
+ {
+  "k": "п"
+ },
+ {
+  "k": "п-ивет 😀,"
+ },
+ {
+  "k": "п8ривет 😀",
+  "n": -0.5
+ },
+ {
+  "k": "п}ривет 😀",
+  "n": -0.25
+ },
+ {
+  "k": "пр\u0001вет 😀",
+  "n": -0.25
+ },
+ {
+  "k": "прве 😀",
+  "n": -0.25
+ },
+ {
+  "k": "првет 😀",
+  "": -0.252
+ },
+ {
+  "k": "првет 😀"
+ },
+ {
+  "k": "при"
+ },
+ {
+  "k": "при5ет 😀",
+  "n": -0.25
+ },
+ {
+  "k": "при7ет 😀",
+  "n": -0.25
+ },
+ {
+  "k": "приaе"
+ },
+ {
+  "k": "приeет 😀"
+ },
+ {
+  "k": "привuет 😀"
+ },
+ {
+  "k": "приве"
+ },
+ {
+  "k": "приве  😀",
+  "n": -0.25
+ },
+ {
+  "k": "приве т 😀",
+  "n": -0.25
+ },
+ {
+  "k": "приве 😀",
+  "n": 0.25
+ },
+ {
+  "k": "приве 😀",
+  "n": -0.25
+ },
+ {
+  "k": "привет"
+ },
+ {
+  "k": "привет ",
+  "na": -0.25
+ },
+ {
+  "k": "привет é"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀",
+  "": -0.25
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀",
+  "n": []
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀",
+  "n": -0.25
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀",
+  "n": -0.25
+ },
+ {
+  "k": "привет 😀",
+  "n": -0.2
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀",
+  "na": -0.2
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀"
+ },
+ {
+  "k": "привет 😀,"
+ },
+ {
+  "k": "привет 😀6"
+ },
+ {
+  "k": "привет,😀",
+  "n": -0.25
+ },
+ {
+  "k": "привет\\ 😀",
+  "n": -0.25
+ },
+ {
+  "k": "приет 😀"
+ },
+ {},
+ {},
+ {},
+ {
+  "k": [
+   "првет 😀",
+   "n"
+  ]
+ },
+ {
+  "k": [],
+  "n": -0.25
+ },
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {
+  "ommand": "ls -la",
+  "timeout": 150
+ },
+ {},
+ {
+  "p": "C:\\dir\f"
+ },
+ {
+  "p": "a\\qb"
+ },
+ {},
+ {
+  "pa\nth": "src/a.py",
+  "limit": 10
+ },
+ {
+  "pa.th": "src/a.py"
+ },
+ {
+  "pa7th": "src/a.py",
+  "limit": 10
+ },
+ {
+  "paEh": "src/a.py",
+  "limit": 10
+ },
+ {
+  "pah": "\\src/a.py",
+  "limit": 10
+ },
+ {
+  "pah": "src/a,.py",
+  "limit": 10
+ },
+ {
+  "pah": "src/a.py",
+  "limit": 10
+ },
+ {
+  "pah": "src/a.py"
+ },
+ {
+  "panth": "src/a.9y",
+  "lim{it": 10
+ },
+ {},
+ {
+  "pat\nh": "src/a.py",
+  "lii": 10
+ },
+ {
+  "pat": "bsrc/a.p",
+  "limit": 10
+ },
+ {
+  "pat": "src/a.Epyn",
+  "limit": 10
+ },
+ {
+  "pat": "src/apEy",
+  "limit": 10
+ },
+ {
+  "pat3": "src/a.py",
+  "limit": 0
+ },
+ {},
+ {},
+ {},
+ {
+  "path": ""
+ },
+ {},
+ {
+  "path": ".rc/a.py"
+ },
+ {
+  "path": "C"
+ },
+ {
+  "path": "C:"
+ },
+ {
+  "path": "C:"
+ },
+ {
+  "path": "C:\t"
+ },
+ {
+  "path": "C:\te"
+ },
+ {
+  "path": "C:\tem"
+ },
+ {
+  "path": "C:\temp"
+ },
+ {
+  "path": "C:\temp"
+ },
+ {
+  "path": "C:\temp"
+ },
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {
+  "path": "C:\temp\\x",
+  "command": "echo\\q"
+ },
+ {
+  "path": "rc/a.py",
+  "l.imit": 110
+ },
+ {
+  "path": "rc/a.py",
+  "limit": 10
+ },
+ {
+  "path": "s"
+ },
+ {
+  "path": "s rc/a.py",
+  "limit": 10
+ },
+ {
+  "path": "s4c/a.py",
+  "limit": 10
+ },
+ {
+  "path": "sEc/a.py",
+  "limit": 10
+ },
+ {
+  "path": "s\\c/a.py",
+  "limit": 10
+ },
+ {
+  "path": "s\rc/a.py",
+  "limit": 10
+ },
+ {
+  "path": "sr"
+ },
+ {
+  "path": "sr/a.py"
+ },
+ {
+  "path": "src"
+ },
+ {
+  "path": "src"
+ },
+ {
+  "path": "src.py",
+  "limit": 10
+ },
+ {
+  "path": "src/"
+ },
+ {
+  "path": "src/.py"
+ },
+ {
+  "path": "src/a\u0001pyé",
+  "limt": 10
+ },
+ {
+  "path": "src/a."
+ },
+ {
+  "path": "src/a.p",
+  "limi+t": 10
+ },
+ {
+  "path": "src/a.p",
+  "limit": 10
+ },
+ {
+  "path": "src/a.p0y",
+  "limit": 10
+ },
+ {
+  "path": "src/a.pfy"
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py",
+  "imit": 10
+ },
+ {
+  "path": "src/a.py",
+  "inmit": 10
+ },
+ {
+  "path": "src/a.py",
+  "l7mi1t": 10
+ },
+ {
+  "path": "src/a.py",
+  "l8imit": 10
+ },
+ {
+  "path": "src/a.py",
+  "lEmit": 10
+ },
+ {
+  "path": "src/a.py",
+  "liit": 10
+ },
+ {
+  "path": "src/a.py",
+  "liit": 10
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py",
+  "limi4t": 10
+ },
+ {
+  "path": "src/a.py",
+  "limi[t": 10
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py",
+  "limit": 0
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py",
+  "limit": 1
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py",
+  "limt": 0
+ },
+ {
+  "path": "src/a.py",
+  "limt": 10
+ },
+ {
+  "path": "src/a.py",
+  "limt": 10
+ },
+ {
+  "path": "src/a.py",
+  "lnimit": 10
+ },
+ {
+  "path": "src/a.py",
+  "uimit": 10
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py"
+ },
+ {
+  "path": "src/a.py[",
+  "limit": 10
+ },
+ {
+  "path": "src/a.y",
+  "limit": 10
+ },
+ {
+  "path": "src/a.éy",
+  "limit": 10
+ },
+ {
+  "path": "src/a3py"
+ },
+ {
+  "path": "src/apy",
+  "li5mit": 10
+ },
+ {
+  "path": "src/nb.py"
+ },
+ {
+  "path": "src2a.pye",
+  "limit": 10
+ },
+ {
+  "path": "srca\t.p",
+  "limit": 10
+ },
+ {
+  "path": "srca.py",
+  "limit": 10
+ },
+ {
+  "path": "src{a.py",
+  "limit": 10
+ },
+ {
+  "path": "src😀a.py",
+  "limit": 10
+ },
+ {
+  "path": "}rc/a.py"
+ },
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {
+  "pathx": "src/a.py",
+  "imit": 10
+ },
+ {},
+ {
+  "pt": "}rc/a.py",
+  "limit": 10
+ },
+ {
+  "pth": "src/a.py"
+ },
+ {
+  "p}th": "src/a.py",
+  "limit": 10
+ },
+ {
+  "ua": {
+   "b": {
+    "c": "xxxxxxxxxxxxxxxxxxxxxxxx7xxxxx"
+   }
+  }
+ },
+ {},
+ {},
+ {},
+ {},
+ {},
+ {
+  "xpath": "src/a.py",
+  "lmit": 10
+ },
+ {
+  "épata": "src/a.y",
+  "limit": 10
+ },
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {},
+ {}
+]

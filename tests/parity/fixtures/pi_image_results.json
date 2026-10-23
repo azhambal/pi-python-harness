@@ -1,0 +1,1045 @@
+[
+ {
+  "name": "PNG unchanged",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAAK0lEQVR4nGNkYGD4z8sgGMjLIMjAyyC4nhI2C4O4IAMDA3XwqGGjhg05wwB8ihbJGbFxEQAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAAK0lEQVR4nGNkYGD4z8sgGMjLIMjAyyC4nhI2C4O4IAMDA3XwqGGjhg05wwB8ihbJGbFxEQAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG no resize",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAAK0lEQVR4nGNkYGD4z8sgGMjLIMjAyyC4nhI2C4O4IAMDA3XwqGGjhg05wwB8ihbJGbFxEQAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAAK0lEQVR4nGNkYGD4z8sgGMjLIMjAyyC4nhI2C4O4IAMDA3XwqGGjhg05wwB8ihbJGbFxEQAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG model profile",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAAsUlEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a/Odk5/4408bP8mHsFNPFw38mDdyGN9Ey/mm3g/buSvtisv+wjgYcAjgAcDLwY8EvhA4M+BV6Lyco8EHgY8FHgJ4MHAewF/BbwWcAuVl3sk8BDgJYBrgHcFngS8DvAg4GFUXvZhwCOBa4H3Bp4MvCZwM/AI4GH8IyHrEJahnPWuAAAAAElFTkSuQmCC",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAAsUlEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a/Odk5/4408bP8mHsFNPFw38mDdyGN9Ey/mm3g/buSvtisv+wjgYcAjgAcDLwY8EvhA4M+BV6Lyco8EHgY8FHgJ4MHAewF/BbwWcAuVl3sk8BDgJYBrgHcFngS8DvAg4GFUXvZhwCOBa4H3Bp4MvCZwM/AI4GH8IyHrEJahnPWuAAAAAElFTkSuQmCC",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG byte budget",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAAK0lEQVR4nGNkYGD4z8sgGMjLIMjAyyC4nhI2C4O4IAMDA3XwqGGjhg05wwB8ihbJGbFxEQAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAAK0lEQVR4nGNkYGD4z8sgGMjLIMjAyyC4nhI2C4O4IAMDA3XwqGGjhg05wwB8ihbJGbFxEQAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG impossible budget",
+  "result": {
+   "ok": false,
+   "message": "[Image omitted: could not be resized below the inline image size limit.]"
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image omitted: could not be resized below the inline image size limit.]"
+   }
+  ]
+ },
+ {
+  "name": "JPEG unchanged",
+  "result": {
+   "ok": true,
+   "data": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAALABMDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDidN8IdP3f6V0UHhvbiONPm7tjpXb29vElszLGAeOfxrX021g4/dLRjc1qYXlwtHRyV2/LVWXnpv8Ad5eRkme1pWkzhY/CH7tf3f6UV69HaweWv7paK5lBWPulxDWsf//Z",
+   "mimeType": "image/jpeg",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/jpeg]"
+   },
+   {
+    "type": "image",
+    "data": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAALABMDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDidN8IdP3f6V0UHhvbiONPm7tjpXb29vElszLGAeOfxrX021g4/dLRjc1qYXlwtHRyV2/LVWXnpv8Ad5eRkme1pWkzhY/CH7tf3f6UV69HaweWv7paK5lBWPulxDWsf//Z",
+    "mimeType": "image/jpeg"
+   }
+  ]
+ },
+ {
+  "name": "JPEG no resize",
+  "result": {
+   "ok": true,
+   "data": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAALABMDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDidN8IdP3f6V0UHhvbiONPm7tjpXb29vElszLGAeOfxrX021g4/dLRjc1qYXlwtHRyV2/LVWXnpv8Ad5eRkme1pWkzhY/CH7tf3f6UV69HaweWv7paK5lBWPulxDWsf//Z",
+   "mimeType": "image/jpeg",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/jpeg]"
+   },
+   {
+    "type": "image",
+    "data": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAALABMDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDidN8IdP3f6V0UHhvbiONPm7tjpXb29vElszLGAeOfxrX021g4/dLRjc1qYXlwtHRyV2/LVWXnpv8Ad5eRkme1pWkzhY/CH7tf3f6UV69HaweWv7paK5lBWPulxDWsf//Z",
+    "mimeType": "image/jpeg"
+   }
+  ]
+ },
+ {
+  "name": "JPEG model profile",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAAxElEQVR4AQG5AEb/AAoMEf8eDzn/NxZH/08Thv9pELH/jhDK/64Tvv/EEV//2hEs/wAQOjf/Jjti/0I/eP9aPp//dz+//5s/0P+rOYj/xDo//+Y+Vv8AB3Bn/yB0ff9Ac57/XnDW/3p4vP+Jd1f/onBC/8pzZv/ic37/AAGpif8Zq5f/QafT/12nxv9qqGL/hK4d/6ipW//Go4z/3qik/wAF2p7/ItPb/0rV3v9Y11z/cNc8/5TWXv+z1IX/0NOl/+bWyf9u5Ww8eZqVbgAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAAxElEQVR4AQG5AEb/AAoMEf8eDzn/NxZH/08Thv9pELH/jhDK/64Tvv/EEV//2hEs/wAQOjf/Jjti/0I/eP9aPp//dz+//5s/0P+rOYj/xDo//+Y+Vv8AB3Bn/yB0ff9Ac57/XnDW/3p4vP+Jd1f/onBC/8pzZv/ic37/AAGpif8Zq5f/QafT/12nxv9qqGL/hK4d/6ipW//Go4z/3qik/wAF2p7/ItPb/0rV3v9Y11z/cNc8/5TWXv+z1IX/0NOl/+bWyf9u5Ww8eZqVbgAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG byte budget",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAYAAABbNsX4AAAASklEQVR4AQE/AMD/ABYbLv8+IWT/ch/C/6ker//UHj//ABFza/9FcrP/dnWp/6FzUP/XcnH/AA7Jsf9Hx8b/b8lH/6jIYv/axrT//RwkGjS4/a4AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 5x3. Multiply coordinates by 3.80 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 5x3. Multiply coordinates by 3.80 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAYAAABbNsX4AAAASklEQVR4AQE/AMD/ABYbLv8+IWT/ch/C/6ker//UHj//ABFza/9FcrP/dnWp/6FzUP/XcnH/AA7Jsf9Hx8b/b8lH/6jIYv/axrT//RwkGjS4/a4AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG impossible budget",
+  "result": {
+   "ok": false,
+   "message": "[Image omitted: could not be resized below the inline image size limit.]"
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/jpeg]\n[Image omitted: could not be resized below the inline image size limit.]"
+   }
+  ]
+ },
+ {
+  "name": "BMP unchanged",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAB4UlEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8C3uYE25xgmxNsc4JtTrDNCbY5wTYn2OYE25xgmxNsc4JtTrDNCbY5wTYn2OYE25ygcu0J4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwgsq1J4ATwAngBHACOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAkq154ATgAngBPACeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAnqFx7AjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnKBy7QngBHACOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAngBHCCyrUngBPACeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAngBPACSrXngBOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeoXHsCOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAngBHACOAGcoHLtCeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAngBPACeAEcILKtSeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ/hGwKhDM8X6jrAAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image converted from image/bmp to image/png.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image converted from image/bmp to image/png.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAB4UlEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8C3uYE25xgmxNsc4JtTrDNCbY5wTYn2OYE25xgmxNsc4JtTrDNCbY5wTYn2OYE25ygcu0J4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwgsq1J4ATwAngBHACOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAkq154ATgAngBPACeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAnqFx7AjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnKBy7QngBHACOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAngBHCCyrUngBPACeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAngBPACSrXngBOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeoXHsCOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAngBHACOAGcoHLtCeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAngBPACeAEcILKtSeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ/hGwKhDM8X6jrAAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "BMP no resize",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAB4UlEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8C3uYE25xgmxNsc4JtTrDNCbY5wTYn2OYE25xgmxNsc4JtTrDNCbY5wTYn2OYE25ygcu0J4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwgsq1J4ATwAngBHACOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAkq154ATgAngBPACeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAnqFx7AjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnKBy7QngBHACOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAngBHCCyrUngBPACeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAngBPACSrXngBOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeoXHsCOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAngBHACOAGcoHLtCeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAngBPACeAEcILKtSeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ/hGwKhDM8X6jrAAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image converted from image/bmp to image/png.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image converted from image/bmp to image/png.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAABMAAAALCAYAAACd1bY6AAAB4UlEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8C3uYE25xgmxNsc4JtTrDNCbY5wTYn2OYE25xgmxNsc4JtTrDNCbY5wTYn2OYE25ygcu0J4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwgsq1J4ATwAngBHACOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAkq154ATgAngBPACeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAnqFx7AjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnKBy7QngBHACOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAngBHCCyrUngBPACeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAngBPACSrXngBOACeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeoXHsCOAGcAE4AJ4ATwAngBHACOAGcAE4AJ4ATwAngBHACOAGcoHLtCeAEcAI4AZwATgAngBPACeAEcAI4AZwATgAngBPACeAEcILKtSeAE8AJ4ARwAjgBnABOACeAE8AJ4ARwAjgBnABOACeAE8AJ/hGwKhDM8X6jrAAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "BMP model profile",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAArklEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a/Odk77Rh7GTTyCm3g4N/JgbuSx3MSLcRPvx438FZWXfQTwMOARwIOBFwMeCXwg8OfAK1F5uUcCDwMeCrwE8GDgvYC/Al4LuIXKyz0SeAjwEsA1wLsCTwJeB3gQ8DAqL/sw4JHAtcB7A08GXhO4GXgE8DD+EX5mDf/roFOiAAAAAElFTkSuQmCC",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image converted from image/bmp to image/png.]",
+    "[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image converted from image/bmp to image/png.]\n[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAArklEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a/Odk77Rh7GTTyCm3g4N/JgbuSx3MSLcRPvx438FZWXfQTwMOARwIOBFwMeCXwg8OfAK1F5uUcCDwMeCrwE8GDgvYC/Al4LuIXKyz0SeAjwEsA1wLsCTwJeB3gQ8DAqL/sw4JHAtcB7A08GXhO4GXgE8DD+EX5mDf/roFOiAAAAAElFTkSuQmCC",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "BMP byte budget",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAYAAABbNsX4AAAASklEQVR4AQE/AMD/ABIeL/9DHmn/dR7D/6cet//YHjf/ABJzav9Dc7n/dXPB/6dzPf/Yc2j/ABLIs/9DyMv/dcg8/6fIZP/YyLL/AVEkLPkrWegAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image converted from image/bmp to image/png.]",
+    "[Image: original 19x11, displayed at 5x3. Multiply coordinates by 3.80 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image converted from image/bmp to image/png.]\n[Image: original 19x11, displayed at 5x3. Multiply coordinates by 3.80 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAYAAABbNsX4AAAASklEQVR4AQE/AMD/ABIeL/9DHmn/dR7D/6cet//YHjf/ABJzav9Dc7n/dXPB/6dzPf/Yc2j/ABLIs/9DyMv/dcg8/6fIZP/YyLL/AVEkLPkrWegAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "BMP impossible budget",
+  "result": {
+   "ok": false,
+   "message": "[Image omitted: could not be resized below the inline image size limit.]"
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/bmp]\n[Image omitted: could not be resized below the inline image size limit.]"
+   }
+  ]
+ },
+ {
+  "name": "GIF unchanged",
+  "result": {
+   "ok": true,
+   "data": "R0lGODlhEwALAIcAABMXKhNFTBNzbhOhkBPPsogAsogu1Ihc9oihKYjPS68X9q9cKa+KS6+4ba/mj9YXKdZFS9Zzbdahj9bPsQ0AEQAAABoAIgAXEQ0uMwAuIhouRABFMw1cVQBcRBpcZgBzVQ2KdwCKZhqKiAChdw24mQC4iBq4qgDPmQ3muwDmqhrmzCcAMzQARDQXVScXRCcuVTQuZjRFdydFZidcdzRciDRzmSdziCeKmTSKqjShuyehqie4uzS4zDTP3SfPzCfm3TTm7kEAVVsAd04AZkEXZk4Xd1sXiEEud1sumU4uiEFFiE5FmVtFqkFcmVtcu05cqkFzqk5zu1tzzEGKu1uK3U6KzEGhzE6h3Vuh7kG43Vu4/0647lvPEEHP7k7P/07mEFvmIUHm/2gAiHUAmWgXmXUXqmguqnUuu2hFu3VFzGhczHVc3Whz3XVz7miK7nWK/3WhEGih/2i4EHW4IWjPIXXPMmjmMnXmQ5wAzIIXu48XzJwX3Zwu7oJF3Y9F7pxF/5xcEI9zEJxzIYJz/4KKEI+KIZyKMpyhQ4K4Mo+4Q5y4VJzPZYLmVI/mZZzmdqkA3bYA7rYuEKku/6lFELZFIalzMrZzQ6mhVLahZanPdrbPh9AAEN0AIcMA/8MXENAuMsMuId0uQ8NFMtBcVMNcQ91cZcNzVNCKdsOKZd2Kh8OhdtC4mMO4h924qcPPmNDmusPmqd3my+oAMuoXQ+ouVOpFZepcdupzh+qKmOqhqeq4uurPy+rm3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAL0ALAAAAAATAAsAAAjuACtQsLCCRZAhQsSMKVAAzyNInTZxknUBAAAXLYgUMUKmTB49exQo8PTgwawMGDS8gHEkCRIzZwwY4CMpEqhPoWhtCBBARgwlS5igSdPHz59JlERBgFCrAwcPM2g0eeJEzZoDBwAtWEBqVClbHwQIsFEDShQpbNoMCiSokiVTESLcCgFCxA0cU6pQcfOGUCFDDBigOpUK14gBA3TksHIFSxw4CBAcuoRJlQQJuUqQMLGDR5YtWuTMQZRIUYMGrFa10nWCAAEfPbp44UKnToIEizJpcjVhwq4UKFT8ABLmCxg7dxg1cuTAAaxXsXgFBAA7",
+   "mimeType": "image/gif",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/gif]"
+   },
+   {
+    "type": "image",
+    "data": "R0lGODlhEwALAIcAABMXKhNFTBNzbhOhkBPPsogAsogu1Ihc9oihKYjPS68X9q9cKa+KS6+4ba/mj9YXKdZFS9Zzbdahj9bPsQ0AEQAAABoAIgAXEQ0uMwAuIhouRABFMw1cVQBcRBpcZgBzVQ2KdwCKZhqKiAChdw24mQC4iBq4qgDPmQ3muwDmqhrmzCcAMzQARDQXVScXRCcuVTQuZjRFdydFZidcdzRciDRzmSdziCeKmTSKqjShuyehqie4uzS4zDTP3SfPzCfm3TTm7kEAVVsAd04AZkEXZk4Xd1sXiEEud1sumU4uiEFFiE5FmVtFqkFcmVtcu05cqkFzqk5zu1tzzEGKu1uK3U6KzEGhzE6h3Vuh7kG43Vu4/0647lvPEEHP7k7P/07mEFvmIUHm/2gAiHUAmWgXmXUXqmguqnUuu2hFu3VFzGhczHVc3Whz3XVz7miK7nWK/3WhEGih/2i4EHW4IWjPIXXPMmjmMnXmQ5wAzIIXu48XzJwX3Zwu7oJF3Y9F7pxF/5xcEI9zEJxzIYJz/4KKEI+KIZyKMpyhQ4K4Mo+4Q5y4VJzPZYLmVI/mZZzmdqkA3bYA7rYuEKku/6lFELZFIalzMrZzQ6mhVLahZanPdrbPh9AAEN0AIcMA/8MXENAuMsMuId0uQ8NFMtBcVMNcQ91cZcNzVNCKdsOKZd2Kh8OhdtC4mMO4h924qcPPmNDmusPmqd3my+oAMuoXQ+ouVOpFZepcdupzh+qKmOqhqeq4uurPy+rm3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAL0ALAAAAAATAAsAAAjuACtQsLCCRZAhQsSMKVAAzyNInTZxknUBAAAXLYgUMUKmTB49exQo8PTgwawMGDS8gHEkCRIzZwwY4CMpEqhPoWhtCBBARgwlS5igSdPHz59JlERBgFCrAwcPM2g0eeJEzZoDBwAtWEBqVClbHwQIsFEDShQpbNoMCiSokiVTESLcCgFCxA0cU6pQcfOGUCFDDBigOpUK14gBA3TksHIFSxw4CBAcuoRJlQQJuUqQMLGDR5YtWuTMQZRIUYMGrFa10nWCAAEfPbp44UKnToIEizJpcjVhwq4UKFT8ABLmCxg7dxg1cuTAAaxXsXgFBAA7",
+    "mimeType": "image/gif"
+   }
+  ]
+ },
+ {
+  "name": "GIF no resize",
+  "result": {
+   "ok": true,
+   "data": "R0lGODlhEwALAIcAABMXKhNFTBNzbhOhkBPPsogAsogu1Ihc9oihKYjPS68X9q9cKa+KS6+4ba/mj9YXKdZFS9Zzbdahj9bPsQ0AEQAAABoAIgAXEQ0uMwAuIhouRABFMw1cVQBcRBpcZgBzVQ2KdwCKZhqKiAChdw24mQC4iBq4qgDPmQ3muwDmqhrmzCcAMzQARDQXVScXRCcuVTQuZjRFdydFZidcdzRciDRzmSdziCeKmTSKqjShuyehqie4uzS4zDTP3SfPzCfm3TTm7kEAVVsAd04AZkEXZk4Xd1sXiEEud1sumU4uiEFFiE5FmVtFqkFcmVtcu05cqkFzqk5zu1tzzEGKu1uK3U6KzEGhzE6h3Vuh7kG43Vu4/0647lvPEEHP7k7P/07mEFvmIUHm/2gAiHUAmWgXmXUXqmguqnUuu2hFu3VFzGhczHVc3Whz3XVz7miK7nWK/3WhEGih/2i4EHW4IWjPIXXPMmjmMnXmQ5wAzIIXu48XzJwX3Zwu7oJF3Y9F7pxF/5xcEI9zEJxzIYJz/4KKEI+KIZyKMpyhQ4K4Mo+4Q5y4VJzPZYLmVI/mZZzmdqkA3bYA7rYuEKku/6lFELZFIalzMrZzQ6mhVLahZanPdrbPh9AAEN0AIcMA/8MXENAuMsMuId0uQ8NFMtBcVMNcQ91cZcNzVNCKdsOKZd2Kh8OhdtC4mMO4h924qcPPmNDmusPmqd3my+oAMuoXQ+ouVOpFZepcdupzh+qKmOqhqeq4uurPy+rm3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAL0ALAAAAAATAAsAAAjuACtQsLCCRZAhQsSMKVAAzyNInTZxknUBAAAXLYgUMUKmTB49exQo8PTgwawMGDS8gHEkCRIzZwwY4CMpEqhPoWhtCBBARgwlS5igSdPHz59JlERBgFCrAwcPM2g0eeJEzZoDBwAtWEBqVClbHwQIsFEDShQpbNoMCiSokiVTESLcCgFCxA0cU6pQcfOGUCFDDBigOpUK14gBA3TksHIFSxw4CBAcuoRJlQQJuUqQMLGDR5YtWuTMQZRIUYMGrFa10nWCAAEfPbp44UKnToIEizJpcjVhwq4UKFT8ABLmCxg7dxg1cuTAAaxXsXgFBAA7",
+   "mimeType": "image/gif",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/gif]"
+   },
+   {
+    "type": "image",
+    "data": "R0lGODlhEwALAIcAABMXKhNFTBNzbhOhkBPPsogAsogu1Ihc9oihKYjPS68X9q9cKa+KS6+4ba/mj9YXKdZFS9Zzbdahj9bPsQ0AEQAAABoAIgAXEQ0uMwAuIhouRABFMw1cVQBcRBpcZgBzVQ2KdwCKZhqKiAChdw24mQC4iBq4qgDPmQ3muwDmqhrmzCcAMzQARDQXVScXRCcuVTQuZjRFdydFZidcdzRciDRzmSdziCeKmTSKqjShuyehqie4uzS4zDTP3SfPzCfm3TTm7kEAVVsAd04AZkEXZk4Xd1sXiEEud1sumU4uiEFFiE5FmVtFqkFcmVtcu05cqkFzqk5zu1tzzEGKu1uK3U6KzEGhzE6h3Vuh7kG43Vu4/0647lvPEEHP7k7P/07mEFvmIUHm/2gAiHUAmWgXmXUXqmguqnUuu2hFu3VFzGhczHVc3Whz3XVz7miK7nWK/3WhEGih/2i4EHW4IWjPIXXPMmjmMnXmQ5wAzIIXu48XzJwX3Zwu7oJF3Y9F7pxF/5xcEI9zEJxzIYJz/4KKEI+KIZyKMpyhQ4K4Mo+4Q5y4VJzPZYLmVI/mZZzmdqkA3bYA7rYuEKku/6lFELZFIalzMrZzQ6mhVLahZanPdrbPh9AAEN0AIcMA/8MXENAuMsMuId0uQ8NFMtBcVMNcQ91cZcNzVNCKdsOKZd2Kh8OhdtC4mMO4h924qcPPmNDmusPmqd3my+oAMuoXQ+ouVOpFZepcdupzh+qKmOqhqeq4uurPy+rm3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAL0ALAAAAAATAAsAAAjuACtQsLCCRZAhQsSMKVAAzyNInTZxknUBAAAXLYgUMUKmTB49exQo8PTgwawMGDS8gHEkCRIzZwwY4CMpEqhPoWhtCBBARgwlS5igSdPHz59JlERBgFCrAwcPM2g0eeJEzZoDBwAtWEBqVClbHwQIsFEDShQpbNoMCiSokiVTESLcCgFCxA0cU6pQcfOGUCFDDBigOpUK14gBA3TksHIFSxw4CBAcuoRJlQQJuUqQMLGDR5YtWuTMQZRIUYMGrFa10nWCAAEfPbp44UKnToIEizJpcjVhwq4UKFT8ABLmCxg7dxg1cuTAAaxXsXgFBAA7",
+    "mimeType": "image/gif"
+   }
+  ]
+ },
+ {
+  "name": "GIF model profile",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAAr0lEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a/Od874eh7CLTySG3g4N/NQbuDR3MiLcTPvxw38JZWXfQTwYOARwIOBFwMeDnwg8OfAK1J5uUcCDwEeBrwE5sHAeyP+Cngt4GYqL/dI4BbgpYBrEO8GPBHzOsCDgIdSedmHAQ8HrgXeG3gK8BqIW4BHAA/lHwEISw/zHB2gMgAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAAr0lEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a/Od874eh7CLTySG3g4N/NQbuDR3MiLcTPvxw38JZWXfQTwYOARwIOBFwMeDnwg8OfAK1J5uUcCDwEeBrwE5sHAeyP+Cngt4GYqL/dI4BbgpYBrEO8GPBHzOsCDgIdSedmHAQ8HrgXeG3gK8BqIW4BHAA/lHwEISw/zHB2gMgAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "GIF byte budget",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAYAAABbNsX4AAAASklEQVR4AQE/AMD/ABIeL/9DHmj/dR7E/6cet//XHjf/ABJzav9Dc7n/dXPB/6dzPf/Xc2f/ABLIs/9DyMr/dcg8/6fIZP/XyLH/ANskJvsIrcQAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 5x3. Multiply coordinates by 3.80 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 5x3. Multiply coordinates by 3.80 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAYAAABbNsX4AAAASklEQVR4AQE/AMD/ABIeL/9DHmj/dR7E/6cet//XHjf/ABJzav9Dc7n/dXPB/6dzPf/Xc2f/ABLIs/9DyMr/dcg8/6fIZP/XyLH/ANskJvsIrcQAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "GIF impossible budget",
+  "result": {
+   "ok": false,
+   "message": "[Image omitted: could not be resized below the inline image size limit.]"
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/gif]\n[Image omitted: could not be resized below the inline image size limit.]"
+   }
+  ]
+ },
+ {
+  "name": "WEBP unchanged",
+  "result": {
+   "ok": true,
+   "data": "UklGRtgAAABXRUJQVlA4WAoAAAAQAAAAEgAACgAAQUxQSBUAAAABD/Co/4iIQCBAEfa656MHEf2PNS8AVlA4IJwAAADwBACdASoTAAsAPm0qkUWkIqGYBABABsS2AE6ZQjgbAByARhiIQANbOMdCsDcFMA4A/vxrzTW1qSQsPbqmHMgJuuw6CmpMza2nghtskjSjf7vImyHzgba/OBNzx/AQb/eTv4qU5uVpt3c/7xbUw6QaPP+aT65JmFMS3H+8JtWNhEO2rIt7f/MT+ujBTfij+nRta+0dZPTDuJIAAAA=",
+   "mimeType": "image/webp",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/webp]"
+   },
+   {
+    "type": "image",
+    "data": "UklGRtgAAABXRUJQVlA4WAoAAAAQAAAAEgAACgAAQUxQSBUAAAABD/Co/4iIQCBAEfa656MHEf2PNS8AVlA4IJwAAADwBACdASoTAAsAPm0qkUWkIqGYBABABsS2AE6ZQjgbAByARhiIQANbOMdCsDcFMA4A/vxrzTW1qSQsPbqmHMgJuuw6CmpMza2nghtskjSjf7vImyHzgba/OBNzx/AQb/eTv4qU5uVpt3c/7xbUw6QaPP+aT65JmFMS3H+8JtWNhEO2rIt7f/MT+ujBTfij+nRta+0dZPTDuJIAAAA=",
+    "mimeType": "image/webp"
+   }
+  ]
+ },
+ {
+  "name": "WEBP no resize",
+  "result": {
+   "ok": true,
+   "data": "UklGRtgAAABXRUJQVlA4WAoAAAAQAAAAEgAACgAAQUxQSBUAAAABD/Co/4iIQCBAEfa656MHEf2PNS8AVlA4IJwAAADwBACdASoTAAsAPm0qkUWkIqGYBABABsS2AE6ZQjgbAByARhiIQANbOMdCsDcFMA4A/vxrzTW1qSQsPbqmHMgJuuw6CmpMza2nghtskjSjf7vImyHzgba/OBNzx/AQb/eTv4qU5uVpt3c/7xbUw6QaPP+aT65JmFMS3H+8JtWNhEO2rIt7f/MT+ujBTfij+nRta+0dZPTDuJIAAAA=",
+   "mimeType": "image/webp",
+   "hints": []
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/webp]"
+   },
+   {
+    "type": "image",
+    "data": "UklGRtgAAABXRUJQVlA4WAoAAAAQAAAAEgAACgAAQUxQSBUAAAABD/Co/4iIQCBAEfa656MHEf2PNS8AVlA4IJwAAADwBACdASoTAAsAPm0qkUWkIqGYBABABsS2AE6ZQjgbAByARhiIQANbOMdCsDcFMA4A/vxrzTW1qSQsPbqmHMgJuuw6CmpMza2nghtskjSjf7vImyHzgba/OBNzx/AQb/eTv4qU5uVpt3c/7xbUw6QaPP+aT65JmFMS3H+8JtWNhEO2rIt7f/MT+ujBTfij+nRta+0dZPTDuJIAAAA=",
+    "mimeType": "image/webp"
+   }
+  ]
+ },
+ {
+  "name": "WEBP model profile",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAAxElEQVR4AQG5AEb/AAwMFpYiDDaJQg1oiVcOgYpvD5yLjgjPirUR0onIDmaJ5wwxlgAPQDqWJD9ZiUNAh4laPauKeTngi5o94IqnOnaJwj45ieg8Y5YACHdalh12eYk5c6eJUHPGinl2zYuHeV+KnHgcicRvZInqbImWAAmog5YdqaSJPKvUiV+l1opwp0qLiK4iiqipWonGo4SJ56KxlgAN07GWJNHZiTzY2Ylkz2yKedcqi5TXYYqt14WJytWtievV1ZaDpViepI82mQAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 9x5. Multiply coordinates by 2.11 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAYAAACXU8ZrAAAAxElEQVR4AQG5AEb/AAwMFpYiDDaJQg1oiVcOgYpvD5yLjgjPirUR0onIDmaJ5wwxlgAPQDqWJD9ZiUNAh4laPauKeTngi5o94IqnOnaJwj45ieg8Y5YACHdalh12eYk5c6eJUHPGinl2zYuHeV+KnHgcicRvZInqbImWAAmog5YdqaSJPKvUiV+l1opwp0qLiK4iiqipWonGo4SJ56KxlgAN07GWJNHZiTzY2Ylkz2yKedcqi5TXYYqt14WJytWtievV1ZaDpViepI82mQAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP byte budget",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAYAAABbNsX4AAAASklEQVR4AQE/AMD/ABYdL5NEHXCIdRvHi6octIjZHUSTABJ2ZpM/dLWIdXS1i552QojYbnKTABPGtpNExsqId8g/i6XKYYjcxLuTO0QdkGT8T/MAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 5x3. Multiply coordinates by 3.80 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 5x3. Multiply coordinates by 3.80 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAYAAABbNsX4AAAASklEQVR4AQE/AMD/ABYdL5NEHXCIdRvHi6octIjZHUSTABJ2ZpM/dLWIdXS1i552QojYbnKTABPGtpNExsqId8g/i6XKYYjcxLuTO0QdkGT8T/MAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP impossible budget",
+  "result": {
+   "ok": false,
+   "message": "[Image omitted: could not be resized below the inline image size limit.]"
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/webp]\n[Image omitted: could not be resized below the inline image size limit.]"
+   }
+  ]
+ },
+ {
+  "name": "JPEG EXIF 1",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AAsMFf8jEDr/PxVY/1kRnf99EMD/pRLK/8AScv/ZECz/ABE6O/8rPGX/Sj+D/2U+r/+MQM//pzuo/745Rf/kPlL/AAlxaf8ldYH/SXKx/2tz2v+DeYH/mHE+/8NzX//hc33/AAKqh/8gqqP/TKfZ/2Onov92qyr/naxC/8Gkh//cp6P/AAbZof8r0uj/UNa3/2DWQP+E10v/qtV7/8vUnv/l1sb/Ez9gM3xUQN0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AAsMFf8jEDr/PxVY/1kRnf99EMD/pRLK/8AScv/ZECz/ABE6O/8rPGX/Sj+D/2U+r/+MQM//pzuo/745Rf/kPlL/AAlxaf8ldYH/SXKx/2tz2v+DeYH/mHE+/8NzX//hc33/AAKqh/8gqqP/TKfZ/2Onov92qyr/naxC/8Gkh//cp6P/AAbZof8r0uj/UNa3/2DWQP+E10v/qtV7/8vUnv/l1sb/Ez9gM3xUQN0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG EXIF 2",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/ANkQLP/AEnL/pRLK/30QwP9ZEZ3/PxVY/yMQOv8LDBX/AOQ+Uv++OUX/pzuo/4xAz/9lPq//Sj+D/ys8Zf8ROjv/AOFzff/Dc1//mHE+/4N5gf9rc9r/SXKx/yV1gf8JcWn/ANyno//BpIf/naxC/3arKv9jp6L/TKfZ/yCqo/8Cqof/AOXWxv/L1J7/qtV7/4TXS/9g1kD/UNa3/yvS6P8G2aH/2F9gM6GDkVkAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/ANkQLP/AEnL/pRLK/30QwP9ZEZ3/PxVY/yMQOv8LDBX/AOQ+Uv++OUX/pzuo/4xAz/9lPq//Sj+D/ys8Zf8ROjv/AOFzff/Dc1//mHE+/4N5gf9rc9r/SXKx/yV1gf8JcWn/ANyno//BpIf/naxC/3arKv9jp6L/TKfZ/yCqo/8Cqof/AOXWxv/L1J7/qtV7/4TXS/9g1kD/UNa3/yvS6P8G2aH/2F9gM6GDkVkAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG EXIF 3",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AOXWxv/L1J7/qtV7/4TXS/9g1kD/UNa3/yvS6P8G2aH/ANyno//BpIf/naxC/3arKv9jp6L/TKfZ/yCqo/8Cqof/AOFzff/Dc1//mHE+/4N5gf9rc9r/SXKx/yV1gf8JcWn/AOQ+Uv++OUX/pzuo/4xAz/9lPq//Sj+D/ys8Zf8ROjv/ANkQLP/AEnL/pRLK/30QwP9ZEZ3/PxVY/yMQOv8LDBX/rmxgM/ujTccAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AOXWxv/L1J7/qtV7/4TXS/9g1kD/UNa3/yvS6P8G2aH/ANyno//BpIf/naxC/3arKv9jp6L/TKfZ/yCqo/8Cqof/AOFzff/Dc1//mHE+/4N5gf9rc9r/SXKx/yV1gf8JcWn/AOQ+Uv++OUX/pzuo/4xAz/9lPq//Sj+D/ys8Zf8ROjv/ANkQLP/AEnL/pRLK/30QwP9ZEZ3/PxVY/yMQOv8LDBX/rmxgM/ujTccAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG EXIF 4",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AAbZof8r0uj/UNa3/2DWQP+E10v/qtV7/8vUnv/l1sb/AAKqh/8gqqP/TKfZ/2Onov92qyr/naxC/8Gkh//cp6P/AAlxaf8ldYH/SXKx/2tz2v+DeYH/mHE+/8NzX//hc33/ABE6O/8rPGX/Sj+D/2U+r/+MQM//pzuo/745Rf/kPlL/AAsMFf8jEDr/PxVY/1kRnf99EMD/pRLK/8AScv/ZECz/6T1gM4ldcbEAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AAbZof8r0uj/UNa3/2DWQP+E10v/qtV7/8vUnv/l1sb/AAKqh/8gqqP/TKfZ/2Onov92qyr/naxC/8Gkh//cp6P/AAlxaf8ldYH/SXKx/2tz2v+DeYH/mHE+/8NzX//hc33/ABE6O/8rPGX/Sj+D/2U+r/+MQM//pzuo/745Rf/kPlL/AAsMFf8jEDr/PxVY/1kRnf99EMD/pRLK/8AScv/ZECz/6T1gM4ldcbEAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG EXIF 5",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AA4SHv8QTVD/BZZ+/wfTo/8AKxdD/zFQdf8pmKD/Ms7k/wBKGXT/VVCn/1eU2/9W0ZP/AGwVtP97U8j/cJiD/27ROf8AmhbV/5pQmP+LmiT/mtFe/wC7FoH/uExO/7qUbf/CzpX/ANkWMf/iUF3/3JWW/+HPv/9qQkNZvdlzjAAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AA4SHv8QTVD/BZZ+/wfTo/8AKxdD/zFQdf8pmKD/Ms7k/wBKGXT/VVCn/1eU2/9W0ZP/AGwVtP97U8j/cJiD/27ROf8AmhbV/5pQmP+LmiT/mtFe/wC7FoH/uExO/7qUbf/CzpX/ANkWMf/iUF3/3JWW/+HPv/9qQkNZvdlzjAAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG EXIF 6",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AAfTo/8Fln7/EE1Q/w4SHv8AMs7k/ymYoP8xUHX/KxdD/wBW0ZP/V5Tb/1VQp/9KGXT/AG7ROf9wmIP/e1PI/2wVtP8AmtFe/4uaJP+aUJj/mhbV/wDCzpX/upRt/7hMTv+7FoH/AOHPv//clZb/4lBd/9kWMf+78kNZ9E0EaAAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AAfTo/8Fln7/EE1Q/w4SHv8AMs7k/ymYoP8xUHX/KxdD/wBW0ZP/V5Tb/1VQp/9KGXT/AG7ROf9wmIP/e1PI/2wVtP8AmtFe/4uaJP+aUJj/mhbV/wDCzpX/upRt/7hMTv+7FoH/AOHPv//clZb/4lBd/9kWMf+78kNZ9E0EaAAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG EXIF 7",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AOHPv//clZb/4lBd/9kWMf8Aws6V/7qUbf+4TE7/uxaB/wCa0V7/i5ok/5pQmP+aFtX/AG7ROf9wmIP/e1PI/2wVtP8AVtGT/1eU2/9VUKf/Shl0/wAyzuT/KZig/zFQdf8rF0P/AAfTo/8Fln7/EE1Q/w4SHv+3JENZRngFAAAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AOHPv//clZb/4lBd/9kWMf8Aws6V/7qUbf+4TE7/uxaB/wCa0V7/i5ok/5pQmP+aFtX/AG7ROf9wmIP/e1PI/2wVtP8AVtGT/1eU2/9VUKf/Shl0/wAyzuT/KZig/zFQdf8rF0P/AAfTo/8Fln7/EE1Q/w4SHv+3JENZRngFAAAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "JPEG EXIF 8",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/ANkWMf/iUF3/3JWW/+HPv/8AuxaB/7hMTv+6lG3/ws6V/wCaFtX/mlCY/4uaJP+a0V7/AGwVtP97U8j/cJiD/27ROf8AShl0/1VQp/9XlNv/VtGT/wArF0P/MVB1/ymYoP8yzuT/AA4SHv8QTVD/BZZ+/wfTo/9ldENZ2IPPAgAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/ANkWMf/iUF3/3JWW/+HPv/8AuxaB/7hMTv+6lG3/ws6V/wCaFtX/mlCY/4uaJP+a0V7/AGwVtP97U8j/cJiD/27ROf8AShl0/1VQp/9XlNv/VtGT/wArF0P/MVB1/ymYoP8yzuT/AA4SHv8QTVD/BZZ+/wfTo/9ldENZ2IPPAgAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP EXIF 1",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AA0MF/8oDD//SQ1z/2EQh/9+C7T/qw7Y/8UQev/kCzH/ABBAO/8qP2L/SkCS/2Y8uP+NPuL/pD6L/7o/Mv/mPWD/AAh3XP8idoL/PnOy/2Ny2v+DeJn/k3cn/7xwVv/obIj/AAyngv8mqKr/S6nb/2qknf97qDP/n6lU/8Ciif/loq3/ABHUpP8o0uH/TNaz/2/UMv+H2UT/pdd6/8TWo//p1dP/M9RghklPRScAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AA0MF/8oDD//SQ1z/2EQh/9+C7T/qw7Y/8UQev/kCzH/ABBAO/8qP2L/SkCS/2Y8uP+NPuL/pD6L/7o/Mv/mPWD/AAh3XP8idoL/PnOy/2Ny2v+DeJn/k3cn/7xwVv/obIj/AAyngv8mqKr/S6nb/2qknf97qDP/n6lU/8Ciif/loq3/ABHUpP8o0uH/TNaz/2/UMv+H2UT/pdd6/8TWo//p1dP/M9RghklPRScAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP EXIF 2",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AOQLMf/FEHr/qw7Y/34LtP9hEIf/SQ1z/ygMP/8NDBf/AOY9YP+6PzL/pD6L/40+4v9mPLj/SkCS/yo/Yv8QQDv/AOhsiP+8cFb/k3cn/4N4mf9jctr/PnOy/yJ2gv8Id1z/AOWirf/Aoon/n6lU/3uoM/9qpJ3/S6nb/yaoqv8Mp4L/AOnV0//E1qP/pdd6/4fZRP9v1DL/TNaz/yjS4f8R1KT/+uBghrVUf2wAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AOQLMf/FEHr/qw7Y/34LtP9hEIf/SQ1z/ygMP/8NDBf/AOY9YP+6PzL/pD6L/40+4v9mPLj/SkCS/yo/Yv8QQDv/AOhsiP+8cFb/k3cn/4N4mf9jctr/PnOy/yJ2gv8Id1z/AOWirf/Aoon/n6lU/3uoM/9qpJ3/S6nb/yaoqv8Mp4L/AOnV0//E1qP/pdd6/4fZRP9v1DL/TNaz/yjS4f8R1KT/+uBghrVUf2wAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP EXIF 3",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AOnV0//E1qP/pdd6/4fZRP9v1DL/TNaz/yjS4f8R1KT/AOWirf/Aoon/n6lU/3uoM/9qpJ3/S6nb/yaoqv8Mp4L/AOhsiP+8cFb/k3cn/4N4mf9jctr/PnOy/yJ2gv8Id1z/AOY9YP+6PzL/pD6L/40+4v9mPLj/SkCS/yo/Yv8QQDv/AOQLMf/FEHr/qw7Y/34LtP9hEIf/SQ1z/ygMP/8NDBf/w8dghnzLSNwAAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/AOnV0//E1qP/pdd6/4fZRP9v1DL/TNaz/yjS4f8R1KT/AOWirf/Aoon/n6lU/3uoM/9qpJ3/S6nb/yaoqv8Mp4L/AOhsiP+8cFb/k3cn/4N4mf9jctr/PnOy/yJ2gv8Id1z/AOY9YP+6PzL/pD6L/40+4v9mPLj/SkCS/yo/Yv8QQDv/AOQLMf/FEHr/qw7Y/34LtP9hEIf/SQ1z/ygMP/8NDBf/w8dghnzLSNwAAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP EXIF 4",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/ABHUpP8o0uH/TNaz/2/UMv+H2UT/pdd6/8TWo//p1dP/AAyngv8mqKr/S6nb/2qknf97qDP/n6lU/8Ciif/loq3/AAh3XP8idoL/PnOy/2Ny2v+DeJn/k3cn/7xwVv/obIj/ABBAO/8qP2L/SkCS/2Y8uP+NPuL/pD6L/7o/Mv/mPWD/AA0MF/8oDD//SQ1z/2EQh/9+C7T/qw7Y/8UQev/kCzH//KxghiHGSc0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAsElEQVR4AQGlAFr/ABHUpP8o0uH/TNaz/2/UMv+H2UT/pdd6/8TWo//p1dP/AAyngv8mqKr/S6nb/2qknf97qDP/n6lU/8Ciif/loq3/AAh3XP8idoL/PnOy/2Ny2v+DeJn/k3cn/7xwVv/obIj/ABBAO/8qP2L/SkCS/2Y8uP+NPuL/pD6L/7o/Mv/mPWD/AA0MF/8oDD//SQ1z/2EQh/9+C7T/qw7Y/8UQev/kCzH//KxghiHGSc0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP EXIF 5",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/ABATHv8OVEj/C5d2/xLNpf8AMRNQ/y1Td/8ql6f/Ls7f/wBUFID/TlCr/1KV2P9cz4//AHATo/96UN7/cpWI/3jQK/8AnRHZ/5dUi/+MmjH/mtJj/wC/FoT/sVEy/7eRa/+9z5n/AOESN//kTWn/446f/+XOyv91CUONefctfwAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/ABATHv8OVEj/C5d2/xLNpf8AMRNQ/y1Td/8ql6f/Ls7f/wBUFID/TlCr/1KV2P9cz4//AHATo/96UN7/cpWI/3jQK/8AnRHZ/5dUi/+MmjH/mtJj/wC/FoT/sVEy/7eRa/+9z5n/AOESN//kTWn/446f/+XOyv91CUONefctfwAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP EXIF 6",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/ABLNpf8Ll3b/DlRI/xATHv8ALs7f/yqXp/8tU3f/MRNQ/wBcz4//UpXY/05Qq/9UFID/AHjQK/9ylYj/elDe/3ATo/8AmtJj/4yaMf+XVIv/nRHZ/wC9z5n/t5Fr/7FRMv+/FoT/AOXOyv/jjp//5E1p/+ESN//GEUONE6cwiwAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/ABLNpf8Ll3b/DlRI/xATHv8ALs7f/yqXp/8tU3f/MRNQ/wBcz4//UpXY/05Qq/9UFID/AHjQK/9ylYj/elDe/3ATo/8AmtJj/4yaMf+XVIv/nRHZ/wC9z5n/t5Fr/7FRMv+/FoT/AOXOyv/jjp//5E1p/+ESN//GEUONE6cwiwAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP EXIF 7",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AOXOyv/jjp//5E1p/+ESN/8Avc+Z/7eRa/+xUTL/vxaE/wCa0mP/jJox/5dUi/+dEdn/AHjQK/9ylYj/elDe/3ATo/8AXM+P/1KV2P9OUKv/VBSA/wAuzt//Kpen/y1Td/8xE1D/ABLNpf8Ll3b/DlRI/xATHv/E2UONI/EpoAAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AOXOyv/jjp//5E1p/+ESN/8Avc+Z/7eRa/+xUTL/vxaE/wCa0mP/jJox/5dUi/+dEdn/AHjQK/9ylYj/elDe/3ATo/8AXM+P/1KV2P9OUKv/VBSA/wAuzt//Kpen/y1Td/8xE1D/ABLNpf8Ll3b/DlRI/xATHv/E2UONI/EpoAAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "WEBP EXIF 8",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AOESN//kTWn/446f/+XOyv8AvxaE/7FRMv+3kWv/vc+Z/wCdEdn/l1SL/4yaMf+a0mP/AHATo/96UN7/cpWI/3jQK/8AVBSA/05Qq/9Sldj/XM+P/wAxE1D/LVN3/yqXp/8uzt//ABATHv8OVEj/C5d2/xLNpf9z0UONapOkmwAAAABJRU5ErkJggg==",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 11x19, displayed at 4x7. Multiply coordinates by 2.75 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAQAAAAHCAYAAAAvZezQAAAAgklEQVR4AQF3AIj/AOESN//kTWn/446f/+XOyv8AvxaE/7FRMv+3kWv/vc+Z/wCdEdn/l1SL/4yaMf+a0mP/AHATo/96UN7/cpWI/3jQK/8AVBSA/05Qq/9Sldj/XM+P/wAxE1D/LVN3/yqXp/8uzt//ABATHv8OVEj/C5d2/xLNpf9z0UONapOkmwAAAABJRU5ErkJggg==",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG EXIF 1",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG EXIF 2",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG EXIF 3",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG EXIF 4",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG EXIF 5",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG EXIF 6",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG EXIF 7",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "PNG EXIF 8",
+  "result": {
+   "ok": true,
+   "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+   "mimeType": "image/png",
+   "hints": [
+    "[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   ]
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "Read image file [image/png]\n[Image: original 19x11, displayed at 8x5. Multiply coordinates by 2.38 to map to original image.]"
+   },
+   {
+    "type": "image",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAApElEQVR4Ae3AA6AkWZbG8f937o3IzKdyS2Oubdu2bdu2bdu2bWmMnpZKr54yMyLu+Xa3anqmhztr1a8udq7xLTyaB/MYHsSjuYWH8yBejwfzhdzCD1J52UcADwceATwYeE3gu4DvBV6Fyss9EngU8BDgdYCfAT4PeA3gEVRe7pHAQ4FXB34D+FTglYFHAo+g8rIPBV4WeCLwscBLAo8CHgY8gn8E7U8N9B13II0AAAAASUVORK5CYII=",
+    "mimeType": "image/png"
+   }
+  ]
+ },
+ {
+  "name": "broken image/png",
+  "result": {
+   "ok": false,
+   "message": "[Image omitted: could not be resized below the inline image size limit.]"
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "not an image"
+   }
+  ]
+ },
+ {
+  "name": "broken image/bmp",
+  "result": {
+   "ok": false,
+   "message": "[Image omitted: could not be converted to a supported inline image format.]"
+  },
+  "readContent": [
+   {
+    "type": "text",
+    "text": "not an image"
+   }
+  ]
+ }
+]

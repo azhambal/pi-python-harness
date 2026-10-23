@@ -53,6 +53,7 @@ def model_from_pi(entry: dict[str, JsonValue]) -> ModelInfo:
     thinking_level_map = entry.get("thinkingLevelMap")
     compat = entry.get("compat")
     cost = entry.get("cost")
+    input_limits = entry.get("inputLimits")
     model_input = entry.get("input") or ["text"]
     return ModelInfo(
         id=str(entry["id"]),
@@ -65,5 +66,6 @@ def model_from_pi(entry: dict[str, JsonValue]) -> ModelInfo:
         thinking_level_map=dict(thinking_level_map) if isinstance(thinking_level_map, dict) else None,  # type: ignore[arg-type]
         input=tuple(str(item) for item in model_input),  # type: ignore[union-attr]
         compat=json.loads(json.dumps(compat)) if isinstance(compat, dict) else None,
+        input_limits=json.loads(json.dumps(input_limits)) if isinstance(input_limits, dict) else None,
         cost=json.loads(json.dumps(cost)) if isinstance(cost, dict) else None,
     )

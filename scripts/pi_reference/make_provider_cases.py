@@ -922,5 +922,33 @@ case(
     ),
 )
 
+# Arguments cross incomplete boolean/escape boundaries in the actual stream callbacks.
+fragments = ['{"a":1,"b":tru', 'e,"c":fal', 'se,"d":"abc\\', '\\"}']
+case(
+    "anthropic partial boolean and escape snapshots",
+    cat("claude-opus-4-8"),
+    base,
+    None,
+    sse(
+        start(),
+        bstart(0, {"type": "tool_use", "id": "c1", "name": "read", "input": {}}),
+        *(delta(0, {"type": "input_json_delta", "partial_json": fragment}) for fragment in fragments),
+        bstop(0),
+        mdelta("tool_use"),
+        stop,
+    ),
+)
+case(
+    "openai partial boolean and escape snapshots",
+    ds,
+    base,
+    None,
+    chunks(
+        ch({"tool_calls": [{"index": 0, "id": "c1", "function": {"name": "read", "arguments": ""}}]}),
+        *(ch({"tool_calls": [{"index": 0, "function": {"arguments": fragment}}]}) for fragment in fragments),
+        ch({}, "tool_calls"),
+    ),
+)
+
 (ROOT / "tests/parity/provider_cases.json").write_text(json.dumps(cases, indent=1) + "\n")
 print(f"{len(cases)} cases")
