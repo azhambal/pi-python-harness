@@ -8,7 +8,10 @@ from pi_agent import PermissionPolicy, ToolHooks, create_agent_session
 from pi_agent.events import ToolExecutionEnd
 from pi_agent.providers import FauxProvider
 from pi_agent.tools import EditTool, ReadTool, WriteTool
+from pi_agent.tools._mutation import file_mutation_queue
+from pi_agent.tools._paths import resolve_to_cwd
 from pi_agent.tools.base import Tool, ToolResult
+from pi_agent.tools.write import write_text_file
 from pi_agent.types import AssistantMessage, TextBlock, ToolCallBlock, ToolResultMessage
 
 
@@ -20,53 +23,37 @@ def done():
     return AssistantMessage(content=[TextBlock(text="done")], stop_reason="stop")
 
 
-async def test_concurrency_bound_out_of_order_completion_and_ordered_persistence(config):
+async def test_unbounded_parallel_batch_reports_ends_on_completion_and_results_in_order(config):
+    # pi starts every prepared call at once; tool_execution_end follows completion order
+    # while result messages keep the call order.
     started = {key: asyncio.Event() for key in "abc"}
     release = {key: asyncio.Event() for key in "abc"}
-    finished = []
-    active = 0
-    peak = 0
 
     class Gate(Tool):
         name = "gate"
-        parallel_safe = True
 
         async def execute(self, call_id, args, cancellation=None, on_update=None):
-            nonlocal active, peak
-            active += 1
-            peak = max(peak, active)
             started[call_id].set()
-            try:
-                await release[call_id].wait()
-                finished.append(call_id)
-                return ToolResult(content=[TextBlock(text=call_id)])
-            finally:
-                active -= 1
+            await release[call_id].wait()
+            return ToolResult(content=[TextBlock(text=call_id)])
 
     tool = Gate()
     provider = FauxProvider([calls(*(ToolCallBlock(id=key, name="gate") for key in "abc")), done()])
     session = create_agent_session(
-        provider,
-        config=replace(config, tool_execution="parallel", max_parallel_tools=2),
-        tools=[tool],
-        session="new",
+        provider, config=replace(config, tool_execution="parallel"), tools=[tool], session="new"
     )
     events = []
     session.subscribe(events.append)
     task = asyncio.create_task(session.prompt("run"))
     try:
-        await asyncio.wait_for(asyncio.gather(started["a"].wait(), started["b"].wait()), 1)
-        assert not started["c"].is_set()
-        release["b"].set()
-        await asyncio.wait_for(started["c"].wait(), 1)
-        release["c"].set()
-        await asyncio.sleep(0)
-        release["a"].set()
+        await asyncio.wait_for(asyncio.gather(*(event.wait() for event in started.values())), 1)
+        for key in "bca":
+            release[key].set()
+            await asyncio.sleep(0.01)
         await asyncio.wait_for(task, 1)
-        assert peak == 2 and finished[0] == "b"
         results = [m for m in session.messages if isinstance(m, ToolResultMessage)]
         assert [m.tool_call_id for m in results] == list("abc")
-        assert [e.tool_call_id for e in events if isinstance(e, ToolExecutionEnd)] == list("abc")
+        assert [e.tool_call_id for e in events if isinstance(e, ToolExecutionEnd)] == list("bca")
         assert [
             m.tool_call_id for m in provider.requests[-1].messages if isinstance(m, ToolResultMessage)
         ] == list("abc")
@@ -78,12 +65,11 @@ async def test_concurrency_bound_out_of_order_completion_and_ordered_persistence
     resumed = create_agent_session(FauxProvider([]), session=path, tools=[tool])
     try:
         assert resumed.config.tool_execution == resumed.agent.tool_execution == "parallel"
-        assert resumed.config.max_parallel_tools == 2
     finally:
         resumed.dispose()
 
 
-async def test_resolved_path_fifo_does_not_consume_independent_capacity(config):
+async def test_resolved_path_fifo_does_not_block_independent_calls(config):
     path = config.cwd / "source"
     path.write_text("old")
     (config.cwd / "alias").symlink_to("source")
@@ -94,10 +80,14 @@ async def test_resolved_path_fifo_does_not_consume_independent_capacity(config):
     edit_entered = asyncio.Event()
 
     class Writer(WriteTool):
-        async def execute(self, *args, **kwargs):
-            entered.set()
-            await released.wait()
-            return await super().execute(*args, **kwargs)
+        async def execute(self, call_id, args, cancellation=None, on_update=None):
+            # Hold the file's queue the way WriteTool does, then write.
+            target = resolve_to_cwd(args["path"], self.cwd)
+            async with file_mutation_queue(target):
+                entered.set()
+                await released.wait()
+                write_text_file(target, args["content"])
+            return ToolResult(content=[TextBlock(text="written")])
 
     class Editor(EditTool):
         async def execute(self, *args, **kwargs):
@@ -125,13 +115,13 @@ async def test_resolved_path_fifo_does_not_consume_independent_capacity(config):
     )
     session = create_agent_session(
         provider,
-        config=replace(config, tool_execution="parallel", max_parallel_tools=2),
+        config=replace(config, tool_execution="parallel"),
         tools=[Writer(config.cwd), Editor(config.cwd), Reader(config.cwd)],
     )
     task = asyncio.create_task(session.prompt("write/edit/read"))
     try:
         await asyncio.wait_for(asyncio.gather(entered.wait(), independent.wait()), 1)
-        assert not edit_entered.is_set() and path.read_text() == "old"
+        assert path.read_text() == "old"  # The edit waits in the file queue inside execute.
         released.set()
         await asyncio.wait_for(task, 1)
         assert path.read_text() == "second"
@@ -142,12 +132,11 @@ async def test_resolved_path_fifo_does_not_consume_independent_capacity(config):
         session.dispose()
 
 
-async def test_unsafe_custom_tool_is_a_barrier(config):
+async def test_sequential_tool_makes_the_whole_batch_sequential(config):
     timeline = []
 
     class Safe(Tool):
         name = "safe"
-        parallel_safe = True
 
         async def execute(self, call_id, args, cancellation=None, on_update=None):
             timeline.append(call_id + " start")
@@ -157,7 +146,7 @@ async def test_unsafe_custom_tool_is_a_barrier(config):
 
     class Barrier(Safe):
         name = "barrier"
-        parallel_safe = False
+        execution_mode = "sequential"
 
     session = create_agent_session(
         FauxProvider(
@@ -229,7 +218,6 @@ async def test_forced_cancel_keeps_completed_results_and_marks_only_running_outc
 
     class Gate(Tool):
         name = "gate"
-        parallel_safe = True
 
         async def execute(self, call_id, args, cancellation=None, on_update=None):
             if call_id == "a":
@@ -316,7 +304,7 @@ async def test_file_queue_is_shared_between_sessions_on_one_loop(config):
             session.dispose()
 
 
-async def test_cancelled_file_queue_waiter_is_known_unexecuted(config):
+async def test_cancelled_file_queue_waiter_outcome_is_unknown(config):
     (config.cwd / "source").write_text("old")
     entered = asyncio.Event()
 
@@ -349,8 +337,8 @@ async def test_cancelled_file_queue_waiter_is_known_unexecuted(config):
         with pytest.raises(asyncio.CancelledError):
             await task
         results = [m for m in session.messages if isinstance(m, ToolResultMessage)]
-        assert results[0].interrupted
-        assert not results[1].interrupted and "not executed" in results[1].content[0].text
+        # The queue wait happens inside the tool, as in pi, so both outcomes are unknown.
+        assert [m.interrupted for m in results] == [True, True]
         assert (config.cwd / "source").read_text() == "old"
     finally:
         task.cancel()
@@ -376,7 +364,7 @@ async def test_actual_bash_processes_overlap_without_reordering_results(config):
                 done(),
             ]
         ),
-        config=replace(config, tool_execution="parallel", max_parallel_tools=2),
+        config=replace(config, tool_execution="parallel"),
     )
 
     def watch(event):

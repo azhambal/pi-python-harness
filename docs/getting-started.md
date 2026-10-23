@@ -4,8 +4,8 @@
 
 ## Install
 
-Use Linux and Python 3.12 or newer. Install Git and ripgrep (`rg`) with your
-operating system's package manager, then:
+Use Linux and Python 3.12 or newer. Install Git, ripgrep (`rg`) and fd (`fd`, or
+`fd-find` on Debian/Ubuntu) with your operating system's package manager, then:
 
 ```bash
 git clone https://github.com/azhambal/pi-python-harness.git

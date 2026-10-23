@@ -1,17 +1,25 @@
-"""Build tagged prompt sections and load AGENTS.md from global to local scope."""
+"""System prompt sections and project context files, translated from Pi.
+
+Mirrors ``core/system-prompt.ts`` (section order and wording) and
+``loadProjectContextFiles`` from ``core/resource-loader.ts``. Pi's ``<docs>``
+section points at Pi's own documentation, which this port does not ship, so it
+is left out.
+"""
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from .config import DEFAULT_AGENT_DIR
 from .tools.base import Tool
 
-INSTRUCTION_FILE_NAME = "AGENTS.md"
+#: Per directory, the first of these that is a file wins (Pi's ``loadContextFileFromDir``).
+CONTEXT_FILE_NAMES = ("AGENTS.override.md", "AGENTS.md", "AGENTS.MD", "CLAUDE.md", "CLAUDE.MD")
 
 _DEFAULT_PREAMBLE = (
-    "You are an expert coding assistant operating inside a coding agent harness. You help users by "
+    "You are an expert coding assistant operating inside pi, a coding agent harness. You help users by "
     "reading files, executing commands, editing code, and writing new files."
 )
 
@@ -42,39 +50,101 @@ def _strip_bom(text: str) -> str:
 
 
 def _load_context_file_from_dir(directory: Path) -> ContextFile | None:
-    candidate = directory / INSTRUCTION_FILE_NAME
-    if not candidate.is_file():
-        return None
+    for name in CONTEXT_FILE_NAMES:
+        candidate = directory / name
+        if not candidate.exists():
+            continue
+        try:
+            if not candidate.is_file():
+                continue
+            content = candidate.read_bytes().decode("utf-8", errors="replace")
+        except OSError:
+            continue
+        return ContextFile(path=candidate, content=_strip_bom(content))
+    return None
+
+
+def _canonical(path: Path) -> Path:
     try:
-        return ContextFile(path=candidate, content=_strip_bom(candidate.read_text(encoding="utf-8")))
+        return Path(os.path.realpath(path, strict=True))
     except OSError:
+        return path
+
+
+def _find_git_paths(cwd: Path) -> tuple[Path, Path] | None:
+    """Pi's ``findGitPaths``: (repository dir, common git dir) for the nearest ``.git``."""
+    directory = cwd
+    while True:
+        git_path = directory / ".git"
+        if git_path.exists():
+            try:
+                if git_path.is_file():
+                    content = git_path.read_text("utf-8").strip()
+                    if content.startswith("gitdir: "):
+                        git_dir = Path(os.path.normpath(directory / content[8:].strip()))
+                        if not (git_dir / "HEAD").exists():
+                            return None
+                        common = git_dir / "commondir"
+                        if common.exists():
+                            return directory, Path(
+                                os.path.normpath(git_dir / common.read_text("utf-8").strip())
+                            )
+                        return directory, git_dir
+                elif git_path.is_dir():
+                    return (directory, git_path) if (git_path / "HEAD").exists() else None
+            except OSError:
+                return None
+        if directory.parent == directory:
+            return None
+        directory = directory.parent
+
+
+def _find_shadowed_context_file(cwd: Path) -> Path | None:
+    """The main checkout's context file that a nested linked worktree's own copy shadows."""
+    git_paths = _find_git_paths(cwd)
+    if git_paths is None:
         return None
+    common_git_dir = _canonical(git_paths[1])
+    worktree_root = _canonical(git_paths[0])
+    main_repo_root = common_git_dir.parent
+    if not str(worktree_root).startswith(f"{main_repo_root}{os.sep}"):
+        return None
+    if _canonical(main_repo_root / ".git") != common_git_dir:
+        return None
+    worktree_context = _load_context_file_from_dir(worktree_root)
+    return main_repo_root / worktree_context.path.name if worktree_context is not None else None
 
 
 def load_project_context_files(cwd: Path, agent_dir: Path | None = None) -> list[ContextFile]:
-    """Global AGENTS.md first, then ancestors from the filesystem root to cwd."""
-    base = agent_dir if agent_dir is not None else DEFAULT_AGENT_DIR
+    """Global context file first, then ancestors from the filesystem root to cwd."""
+    resolved_cwd = Path(os.path.abspath(cwd))
+    resolved_agent_dir = Path(os.path.abspath(agent_dir if agent_dir is not None else DEFAULT_AGENT_DIR))
     context_files: list[ContextFile] = []
     seen: set[Path] = set()
 
-    global_file = _load_context_file_from_dir(base)
+    global_file = _load_context_file_from_dir(resolved_agent_dir)
     if global_file is not None:
         context_files.append(global_file)
         seen.add(global_file.path)
 
-    resolved = Path(cwd).resolve()
     ancestors: list[ContextFile] = []
-    current = resolved
+    shadowed = _find_shadowed_context_file(resolved_cwd)
+    current = resolved_cwd
     while True:
         context_file = _load_context_file_from_dir(current)
-        if context_file is not None and context_file.path not in seen:
-            ancestors.append(context_file)
+        # Compare the directory's real path: a worktree file that symlinks to the main
+        # checkout's file resolves to the shadowed path itself.
+        is_shadowed = (
+            shadowed is not None
+            and context_file is not None
+            and _canonical(current) / context_file.path.name == shadowed
+        )
+        if context_file is not None and not is_shadowed and context_file.path not in seen:
+            ancestors.insert(0, context_file)
             seen.add(context_file.path)
-        parent = current.parent
-        if parent == current:
+        if current.parent == current:
             break
-        current = parent
-    ancestors.reverse()
+        current = current.parent
     context_files.extend(ancestors)
     return context_files
 
@@ -127,15 +197,19 @@ def build_system_prompt_sections(prompt_input: SystemPromptInput) -> dict[str, s
                 f'<project_instructions path="{context_file.path}">\n{context_file.content}\n</project_instructions>'
             )
         sections["project_context"] = "\n\n".join(rendered)
-    sections["cwd"] = str(prompt_input.cwd)
+    if prompt_input.skills_section:
+        sections["skills"] = prompt_input.skills_section
+    sections["cwd"] = str(prompt_input.cwd).replace("\\", "/")
     # Wrap every non-preamble section in a tag of its section name.
     wrapped: dict[str, str] = {"preamble": sections["preamble"]}
     for name, content in sections.items():
         if name != "preamble":
-            wrapped[name] = f"<{name}>\n{content}\n</{name}>"
-    if prompt_input.skills_section:
-        wrapped["skills"] = prompt_input.skills_section
+            wrapped[name] = wrap_section(name, content)
     return wrapped
+
+
+def wrap_section(name: str, content: str) -> str:
+    return f"<{name}>\n{content}\n</{name}>"
 
 
 def diff_system_prompt_sections(

@@ -12,6 +12,7 @@ from typing import Literal
 from .agent_loop import (
     AgentLoopConfig,
     HistoricalCallIds,
+    PrepareNextTurnHook,
     PrepareRequestContext,
     PrepareRequestHook,
     PrepareRequestUpdate,
@@ -148,13 +149,13 @@ class Agent:
         steering_mode: QueueMode = "one-at-a-time",
         follow_up_mode: QueueMode = "one-at-a-time",
         prepare_request: PrepareRequestHook | None = None,
+        prepare_next_turn: PrepareNextTurnHook | None = None,
         historical_call_ids: HistoricalCallIds | None = None,
         hooks: ToolHooks | None = None,
         permission_policy: PermissionPolicy | None = None,
         confirm_permission: PermissionPrompt | None = None,
         cwd: Path | str | None = None,
-        tool_execution: Literal["sequential", "parallel"] = "sequential",
-        max_parallel_tools: int = 4,
+        tool_execution: Literal["sequential", "parallel"] = "parallel",
     ) -> None:
         self.provider = provider
         self._tools: list[Tool] = list(tools)
@@ -175,6 +176,7 @@ class Agent:
         self._steering_queue = _PendingMessageQueue(steering_mode)
         self._follow_up_queue = _PendingMessageQueue(follow_up_mode)
         self._prepare_request_hook = prepare_request
+        self._prepare_next_turn_hook = prepare_next_turn
         self._historical_call_ids = historical_call_ids
         self._hooks = hooks or ToolHooks()
         self._permissions = permission_policy or PermissionPolicy()
@@ -183,14 +185,7 @@ class Agent:
         self._cwd = Path(cwd).resolve() if cwd is not None else None
         if tool_execution not in ("sequential", "parallel"):
             raise ValueError("tool_execution must be sequential or parallel")
-        if (
-            isinstance(max_parallel_tools, bool)
-            or not isinstance(max_parallel_tools, int)
-            or max_parallel_tools < 1
-        ):
-            raise ValueError("max_parallel_tools must be a positive integer")
         self.tool_execution = tool_execution
-        self.max_parallel_tools = max_parallel_tools
         self._active_run: asyncio.Future[None] | None = None
         self._active_cancellation: Cancellation | None = None
         self.is_streaming = False
@@ -416,6 +411,7 @@ class Agent:
             get_steering_messages=(lambda: drain(self._steering_queue)),
             get_follow_up_messages=(lambda: drain(self._follow_up_queue)),
             prepare_request=prepare_request,
+            prepare_next_turn=self._prepare_next_turn_hook,
             historical_call_ids=self._historical_call_ids,
             session_id=self.session_id,
             hooks=self._hooks,
@@ -423,7 +419,6 @@ class Agent:
             confirm_permission=self._confirm_permission,
             cwd=self._cwd,
             tool_execution=self.tool_execution,
-            max_parallel_tools=self.max_parallel_tools,
         )
 
     async def _run_with_lifecycle(self, executor: Callable[[Cancellation], Awaitable[object]]) -> None:

@@ -5,6 +5,7 @@ import pytest
 
 from pi_agent import AgentConfig, FatalPersistenceError, create_agent_session
 from pi_agent.providers import FauxProvider
+from pi_agent.providers._normalize import transform_messages
 from pi_agent.session_store import (
     SessionCorruptError,
     SessionLockError,
@@ -117,7 +118,7 @@ async def test_session_write_failure_is_fatal_not_retryable(config: AgentConfig,
         session.dispose()
 
 
-def test_resume_records_unknown_outcome_without_replaying_tools(config: AgentConfig) -> None:
+def test_resume_leaves_unanswered_call_for_the_projection_without_replaying(config: AgentConfig) -> None:
     session = create_agent_session(FauxProvider([]), config=config, session="new")
     session.store.append_message(UserMessage(content="work"))
     session.store.append_message(
@@ -128,18 +129,16 @@ def test_resume_records_unknown_outcome_without_replaying_tools(config: AgentCon
     )
     path = session.session_file
     session.dispose()
+    before = path.read_bytes()
     resumed = create_agent_session(FauxProvider([]), session=path)
     try:
-        result = resumed.messages[-1]
-        assert isinstance(result, ToolResultMessage)
-        assert result.interrupted and result.is_error
-        assert "unknown" in result.content[0].text
+        # As in pi, nothing is written for the unanswered call: the provider projection
+        # answers it with "No result provided" on the next request.
+        assert isinstance(resumed.messages[-1], AssistantMessage)
+        synthetic = transform_messages(resumed.messages, resumed.model)[-1]
+        assert isinstance(synthetic, ToolResultMessage) and synthetic.tool_call_id == "c"
+        assert synthetic.is_error and synthetic.content[0].text == "No result provided"
         assert not (config.cwd / "never").exists()
-        count = len(resumed.store.entries)
     finally:
         resumed.dispose()
-    reopened = create_agent_session(FauxProvider([]), session=path)
-    try:
-        assert len(reopened.store.entries) == count
-    finally:
-        reopened.dispose()
+    assert path.read_bytes() == before

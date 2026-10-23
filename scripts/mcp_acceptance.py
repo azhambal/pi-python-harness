@@ -244,6 +244,8 @@ async def acceptance(directory: Path) -> dict:
             done(),
             done("Second turn"),
             done("Summary: addition fixed and tested; MCP/skill loadout preserved."),
+            # keep_recent_tokens=0 cuts at the last answer, so its turn prefix is summarized too.
+            done("Turn prefix: keep this result for continuation."),
         ]
         provider = FauxProvider(responses)
         events = []
@@ -342,7 +344,9 @@ async def acceptance(directory: Path) -> dict:
         finally:
             await session.aclose()
         reaped(pids)
-        require(not spill.exists(), "Owned Bash spill survived close")
+        # Bash full-output files stay after close, as in pi.
+        require(spill.is_file(), "Bash full-output file vanished on close")
+        spill.unlink()
         SessionStore.open(path).close()
         before_resume = path.read_bytes()
         continuation = FauxProvider(
@@ -409,7 +413,7 @@ async def acceptance(directory: Path) -> dict:
             "strict-resume",
             "abort-no-replay",
             "explicit-reconnect",
-            "child-task-spill-lock-cleanup",
+            "child-task-lock-cleanup",
             "synthetic-credentials-excluded",
         ],
     }

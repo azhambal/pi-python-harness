@@ -10,9 +10,11 @@ from .compaction import (
     _CompactionMarker,
     compaction_projected_entry,
 )
+from .context import estimate_context_tokens, projection_system_tokens
 from .session_store import (
     SessionCompactionEntry,
     SessionMessageEntry,
+    SessionOmissionEntry,
     SessionStore,
 )
 from .types import (
@@ -45,31 +47,60 @@ def _build_projection(store: SessionStore) -> list[ProjectedEntry]:
     omitted_ids = store._omitted_ids
     compaction_index = store._latest_compaction_source
     projected: list[ProjectedEntry] = []
+
+    def project(entry: SessionMessageEntry, index: int) -> ProjectedEntry:
+        if entry.id in omitted_ids:
+            return ProjectedEntry(entry_id=entry.id, source_index=index, omitted_role=entry.message.role)
+        return ProjectedEntry(entry_id=entry.id, source_index=index, messages=[entry.message])
+
     if compaction_index is None:
         for index, entry in enumerate(entries):
-            if isinstance(entry, SessionMessageEntry) and entry.id not in omitted_ids:
-                projected.append(
-                    ProjectedEntry(entry_id=entry.id, source_index=index, messages=[entry.message])
-                )
+            if isinstance(entry, SessionMessageEntry):
+                projected.append(project(entry, index))
     else:
         latest_compaction = cast(SessionCompactionEntry, entries[compaction_index])
         projected.append(compaction_projected_entry(latest_compaction, compaction_index))
         first_kept = store._entry_positions[latest_compaction.first_kept_entry_id]
         for index in range(first_kept, compaction_index):
             entry = entries[index]
-            if not isinstance(entry, SessionMessageEntry) or entry.id in omitted_ids:
-                continue
-            if not isinstance(entry.message, SystemMessage):
-                projected.append(
-                    ProjectedEntry(entry_id=entry.id, source_index=index, messages=[entry.message])
-                )
+            if isinstance(entry, SessionMessageEntry) and not isinstance(entry.message, SystemMessage):
+                projected.append(project(entry, index))
         for index, entry in enumerate(entries[compaction_index + 1 :], start=compaction_index + 1):
-            if isinstance(entry, SessionMessageEntry) and entry.id not in omitted_ids:
-                projected.append(
-                    ProjectedEntry(entry_id=entry.id, source_index=index, messages=[entry.message])
-                )
+            if isinstance(entry, SessionMessageEntry):
+                projected.append(project(entry, index))
 
     return _relocate_interruption_results(projected)
+
+
+def estimate_projected_context_tokens(store: SessionStore) -> int:
+    """Pi's ``estimateProjectedContextTokens``.
+
+    Provider usage counts only when recorded after the latest omission or
+    compaction; otherwise the chars/4 estimate of the projection applies.
+    """
+    entries = _projection_entries(store)
+    messages = [message for entry in entries for message in entry.messages]
+    estimate = estimate_context_tokens(messages)
+    if estimate.last_usage_index is not None:
+        index = 0
+        usage_source = -1
+        for entry in entries:
+            if estimate.last_usage_index < index + len(entry.messages):
+                usage_source = entry.source_index
+                break
+            index += len(entry.messages)
+        journal = store._entries
+        latest_invalidating = next(
+            (
+                position
+                for position in range(len(journal) - 1, -1, -1)
+                if isinstance(journal[position], (SessionOmissionEntry, SessionCompactionEntry))
+            ),
+            -1,
+        )
+        if usage_source > latest_invalidating:
+            return estimate.tokens
+    return projection_system_tokens(messages)
 
 
 def _raw_call_ids(store: SessionStore) -> set[str]:
@@ -149,7 +180,17 @@ def _relocate_interruption_results(projected: list[ProjectedEntry]) -> list[Proj
                         elif block.id in interruptions:
                             messages.append(interruptions.pop(block.id))
             if isinstance(entry, _CompactionMarker):
-                result.append(_CompactionMarker(entry.entry_id, entry.source_index, messages, entry.summary))
+                result.append(
+                    _CompactionMarker(
+                        entry.entry_id,
+                        entry.source_index,
+                        messages,
+                        entry.summary,
+                        entry.read_files,
+                        entry.modified_files,
+                        entry.file_lists_recorded,
+                    )
+                )
             else:
                 result.append(
                     ProjectedEntry(

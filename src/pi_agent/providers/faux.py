@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from pi_agent.events import AssistantStreamEvent, StreamDone, StreamError, StreamStart, TextDelta
 from pi_agent.provider import ProviderOptions, ProviderRequest
-from pi_agent.types import AssistantMessage, TextBlock
+from pi_agent.types import AssistantMessage, TextBlock, now_ms
 
 
 class FauxProvider:
@@ -33,6 +33,9 @@ class FauxProvider:
         final.model = request.model.id
         final.provider = request.model.provider
         final.api = request.model.api
+        if not final.timestamp:
+            # Like a real response, stamped when the request starts.
+            final.timestamp = now_ms()
         partial = deepcopy(final)
         partial.content = []
         partial.stop_reason = "pending"

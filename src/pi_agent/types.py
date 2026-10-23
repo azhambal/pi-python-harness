@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import time
 from collections.abc import Sequence
+from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import Literal
 
@@ -186,6 +187,39 @@ class TextBlock:
 
 
 @dataclass
+class ImageBlock:
+    """Base64 image content in user messages and tool results (Pi's ImageContent)."""
+
+    type: Literal["image"] = "image"
+    data: str = ""
+    mime_type: str = ""
+
+    def to_json(self) -> dict[str, JsonValue]:
+        return {"type": "image", "data": self.data, "mime_type": self.mime_type}
+
+    @classmethod
+    def from_json(cls, data: object) -> ImageBlock:
+        if not isinstance(data, dict):
+            raise MessageFormatError("image block: must be an object")
+        return cls(
+            data=_require_str(data, "data", where="image block"),
+            mime_type=_require_str(data, "mime_type", where="image block"),
+        )
+
+
+#: Content of user messages and tool results.
+UserContentBlock = TextBlock | ImageBlock
+
+
+def user_content_block_from_json(data: object, *, where: str) -> UserContentBlock:
+    if isinstance(data, dict) and data.get("type") == "image":
+        return ImageBlock.from_json(data)
+    if isinstance(data, dict) and data.get("type") not in (None, "text"):
+        raise MessageFormatError(f"{where}: unknown content type {data.get('type')!r}")
+    return TextBlock.from_json(data)
+
+
+@dataclass
 class ThinkingBlock:
     """Reasoning text plus provider-native opaque replay metadata.
 
@@ -235,6 +269,10 @@ class ToolCallBlock:
     arguments: dict[str, JsonValue] = field(default_factory=dict)
     thought_signature: str | None = None
     namespace: str | None = None
+    #: Why the finished arguments text was not a JSON object (Pi's
+    #: ``argumentsError``); ``arguments`` is then ``{}`` and validation
+    #: reports this text back to the model.
+    arguments_error: str | None = None
 
     def to_json(self) -> dict[str, JsonValue]:
         data: dict[str, JsonValue] = {
@@ -247,6 +285,8 @@ class ToolCallBlock:
             data["thought_signature"] = self.thought_signature
         if self.namespace is not None:
             data["namespace"] = self.namespace
+        if self.arguments_error is not None:
+            data["arguments_error"] = self.arguments_error
         return data
 
     @classmethod
@@ -266,6 +306,7 @@ class ToolCallBlock:
             arguments=dict(arguments),
             thought_signature=_optional_str(data, "thought_signature", where="toolCall block"),
             namespace=_optional_str(data, "namespace", where="toolCall block"),
+            arguments_error=_optional_str(data, "arguments_error", where="toolCall block"),
         )
 
 
@@ -291,7 +332,7 @@ def content_blocks_from_json(data: object) -> list[ContentBlock]:
     return [content_block_from_json(item) for item in data]
 
 
-def content_text(content: str | Sequence[ContentBlock], separator: str = "\n") -> str:
+def content_text(content: str | Sequence[ContentBlock | ImageBlock], separator: str = "\n") -> str:
     """Concatenate the text blocks of a content array (or pass a string through)."""
     if isinstance(content, str):
         return content
@@ -338,14 +379,14 @@ class ToolDeclaration:
 # ---------------------------------------------------------------------------
 
 
-def _content_from_json(data: object, *, where: str) -> str | list[TextBlock]:
+def _content_from_json(data: object, *, where: str) -> str | list[UserContentBlock]:
     if isinstance(data, str):
         return data
     if isinstance(data, list):
         if not data:
             return []
-        return [TextBlock.from_json(item) for item in data]
-    raise MessageFormatError(f"{where}: 'content' must be a string or an array of text blocks")
+        return [user_content_block_from_json(item, where=where) for item in data]
+    raise MessageFormatError(f"{where}: 'content' must be a string or an array of content blocks")
 
 
 @dataclass
@@ -419,8 +460,13 @@ class SystemMessage:
             raise MessageFormatError(f"{where}: 'tools_added' must be an array")
         if tools_removed_data is not None and not isinstance(tools_removed_data, list):
             raise MessageFormatError(f"{where}: 'tools_removed' must be an array")
+        content = _content_from_json(data.get("content"), where=where)
+        if not isinstance(content, str) and not all(isinstance(block, TextBlock) for block in content):
+            raise MessageFormatError(f"{where}: 'content' must contain only text blocks")
         return cls(
-            content=_content_from_json(data.get("content"), where=where),
+            content=content
+            if isinstance(content, str)
+            else [block for block in content if isinstance(block, TextBlock)],
             sections=sections,
             resource_manifest=manifest,
             mcp_manifest=mcp_manifest,
@@ -441,7 +487,7 @@ class SystemMessage:
 @dataclass
 class UserMessage:
     role: Literal["user"] = "user"
-    content: str | list[TextBlock] = ""
+    content: str | list[UserContentBlock] = ""
     timestamp: int = 0
 
     def to_json(self) -> dict[str, JsonValue]:
@@ -547,7 +593,7 @@ class ToolResultMessage:
     role: Literal["toolResult"] = "toolResult"
     tool_call_id: str = ""
     tool_name: str = ""
-    content: list[TextBlock] = field(default_factory=list)
+    content: list[UserContentBlock] = field(default_factory=list)
     details: JsonValue = None
     structured_content: JsonValue = field(default=None, kw_only=True)
     usage: Usage | None = None
@@ -597,7 +643,7 @@ class ToolResultMessage:
         return cls(
             tool_call_id=tool_call_id,
             tool_name=_require_str(data, "tool_name", where=where),
-            content=[TextBlock.from_json(item) for item in content_data],
+            content=[user_content_block_from_json(item, where=where) for item in content_data],
             details=data.get("details"),
             structured_content=data.get("structured_content"),
             usage=Usage.from_json(usage_data) if usage_data is not None else None,
@@ -638,24 +684,36 @@ def _parse_thinking_level_map(value: object) -> dict[str, str | None] | None:
         return None
     if (
         not isinstance(value, dict)
-        or not value
         or set(value) - _THINKING_LEVELS
         or any(
             item is not None and (not isinstance(item, str) or not item.strip()) for item in value.values()
         )
-        or not any(item is not None for item in value.values())
     ):
         raise MessageFormatError("Invalid model thinking_level_map")
     return dict(value)
+
+
+#: Pi's ``EXTENDED_THINKING_LEVELS``, in increasing order.
+THINKING_LEVEL_ORDER: tuple[ThinkingLevel, ...] = ("off", "minimal", "low", "medium", "high", "xhigh", "max")
+
+
+def _parse_json_object(value: object, *, where: str) -> dict[str, JsonValue] | None:
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise MessageFormatError(f"{where}: must be an object")
+    return deepcopy(value)
 
 
 @dataclass
 class ModelInfo:
     """Identity and limits of the model an agent talks to.
 
-    This is not a catalog entry: it carries only what the loop needs (who the
-    model is, its context window and output cap). Cost metadata lives in Usage
-    and is filled by the provider. No secrets, no endpoints.
+    Mirrors the fields of Pi's ``Model`` that requests and accounting use.
+    ``thinking_level_map`` has Pi's meaning: a level mapped to ``None`` is
+    unsupported, an absent ``xhigh``/``max`` is unsupported, any other absent
+    level is supported and uses the provider's default effort. ``compat`` and
+    ``cost`` are Pi's catalog objects (camelCase keys). No secrets, no endpoints.
     """
 
     id: str
@@ -666,22 +724,55 @@ class ModelInfo:
     context_window: int = 0
     max_tokens: int = 0
     thinking_level_map: dict[str, str | None] | None = None
+    #: Input modalities, as Pi's ``Model.input``: images reach the model only
+    #: when this includes ``"image"``; otherwise they become placeholders.
+    input: tuple[str, ...] = ("text",)
+    #: Pi's ``Model.compat`` (provider request quirks), or None for defaults.
+    compat: dict[str, JsonValue] | None = None
+    #: Pi's ``Model.cost`` in USD per million tokens (``input``, ``output``,
+    #: ``cacheRead``, ``cacheWrite``, optional ``tiers``), or None when unknown.
+    cost: dict[str, JsonValue] | None = None
+
+    @property
+    def supports_images(self) -> bool:
+        return "image" in self.input
+
+    def supported_thinking_levels(self) -> list[ThinkingLevel]:
+        """Pi's ``getSupportedThinkingLevels``."""
+        if not self.reasoning:
+            return ["off"]
+        mapping = self.thinking_level_map or {}
+        levels: list[ThinkingLevel] = []
+        for level in THINKING_LEVEL_ORDER:
+            if level in mapping and mapping[level] is None:
+                continue
+            if level in ("xhigh", "max") and level not in mapping:
+                continue
+            levels.append(level)
+        return levels
+
+    def clamp_thinking_level(self, level: ThinkingLevel) -> ThinkingLevel:
+        """Pi's ``clampThinkingLevel``: the level, else the nearest higher, else lower one."""
+        available = self.supported_thinking_levels()
+        if level in available:
+            return level
+        if level not in THINKING_LEVEL_ORDER:
+            return available[0] if available else "off"
+        index = THINKING_LEVEL_ORDER.index(level)
+        for candidate in (*THINKING_LEVEL_ORDER[index:], *reversed(THINKING_LEVEL_ORDER[:index])):
+            if candidate in available:
+                return candidate
+        return available[0] if available else "off"
 
     def validate_thinking_level(self, level: ThinkingLevel) -> None:
+        """Only the name is checked: unsupported levels are clamped, as in Pi."""
         if level not in _THINKING_LEVELS:
             raise ValueError("thinking_level is invalid")
-        mapping = _parse_thinking_level_map(self.thinking_level_map)
-        if mapping is not None:
-            if mapping.get(level) is None:
-                raise ValueError(f"Model does not support thinking level {level!r}")
 
     def thinking_effort(self, level: ThinkingLevel, default: str) -> str:
-        self.validate_thinking_level(level)
-        if self.thinking_level_map is None:
-            return default
-        value = self.thinking_level_map[level]
-        assert isinstance(value, str)
-        return value
+        """The mapped native effort for ``level``, else ``default``."""
+        mapped = (self.thinking_level_map or {}).get(level)
+        return mapped if isinstance(mapped, str) else default
 
     def to_json(self) -> dict[str, JsonValue]:
         data: dict[str, JsonValue] = {
@@ -695,6 +786,12 @@ class ModelInfo:
         }
         if self.thinking_level_map is not None:
             data["thinking_level_map"] = dict(self.thinking_level_map)
+        if self.input != ("text",):
+            data["input"] = list(self.input)
+        if self.compat is not None:
+            data["compat"] = deepcopy(self.compat)
+        if self.cost is not None:
+            data["cost"] = deepcopy(self.cost)
         return data
 
     @classmethod
@@ -715,6 +812,13 @@ class ModelInfo:
         if not isinstance(name, str):
             raise MessageFormatError(f"{where}: 'name' must be a string")
         mapping = _parse_thinking_level_map(data.get("thinking_level_map"))
+        model_input = data.get("input", ["text"])
+        if (
+            not isinstance(model_input, list)
+            or not model_input
+            or any(item not in ("text", "image") for item in model_input)
+        ):
+            raise MessageFormatError(f"{where}: 'input' must be a list of 'text'/'image'")
         return cls(
             id=model_id,
             name=name,
@@ -724,6 +828,9 @@ class ModelInfo:
             context_window=_require_int(data, "context_window", where=where, minimum=0),
             max_tokens=_require_int(data, "max_tokens", where=where, minimum=0),
             thinking_level_map=dict(mapping) if mapping is not None else None,
+            input=tuple(model_input),
+            compat=_parse_json_object(data.get("compat"), where=f"{where}.compat"),
+            cost=_parse_json_object(data.get("cost"), where=f"{where}.cost"),
         )
 
 
@@ -775,6 +882,62 @@ def get_system_message_text(message: SystemMessage) -> str:
         if value is not None:
             parts.append(value)
     return "\n\n".join(part for part in parts if part)
+
+
+def render_system_message_update(message: SystemMessage) -> str:
+    """Pi's ``renderSystemMessageUpdate``: a later system message for APIs that accept them."""
+    parts: list[str] = []
+    text = content_text(message.content)
+    if text:
+        parts.append(text)
+    for name, value in (message.sections or {}).items():
+        parts.append(
+            f'Removed system prompt section "{name}".'
+            if value is None
+            else f'Updated system prompt section "{name}":\n\n{value}'
+        )
+    return "\n\n".join(parts)
+
+
+def collapse_system_messages(messages: list[Message]) -> list[Message]:
+    """Pi's ``collapseSystemMessages``: one replayed leading system message, no later ones."""
+    head = get_current_system_message(messages)
+    collapsed: list[Message] = [head] if head is not None else []
+    collapsed.extend(message for message in messages if not isinstance(message, SystemMessage))
+    return collapsed
+
+
+def resolve_transcript(messages: list[Message], supports_mid_convo_system_messages: bool) -> list[Message]:
+    """Pi's ``resolveTranscript``."""
+    return list(messages) if supports_mid_convo_system_messages else collapse_system_messages(messages)
+
+
+def _last_non_additive_tool_change(system_messages: list[SystemMessage]) -> int:
+    """Index of the last system message with a removal or same-name redeclaration, or -1."""
+    declared: set[str] = set()
+    last = -1
+    for index, message in enumerate(system_messages):
+        if message.tools_removed:
+            last = index
+        for tool in message.tools_added or []:
+            if tool.name in declared:
+                last = index
+            declared.add(tool.name)
+    return last
+
+
+def resolve_transcript_tools(
+    messages: list[Message], support: Literal["none", "additions"]
+) -> tuple[list[ToolDeclaration], int]:
+    """Pi's ``resolveTranscriptTools``: (request-level tools, number of folded system messages)."""
+    system_messages = [message for message in messages if isinstance(message, SystemMessage)]
+    if support == "none":
+        return get_current_tools(list(system_messages)), len(system_messages)
+    folded = max(
+        1 if get_initial_system_message(messages) else 0,
+        _last_non_additive_tool_change(system_messages) + 1,
+    )
+    return get_current_tools(list(system_messages[:folded])), folded
 
 
 def get_current_system_message(messages: list[Message]) -> SystemMessage | None:

@@ -15,13 +15,13 @@ from pi_agent.compaction import (
     run_compaction,
     serialize_conversation,
 )
-from pi_agent.context import estimate_tokens, output_token_limit
+from pi_agent.context import estimate_tokens
 from pi_agent.error_policy import is_retryable_error
 from pi_agent.events import StreamError, StreamStart
 from pi_agent.mcp.config import McpConfigError, load_mcp_config
 from pi_agent.provider import ProviderOptions, ProviderRequest
 from pi_agent.providers import AnthropicProvider, FauxProvider, OpenAICompatProvider
-from pi_agent.providers._normalize import normalize_messages
+from pi_agent.providers._normalize import transform_messages
 from pi_agent.settings import load_settings
 from pi_agent.types import (
     AssistantMessage,
@@ -66,13 +66,13 @@ def test_switching_models_drops_thinking_without_changing_history(provider):
         content=[ThinkingBlock(thinking="private", thinking_signature="signed"), TextBlock(text="visible")],
     )
     before = deepcopy(original)
-    assert normalize_messages([original], model)[0].content == original.content
+    assert transform_messages([original], model)[0].content == original.content
     changed = replace(model, id="different")
-    assert normalize_messages([original], changed)[0].content == [TextBlock(text="visible")]
+    assert transform_messages([original], changed)[0].content == [TextBlock(text="visible")]
     original.content = [ThinkingBlock(thinking="private")]
-    assert normalize_messages([original, UserMessage(content="next")], changed) == [
-        UserMessage(content="next")
-    ]
+    # As in pi, the emptied assistant message stays; provider payloads skip empty turns.
+    projected = transform_messages([original, UserMessage(content="next")], changed)
+    assert [message.role for message in projected] == ["assistant", "user"] and projected[0].content == []
     original.content = before.content
     assert original == before
 
@@ -142,17 +142,27 @@ def test_summary_serialization_excludes_thinking_and_keeps_actions():
     assert messages == before
 
 
-@pytest.mark.parametrize("maximum,expected", [(0, 8192), (1024, 1024), (20000, 20000)])
-async def test_summary_uses_model_output_limit(maximum, expected, model):
-    provider = RecordingProvider([answer("summary")])
-    await generate_summary(
-        [UserMessage(content="task")],
-        provider=provider,
-        model=replace(model, max_tokens=maximum),
-        cancellation=Cancellation(),
-    )
-    assert provider.options[0].max_tokens == expected
-    assert provider.options[0].thinking_level == "off"
+@pytest.mark.parametrize(
+    "reasoning,level,expected", [(False, "high", "off"), (True, "off", "off"), (True, "high", "high")]
+)
+async def test_summary_request_options_follow_pi(reasoning, level, expected, model):
+    # Pi's completeSummarization: no cache writes, fresh routing id, no maxTokens,
+    # and reasoning only for reasoning models above "off".
+    provider = RecordingProvider([answer("summary"), answer("summary")])
+    for _ in range(2):
+        await generate_summary(
+            [UserMessage(content="task")],
+            provider=provider,
+            model=replace(model, reasoning=reasoning),
+            cancellation=Cancellation(),
+            thinking_level=level,
+        )
+    first, second = provider.options
+    assert first.max_tokens is None
+    assert first.cache_retention == "none"
+    assert first.thinking_level == expected
+    assert first.session_id and second.session_id and first.session_id != second.session_id
+    assert first.session_id[14] == "7"
     assert provider.requests[0].tools == []
 
 
@@ -165,6 +175,7 @@ async def test_summary_retry_is_bounded_and_does_not_commit_failed_attempts(conf
             answer(),
             AssistantMessage(stop_reason="error", error_message="Unable to forward upstream stream"),
             answer("checkpoint"),
+            answer("prefix"),
         ]
     )
     session = create_agent_session(provider, config=config, session="new")
@@ -173,11 +184,12 @@ async def test_summary_retry_is_bounded_and_does_not_commit_failed_attempts(conf
         await session.prompt("second " + "y" * 100)
         before = deepcopy(session.store.entries)
         result = await session.compact()
-        assert result.summary == "checkpoint"
+        # The cut lands on the second answer, so its turn prefix is summarized too.
+        assert result.summary.startswith("checkpoint\n\n---\n\n**Turn Context (split turn):**\n\nprefix")
         assert session.store.entries[:-1] == before
-        assert len(provider.requests) == 4
-        assert [message.content for message in provider.requests[-1].messages] == [
-            message.content for message in provider.requests[-2].messages
+        assert len(provider.requests) == 5
+        assert [message.content for message in provider.requests[3].messages] == [
+            message.content for message in provider.requests[2].messages
         ]
     finally:
         session.dispose()
@@ -239,19 +251,12 @@ def test_bom_configs_keep_duplicate_key_and_number_checks(tmp_path):
         load_settings(tmp_path, agent_dir=tmp_path / "absent", explicit=settings)
 
 
-def test_context_estimate_bounds_output_and_accounts_for_tools(model):
-    messages = [UserMessage(content="x" * 350)]
-    assert estimate_tokens(messages[0]) == 100
-    small = replace(model, context_window=1000, max_tokens=2000)
-    assert output_token_limit(messages, small) == 644
-    assert output_token_limit(messages, small, 100) == 100
+def test_compaction_estimate_is_chars_over_four():
+    # Pi's compaction estimateTokens: UTF-16 code units / 4, rounded up.
+    assert estimate_tokens(UserMessage(content="x" * 350)) == 88
+    assert estimate_tokens(UserMessage(content="\U0001f600")) == 1
     tools = [ToolDeclaration("read", "read files", {"type": "object"})]
-    assert output_token_limit(messages, small, tools=tools) < 644
-    assert output_token_limit([SystemMessage(tools_added=tools), *messages], small, tools=tools) == (
-        output_token_limit(messages, small, tools=tools)
-    )
-    with pytest.raises(ValueError, match="context window"):
-        output_token_limit([UserMessage(content="x" * 3500)], small)
+    assert estimate_tokens(SystemMessage(content="abcd", tools_added=tools)) > 1
 
 
 async def test_reasoning_in_same_chunk_precedes_answer():
@@ -263,9 +268,12 @@ async def test_reasoning_in_same_chunk_precedes_answer():
     }
     response = httpx.Response(200, text=f"data: {json.dumps(data)}\n\ndata: [DONE]\n\n")
     message = AssistantMessage()
-    async for _ in provider.decode(response, message):
+    async for _ in provider.decode(response, message, ProviderRequest(model=ModelInfo("m", "m", "openai"))):
         pass
-    assert message.content == [ThinkingBlock(thinking="plan"), TextBlock(text="answer")]
+    assert message.content == [
+        ThinkingBlock(thinking="plan", thinking_signature="reasoning_content"),
+        TextBlock(text="answer"),
+    ]
 
 
 @pytest.mark.parametrize("kind", ["openai", "anthropic"])
@@ -276,7 +284,7 @@ def test_provider_output_limits_use_available_context(kind):
         kind,
         api=f"{kind}-completions" if kind == "openai" else "anthropic-messages",
         max_tokens=8192,
-        context_window=1500,
+        context_window=10000,
     )
     provider = (
         OpenAICompatProvider(api_key="synthetic", base_url="https://example.invalid/v1")
@@ -284,7 +292,9 @@ def test_provider_output_limits_use_available_context(kind):
         else AnthropicProvider(api_key="synthetic")
     )
     request = ProviderRequest(model=model, messages=[UserMessage(content="x" * 350)])
-    assert provider.payload(request, ProviderOptions())["max_tokens"] == 1144
+    # Pi's clampMaxTokensToContext: window - estimate (100) - 4096 safety tokens.
+    field = "max_completion_tokens" if kind == "openai" else "max_tokens"
+    assert provider.payload(request, ProviderOptions())[field] == 10000 - 100 - 4096
 
 
 async def test_summary_error_event_cannot_publish_a_successful_message(model):
@@ -330,13 +340,13 @@ async def test_session_summary_output_is_independent_of_reserve(config, reserve)
     config.compaction.reserve_tokens = reserve
     config.compaction.keep_recent_tokens = 1
     config.model.max_tokens = 8192
-    provider = RecordingProvider([answer(), answer(), answer("summary")])
+    provider = RecordingProvider([answer(), answer(), answer("summary"), answer("prefix")])
     session = create_agent_session(provider, config=config)
     try:
         await session.prompt("first " + "x" * 100)
         await session.prompt("second " + "y" * 100)
         await session.compact()
-        assert provider.options[-1].max_tokens == 8192
+        assert [options.max_tokens for options in provider.options[-2:]] == [None, None]
     finally:
         session.dispose()
 

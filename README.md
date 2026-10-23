@@ -29,15 +29,16 @@ Set your provider credentials and model in `.env`, then run:
 .venv/bin/pi-agent chat
 ```
 
-Install Git and [ripgrep](https://github.com/BurntSushi/ripgrep) separately for
-repository workflows and the `grep` / `find` tools. The Python package, import and
+Install Git, [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`, for `grep`)
+and [fd](https://github.com/sharkdp/fd) (`fd` or Debian's `fdfind`, for `find`)
+separately; the harness never downloads them. The Python package, import and
 command names are `pi-agent`, `pi_agent` and `pi-agent`.
 
 ## What it provides
 
 - **Coding tools:** read, write, fuzzy edit, Bash and bounded repository search.
-- **Sessions:** append-only JSONL journals, resume, interrupted-call recovery and
-  model switching.
+- **Sessions:** append-only JSONL journals, resume without replaying interrupted
+  calls, and model switching.
 - **Control:** streaming events, cancellation, steering, follow-up queues,
   tool hooks and allow/ask/deny permissions.
 - **Context:** compaction, bounded retries and configurable parallel tool execution.

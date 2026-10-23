@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
-from typing import Protocol, runtime_checkable
+from typing import Literal, Protocol, runtime_checkable
 
 from .cancellation import Cancellation
 from .events import AssistantStreamEvent
@@ -19,6 +19,8 @@ class ProviderOptions:
     thinking_level: ThinkingLevel = "off"
     max_tokens: int | None = None
     session_id: str | None = None
+    #: Pi's per-request ``cacheRetention`` (summaries use "none"); None keeps the provider's.
+    cache_retention: Literal["none", "short", "long"] | None = None
 
 
 @dataclass

@@ -27,8 +27,10 @@ checks. See [SDK](sdk.md), [sessions](sessions.md), [tools](tools.md) and
   invalid records, duplicate IDs or broken references are errors.
 - Canonical tool-call IDs are unique across raw history, including omissions and
   pre-compaction messages. Conflicting provider IDs are reassigned before commit.
-- An unanswered call receives one recorded unknown-outcome result. Recovery never
-  automatically executes the call again.
+- A tool interrupted by task cancellation while running receives one recorded
+  unknown-outcome result. A call left without any result gets no record; each
+  request answers it with `"No result provided"`. Recovery never executes a
+  call again.
 
 ## Projection, retries and compaction
 
@@ -42,14 +44,14 @@ checks. See [SDK](sdk.md), [sessions](sessions.md), [tools](tools.md) and
 - Retry omits a failed attempt durably before requesting another response.
   Completed tools are never replayed. Overflow allows one compact-and-retry cycle
   per failing request, with no recursive recovery loop.
-- Only a nonempty summary ending in successful `stop` may become a compaction
-  checkpoint. A partial, aborted, tool-calling or length-limited summary cannot
-  replace context. Both summaries of a split tool turn must succeed.
+- An error, aborted, tool-calling or length-limited summary cannot become a
+  compaction checkpoint (pi's `getSummarizationFailure`). Both summaries of a
+  split turn must succeed.
 - Summary retries are bounded, cancellable provider requests with no tools.
-  Reserve thresholds do not cap summary output; model and context limits do.
-- Provider usage becomes stale after compaction or provider/API/model identity
-  change. Until valid new usage arrives, context sizing uses a documented
-  approximation. Per-request limits are not whole-run budgets.
+  Reserve thresholds do not cap summary output; the model's limit does.
+- Provider usage becomes stale after a compaction or an omission. Until valid
+  new usage arrives, context sizing uses pi's chars/4 approximation.
+  Per-request limits are not whole-run budgets.
 
 ## Lifecycle and event delivery
 
@@ -66,18 +68,18 @@ checks. See [SDK](sdk.md), [sessions](sessions.md), [tools](tools.md) and
 
 - Schema validation and admission precede execution. Before/confirmation callbacks
   are serialized; an after hook may replace a result but cannot undo an operation.
+  A raising hook turns the result into an error with the exception text.
 - Read-only allows only verified builtin readers/search tools, subject to policy.
   Tool names or MCP annotations alone never grant admission.
-- Parallel execution is bounded. Custom tools are barriers unless explicitly safe;
-  builtin file operations on the same resolved path use FIFO queues.
-- Atomic write/edit use same-directory temporary files, version checks, replace
-  and fsync. Postcommit durability errors report that content may already be
-  installed. These checks are not a cross-process transaction.
+- Parallel batches follow pi: preparation in call order, then unbounded concurrent
+  execution; a tool with `execution_mode="sequential"` makes the batch sequential.
+  `write`/`edit` on the same resolved path use a FIFO queue.
+- `write`/`edit` write in place, as pi does; there is no cross-process locking.
 - Bash abort/timeout terminates its owned process group. Normal leader exit may
   leave background descendants alive until tool/session close. Descendants that
   escape the process group are outside ownership.
-- Spill cleanup uses tool-registered file identity, never journal-supplied paths.
-  Spill files are temporary and are not recreated by resume.
+- Bash full-output files stay after close, as in pi. MCP spill cleanup uses
+  registered file identity, never journal-supplied paths.
 
 ## Resource ownership and integrations
 

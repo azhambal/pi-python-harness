@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 
 from .base import (
@@ -75,17 +75,35 @@ def create_builtin_tools(
     bash_default_timeout_s: float | None = None,
     max_lines: int = DEFAULT_MAX_LINES,
     max_bytes: int = DEFAULT_MAX_BYTES,
+    expose_session_environment: bool = True,
+    session_environment: Callable[[], Mapping[str, str]] | None = None,
+    model_supports_images: Callable[[], bool | None] | None = None,
 ) -> list[Tool]:
     selected = validate_builtin_names(names)
     result: list[Tool] = []
-    factories = {"read": ReadTool, "grep": GrepTool, "find": FindTool, "ls": LsTool}
+    factories: dict[str, type[GrepTool] | type[FindTool] | type[LsTool]] = {
+        "grep": GrepTool,
+        "find": FindTool,
+        "ls": LsTool,
+    }
     for name in selected:
-        if name in factories:
+        if name == "read":
+            result.append(
+                ReadTool(
+                    cwd, max_lines=max_lines, max_bytes=max_bytes, model_supports_images=model_supports_images
+                )
+            )
+        elif name in factories:
             result.append(factories[name](cwd, max_lines=max_lines, max_bytes=max_bytes))
         elif name == "bash":
             result.append(
                 BashTool(
-                    cwd, default_timeout_s=bash_default_timeout_s, max_lines=max_lines, max_bytes=max_bytes
+                    cwd,
+                    default_timeout_s=bash_default_timeout_s,
+                    max_lines=max_lines,
+                    max_bytes=max_bytes,
+                    expose_session_environment=expose_session_environment,
+                    session_environment=session_environment,
                 )
             )
         elif name == "edit":

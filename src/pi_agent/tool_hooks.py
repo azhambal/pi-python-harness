@@ -14,7 +14,16 @@ from pathlib import Path
 
 from .cancellation import Cancellation
 from .tools.base import ToolResult
-from .types import AssistantMessage, JsonValue, Message, TextBlock, ToolCallBlock, ToolDeclaration, Usage
+from .types import (
+    AssistantMessage,
+    ImageBlock,
+    JsonValue,
+    Message,
+    TextBlock,
+    ToolCallBlock,
+    ToolDeclaration,
+    Usage,
+)
 
 _IN_TOOL_HOOK: contextvars.ContextVar[bool] = contextvars.ContextVar("pi_agent_in_tool_hook", default=False)
 
@@ -70,7 +79,7 @@ _UNSET = _Unset.VALUE
 class AfterToolCallResult:
     """Partial replacement. Explicit None clears nullable fields; omission keeps them."""
 
-    content: list[TextBlock] | None = None
+    content: list[TextBlock | ImageBlock] | None = None
     details: JsonValue | _Unset = _UNSET
     structured_content: JsonValue | _Unset = _UNSET
     usage: Usage | None | _Unset = _UNSET
@@ -167,9 +176,17 @@ def validate_tool_result(result: ToolResult) -> None:
     if not isinstance(result, ToolResult):
         raise ValueError("Tool must return ToolResult")
     if not isinstance(result.content, list) or any(
-        not isinstance(block, TextBlock) or not isinstance(block.text, str) for block in result.content
+        not (
+            (isinstance(block, TextBlock) and isinstance(block.text, str))
+            or (
+                isinstance(block, ImageBlock)
+                and isinstance(block.data, str)
+                and isinstance(block.mime_type, str)
+            )
+        )
+        for block in result.content
     ):
-        raise ValueError("Tool result content must contain text blocks")
+        raise ValueError("Tool result content must contain text or image blocks")
     if not isinstance(result.is_error, bool) or not isinstance(result.terminate, bool):
         raise ValueError("Tool result is_error/terminate must be boolean")
     if result.usage is not None:

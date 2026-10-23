@@ -16,6 +16,7 @@ dependencies = [
     "python-dotenv==1.2.1",
     "PyYAML==6.0.3",
     "pathspec==1.1.1",
+    "Pillow==12.3.0",
 ]
 keywords = ["agent", "coding-agent", "llm", "cli"]
 classifiers = [
@@ -55,7 +56,7 @@ Upstream = "https://github.com/earendil-works/pi"
 where = ["src"]
 
 [tool.setuptools.package-data]
-pi_agent = ["py.typed", "schemas/*.json"]
+pi_agent = ["py.typed", "schemas/*.json", "data/*.json", "data/models/*.json"]
 
 [tool.ruff]
 target-version = "py312"

@@ -51,7 +51,7 @@ async def test_real_git_fetch_combined_acceptance(tmp_path):
     assert report["status"] == "passed"
     assert report["active_mcp_bindings"] == 8 and report["model_requests"] == 0
     assert report["largest_mcp_result_message_bytes"] < 50 * 1024
-    assert "abort-no-replay" in report["checks"] and "child-task-spill-lock-cleanup" in report["checks"]
+    assert "abort-no-replay" in report["checks"] and "child-task-lock-cleanup" in report["checks"]
 
 
 async def test_pinned_fetch_refuses_loopback_without_test_opt_in(tmp_path):

@@ -39,7 +39,7 @@ async def test_chat_commands_prompts_switch_and_clean_json(config, monkeypatch, 
     monkeypatch.setattr(
         "sys.stdin",
         io.StringIO(
-            "/thinking high\n/parallel parallel 2\nfirst\n/wait\n/model second\nsecond\n/wait\n/status\n/help\n/quit\n"
+            "/thinking high\n/parallel parallel\nfirst\n/wait\n/model second\nsecond\n/wait\n/status\n/help\n/quit\n"
         ),
     )
     args = cli._build_parser().parse_args(["chat"] + (["--json"] if json_mode else []))
@@ -56,7 +56,7 @@ async def test_chat_commands_prompts_switch_and_clean_json(config, monkeypatch, 
         assert "first answer" in captured.out and "second answer" in captured.out
     resumed = create_agent_session(FauxProvider([]), session=session.session_file)
     try:
-        assert resumed.model.id == "second" and resumed.config.max_parallel_tools == 2
+        assert resumed.model.id == "second" and resumed.config.tool_execution == "parallel"
     finally:
         resumed.dispose()
 

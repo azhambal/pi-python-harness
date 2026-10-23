@@ -21,73 +21,58 @@ not activate remote tools or bypass schema checks. SDK `tool_names` and settings
 The SDK retains its four-tool default. Use
 `create_agent_session(provider, ..., tool_names=["read", "grep", "find", "ls"])`
 or inject `create_builtin_tools(cwd)` to enable search. `create_coding_tools(cwd)`
-still returns four tools. Selection can be made without `rg`; execution of
-grep/find requires an installed `rg` on PATH, with an actionable error if absent.
-The harness never downloads a search binary. `ls` needs no external executable.
+still returns four tools.
 
-`grep` supports regex/literal, `ignoreCase`, `glob`, context rows and a match
-limit (default 100). `find` returns files matching a glob (default limit 1000);
-`ls` returns a sorted directory listing including dotfiles and broken symlinks
-(default limit 500). Both search tools discover unignored hidden files. Directory
-search respects ignore rules even outside Git; nested Git roots stop inherited
-Git ignore rules. Explicit grep file targets follow rg's explicit-file semantics.
-`ls` does not filter `.gitignore`.
+`grep`, `find` and `ls` are line-by-line translations of pi's tools: the same
+descriptions, parameter schemas, output text and error messages, checked against
+pi in `tests/parity`. `grep` runs ripgrep (`rg --json`), `find` runs `fd --glob`,
+and `ls` sorts entries the way Node's `localeCompare` does. Like pi, the harness
+looks for `rg` and `fd` (or Debian's `fdfind`) in `~/.pi-agent/bin`, then on
+`PATH`, but never downloads them: a container image must ship both. Selection
+works without them; a call reports pi's "not available" error.
 
-Globs without `/` match basenames; path globs are relative to the search root,
-with `**` matching zero or more segments and `*` staying within one segment.
-Character classes work; grep also accepts a negated glob. Brace expansion is not
-supported. Unlike passing a positive rg `--glob` directly, these filters never
-re-include files excluded by ignore rules. Grep streams context from rg, without
-rereading matched files. Filtering follows ignore discovery; a narrow glob does
-not necessarily narrow the underlying content scan.
+- `grep`: regex or `literal`, `ignoreCase`, `glob`, `context` lines and `limit`
+  (default 100 matches). Rows are `path:line: text`, context rows `path-line- text`;
+  lines over 500 characters are cut with `... [truncated]`.
+- `find`: glob over files and directories (directories end in `/`), default
+  limit 1000. A pattern containing `/` matches the full path.
+- `ls`: one directory, dotfiles included, directories marked `/`, entries that
+  cannot be stat'ed (broken symlinks) skipped, default limit 500.
 
-Host caps: limit <=10000, context <=100, 30-second grep/find timeout,
-1 MiB maximum rg record, 4 KiB retained stderr. Tool constructors expose output
-budgets (defaults 2000 lines / 50 KiB; byte budget 512 bytes to 1 MiB) and search
-timeout. Text, structured items and notices share the byte budget; notices count
-against the line budget. Grep lines over 500 characters have a read notice.
-Reaching a requested count conservatively reports the limit, including when it
-equals the exact result count. A truncated final match may omit its trailing
-context. Search does not spill full output; refine the query or use read.
-
-Structured items preserve names with newlines independently of escaped display.
-Non-UTF-8 filenames include `path_bytes_base64` (or `name_bytes_base64` for ls)
-so hosts can recover exact bytes. Cancellation/timeout/output limits terminate
-and join the owned subprocess, drain pipes and escalate to SIGKILL if needed.
-Search child environments contain PATH/locale only; provider credentials are not
-forwarded. No-match is successful; invalid regex and filesystem errors are explicit.
-Concurrent external edits can still change files while search is running.
+Outside a Git repository fd keeps honoring `.gitignore` (`--no-require-git`);
+ripgrep, as in pi, does not. Output is cut at 50 KiB with a notice, and a reached
+limit adds a notice suggesting a larger `limit`. The order of grep and find rows
+follows the parallel directory walk and is not stable between runs. Search
+processes inherit the environment, as in pi. Cancellation stops the process group
+(SIGTERM, then SIGKILL after one second) and reaps it.
 
 ## Parallel tool scheduling
 
-Use `AgentConfig(tool_execution="parallel", max_parallel_tools=4)` or the CLI
-flags above. `session.set_tool_execution(mode, max_parallel_tools=...)` makes a
-durable idle-session change. A bare `Agent` accepts the same construction options.
+`tool_execution` is `"parallel"` (default, as in pi) or `"sequential"`; set it with
+`AgentConfig(tool_execution=...)`, `--tool-execution`, or
+`session.set_tool_execution(mode)` on an idle session. A bare `Agent` accepts the
+same option.
 
-Built-in tools opt into parallel execution. Custom tools default to a barrier:
-preceding work completes before the custom call, and following work waits for it.
-Set `Tool.parallel_safe=True` only when concurrent execution is supported by the
-implementation. Admission/before hooks and permission confirmation are serialized
-within each parallel batch; after hooks follow each tool's actual completion.
-Context snapshots contain the batch's starting history and prior barrier groups;
-they do not contain concurrently completing results in the same group.
+The batch follows pi's `executeToolCalls`. In parallel mode every call is
+prepared in source order (argument validation, before hook, permission check),
+then all prepared calls run at once with no concurrency cap. A tool with
+`execution_mode = "sequential"` makes the whole batch sequential. Before hooks
+see the history up to the assistant message; results of the current batch reach
+the context only after the whole batch, as in pi.
 
-Read/write/edit calls to the same resolved path use FIFO locks shared between
-harness batches on one event loop, including separate sessions and symlink aliases.
-File waiters acquire the path queue before capacity, so they do not monopolize
-slots needed for independent files. The queue covers admission, execution and
-after processing. Locks are weakly retained after use. Bash commands and custom
-tools with other names can modify arbitrary paths; the host must manage those
-dependencies. These queues are not cross-process locks or protection against
-external writers. Synchronous filesystem syscalls still block the event loop.
+`write` and `edit` serialize mutations of one file through a queue keyed by the
+resolved real path, shared across sessions on one event loop; the wait happens
+inside the tool, as pi's `withFileMutationQueue` does. Bash commands and custom
+tools can modify arbitrary paths; the host must manage those dependencies. The
+queue is not a cross-process lock.
 
-Start/update events may interleave, while final execution events, canonical
-messages and persisted results follow the assistant's source order. A completed
-tool keeps its known result during batch cancellation; a cancelled in-flight
-execution gets an explicit unknown-outcome interruption result; a queued,
-unstarted call gets a known unexecuted error. Every requested call remains paired.
-Tasks are cancelled and joined before the batch settles; a fatal journal error
-still stops the session, and unrecorded outcomes require inspection on recovery.
+`ToolExecutionEnd` events arrive as calls finish; result messages and the
+journal follow the assistant's call order. On abort, a sequential batch stops
+after the running call and a parallel batch stops preparing further calls; calls
+left without a result get none in the journal, and the provider request answers
+them with `"No result provided"`, as pi's `transformMessages` does. Cancelling
+the Python task (not an abort) marks in-flight calls with an unknown-outcome
+result.
 
 ## Tool hooks and permissions
 
@@ -133,7 +118,7 @@ policy = PermissionPolicy(
 
 Callbacks receive `(context, cancellation)` and may return directly or await.
 Before context contains the final assistant message, tool call, validated args,
-projected messages (including earlier results in this batch), tool declarations
+projected messages (without results of the current batch), tool declarations
 and the actual tool cwd when available. These are copied snapshots: mutating
 args does not change execution. Before may return `BeforeToolCallResult` with
 `block`, `reason`, and `terminate`; it cannot replace arguments or override a
@@ -151,10 +136,9 @@ text-only transcript. Termination stops the next model request only when every
 result in the batch requests it. No automatic raw-result audit accompanies a
 successful override. Already emitted streaming updates cannot be redacted by after.
 
-Before failure denies execution. After failure preserves the original executed
-result in `details.original_result` and reports an error explaining that the tool
-already executed. Cancellation during after retains the known result and its
-original error flag. Pending callbacks are cancelled and joined; synchronous
+A before or after hook that raises turns the result into an error whose text is
+the exception message, as in pi (the after case replaces the executed result).
+Cancellation during after retains the known result and its original error flag. Pending callbacks are cancelled and joined; synchronous
 blocking code or callbacks suppressing task cancellation are outside this guarantee.
 `ToolExecutionStart` announces an attempted call before admission; denied calls
 still get a paired result and `duration_ms=None`. Execution duration excludes
@@ -216,9 +200,11 @@ after a denied tool call; JSONL tool results record the denial.
 
 ## Dependencies and shell behavior
 
-- Runtime: Python >= 3.12 standard library plus pinned jsonschema, httpx, python-dotenv
-  (versions pinned in `pyproject.toml`).
-- The `bash` tool is Linux-first: `/bin/bash` (fallback `/bin/sh`), the
+- Runtime: Python >= 3.12 standard library plus pinned jsonschema, httpx, python-dotenv,
+  PyYAML, pathspec and Pillow (versions pinned in `pyproject.toml`); `rg` and `fd`
+  for grep/find.
+- The `bash` tool is Linux-first: the shell is pi's choice (`/bin/bash`, then
+  `bash` on PATH, then `sh`), the
   child runs in its own session/process group (`start_new_session=True`),
   stderr is merged into stdout at the subprocess level (one pipe, one
   decoder — concurrent decoders could split multi-byte UTF-8). Timeout and
@@ -226,6 +212,7 @@ after a denied tool call; JSONL tool results record the denial.
   period) and reap it; descendants holding the inherited pipe after the
   leader exited get an idle drain window, extended by incoming data. Normal
   exit preserves background jobs until tool/session closure. Reader failures surface with the collected
-  output. Tool paths resolve against the session cwd (`~` and absolute
+  output. Truncated output is saved to `pi-bash-<hex>.log` in the temporary
+  directory and, as in pi, is not deleted when the session closes. Tool paths resolve against the session cwd (`~` and absolute
   paths supported); the cwd is a base directory, not a sandbox, and the
   process working directory is never changed.

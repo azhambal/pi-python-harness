@@ -331,7 +331,8 @@ async def test_cancelled_reload_closes_candidate_preserves_old_registry(config):
 
 
 async def test_compaction_preserves_manifest_and_restore(config):
-    provider = FauxProvider([done("seed"), done("second"), done("summary")])
+    # keep_recent_tokens=0 splits the last turn: history and turn-prefix summaries.
+    provider = FauxProvider([done("seed"), done("second"), done("summary"), done("prefix")])
     session = await create_harness(
         provider,
         config=replace(config, compaction=replace(config.compaction, keep_recent_tokens=0)),
@@ -355,7 +356,7 @@ async def test_compaction_preserves_manifest_and_restore(config):
         await restored.aclose()
 
 
-async def test_unfinished_recorded_call_recovers_unknown_outcome_without_replay(config):
+async def test_unfinished_recorded_call_is_not_replayed_or_answered_in_the_journal(config):
     path = await seed(config)
     store = SessionStore.open(path)
     try:
@@ -375,12 +376,10 @@ async def test_unfinished_recorded_call_recovers_unknown_outcome_without_replay(
         store.close()
     session = await create_harness(FauxProvider([]), session=path, mcp_config=settings(config.cwd))
     try:
-        result = next(
-            message
+        assert not any(
+            isinstance(message, ToolResultMessage) and message.tool_call_id == "unfinished"
             for message in session.messages
-            if isinstance(message, ToolResultMessage) and message.tool_call_id == "unfinished"
         )
-        assert result.interrupted and result.is_error and "unknown" in result.content[0].text
         assert "call:echo" not in (config.cwd / "events").read_text()
     finally:
         await session.aclose()

@@ -3,7 +3,7 @@ from copy import deepcopy
 import pytest
 
 from pi_agent import create_agent_session
-from pi_agent.compaction import prepare_compaction
+from pi_agent.compaction import CompactionAbortedError, prepare_compaction
 from pi_agent.providers import FauxProvider
 from pi_agent.session import build_projection
 from pi_agent.session_store import SessionCompactionEntry, SessionStore
@@ -42,7 +42,12 @@ def seed(session, *, prior_history=False):
 async def test_split_turn_checkpoint_is_atomic_keeps_pairs_and_accumulates_files(config, prior_history):
     config.compaction.keep_recent_tokens = 70
     summaries = [answer("history", Usage(input=2, output=3, total_tokens=5))] if prior_history else []
-    summaries += [answer("prefix", Usage(input=7, output=11, total_tokens=18)), answer("updated")]
+    # The second checkpoint cuts at "next answer", splitting that turn too (Pi's findCutPoint).
+    summaries += [
+        answer("prefix", Usage(input=7, output=11, total_tokens=18)),
+        answer("updated"),
+        answer("next prefix"),
+    ]
     provider = FauxProvider(summaries)
     session = create_agent_session(provider, config=config, session="new")
     try:
@@ -91,8 +96,11 @@ async def test_split_turn_checkpoint_is_atomic_keeps_pairs_and_accumulates_files
         resumed.dispose()
 
 
-@pytest.mark.parametrize("stop", ["error", "length", "aborted", "toolUse"])
-async def test_failed_second_summary_does_not_commit_partial_history_summary(config, stop):
+@pytest.mark.parametrize(
+    ("stop", "error"),
+    [("error", RuntimeError), ("length", RuntimeError), ("aborted", CompactionAbortedError)],
+)
+async def test_failed_second_summary_does_not_commit_partial_history_summary(config, stop, error):
     config.compaction.keep_recent_tokens = 70
     provider = FauxProvider(
         [
@@ -106,7 +114,7 @@ async def test_failed_second_summary_does_not_commit_partial_history_summary(con
     try:
         seed(session, prior_history=True)
         before = deepcopy(session.store.entries)
-        with pytest.raises(RuntimeError):
+        with pytest.raises(error):
             await session.compact()
         assert session.store.entries == before
         assert not any(isinstance(e, SessionCompactionEntry) for e in before)

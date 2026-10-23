@@ -1,10 +1,7 @@
 """Shared HTTP lifetime and SSE framing; no retries below the session layer."""
 
 import asyncio
-import codecs
-import json
 import math
-import re
 from collections.abc import AsyncGenerator, AsyncIterator
 from copy import deepcopy
 
@@ -14,62 +11,6 @@ from pi_agent.cancellation import Cancellation, OperationAbortedError, iterate_w
 from pi_agent.events import AssistantStreamEvent, StreamError, StreamStart
 from pi_agent.provider import ProviderOptions, ProviderRequest
 from pi_agent.types import AssistantMessage, now_ms
-
-MAX_EVENT_CHARS = 4 * 1024 * 1024
-
-
-def text_field(data: dict, key: str, default: str = "") -> str:
-    value = data.get(key, default)
-    if not isinstance(value, str):
-        raise ValueError(f"Provider field {key} must be text")
-    return value
-
-
-def strict_json(value: str) -> object:
-    def invalid_constant(_: str) -> None:
-        raise ValueError("Non-finite JSON number")
-
-    def finite_float(text: str) -> float:
-        number = float(text)
-        if not math.isfinite(number):
-            raise ValueError("Non-finite JSON number")
-        return number
-
-    return json.loads(value, parse_constant=invalid_constant, parse_float=finite_float)
-
-
-async def sse_data(response: httpx.Response) -> AsyncIterator[str]:
-    """Frame data across TCP chunks, CRLF, comments and multiline events."""
-    data: list[str] = []
-    size = 0
-    buffer = ""
-    decoder = codecs.getincrementaldecoder("utf-8-sig")("strict")
-    async for chunk in response.aiter_bytes():
-        buffer += decoder.decode(chunk)
-        while match := re.search(r"\r\n|\r|\n", buffer):
-            if match.group() == "\r" and match.end() == len(buffer):
-                break  # CRLF may be split across TCP chunks
-            line = buffer[: match.start()]
-            buffer = buffer[match.end() :]
-            size += len(line)
-            if size > MAX_EVENT_CHARS:
-                raise ValueError("SSE event exceeds 4 MiB")
-            if not line:
-                if data:
-                    yield "\n".join(data)
-                data.clear()
-                size = 0
-            elif line.startswith("data:"):
-                data.append(line[5:].removeprefix(" "))
-        if size + len(buffer) > MAX_EVENT_CHARS:
-            raise ValueError("SSE event exceeds 4 MiB")
-    buffer += decoder.decode(b"", final=True)
-    if buffer == "\r":
-        if data:
-            yield "\n".join(data)
-        return
-    if data or buffer.strip():
-        raise ValueError("Incomplete SSE frame at end of stream")
 
 
 class HTTPProvider:
@@ -103,20 +44,26 @@ class HTTPProvider:
     def headers(self) -> dict[str, str]:
         return {"Authorization": f"Bearer {self._api_key}", "Accept": "text/event-stream"}
 
+    def prepare(
+        self, request: ProviderRequest, options: ProviderOptions, message: AssistantMessage
+    ) -> tuple[dict[str, str], dict[str, object]]:
+        """Headers and JSON body of one request; may annotate the reply ``message``."""
+        return self.headers(), self.payload(request, options)
+
     def decode(
-        self, response: httpx.Response, message: AssistantMessage
+        self, response: httpx.Response, message: AssistantMessage, request: ProviderRequest
     ) -> AsyncIterator[AssistantStreamEvent]:
         raise NotImplementedError
 
     async def _events(
         self, request: ProviderRequest, options: ProviderOptions, message: AssistantMessage
     ) -> AsyncGenerator[AssistantStreamEvent, None]:
-        payload = self.payload(request, options)
+        headers, payload = self.prepare(request, options, message)
         client = self._client or httpx.AsyncClient(
             timeout=httpx.Timeout(self._timeout, connect=15.0), follow_redirects=False
         )
         try:
-            async with client.stream("POST", self._url, headers=self.headers(), json=payload) as response:
+            async with client.stream("POST", self._url, headers=headers, json=payload) as response:
                 if response.status_code >= 300:
                     # Read bounded error data; never put the request/headers in the journal.
                     body = bytearray()
@@ -128,7 +75,7 @@ class HTTPProvider:
                     raise ValueError(f"HTTP {response.status_code}: {detail}")
                 if "text/event-stream" not in response.headers.get("content-type", "").lower():
                     raise ValueError("Expected a text/event-stream response")
-                async for event in self.decode(response, message):
+                async for event in self.decode(response, message, request):
                     yield event
         finally:
             if self._client is None:

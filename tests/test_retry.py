@@ -73,14 +73,16 @@ async def test_overflow_compaction_precedes_retry(config: AgentConfig) -> None:
     provider = FauxProvider([AssistantMessage(stop_reason="error", error_message=OVERFLOW_ERRORS[17])])
     config.retry.enabled = True
     config.retry.base_delay_ms = 1
+    config.compaction.enabled = True  # Pi handles overflow only with compaction enabled.
     session = create_agent_session(provider, config=config)
     events = []
     session.subscribe(events.append)
     try:
         await session.prompt("work")
-        assert any(isinstance(event, CompactionStart) and event.reason == "overflow" for event in events)
-        assert not any(isinstance(event, AutoRetryStart) for event in events)
-        assert len(provider.requests) == 1  # insufficient history: compaction fails, no blind retry
+        # Pi's _runAutoCompaction: nothing to compact is silent; never a blind retry.
+        assert not any(isinstance(event, (CompactionStart, AutoRetryStart)) for event in events)
+        assert len(provider.requests) == 1
+        assert session.messages[-1].role == "user"  # the failed attempt is omitted
     finally:
         session.dispose()
 
@@ -123,20 +125,31 @@ async def test_abort_during_retry_backoff(config: AgentConfig) -> None:
         session.dispose()
 
 
-def test_usage_overflow_is_excluded_from_transient_retry() -> None:
-    message = AssistantMessage(stop_reason="error", error_message="HTTP 503", usage=Usage(input=9000))
-    assert _is_context_overflow(message, 8192)
-    assert not _is_retryable_error(message, 8192)
-
-
-def test_success_and_output_tokens_do_not_trigger_overflow() -> None:
-    assert not _is_context_overflow(AssistantMessage(stop_reason="stop", usage=Usage(input=9000)), 8192)
-    assert not _is_context_overflow(AssistantMessage(stop_reason="error", usage=Usage(output=9000)), 8192)
-
-
-@pytest.mark.parametrize("provider, expected", [("cerebras", True), ("other", False)])
-def test_bodyless_overflow_is_provider_specific(provider: str, expected: bool) -> None:
-    message = AssistantMessage(
-        stop_reason="error", provider=provider, error_message="413 status code (no body)"
+def test_usage_overflow_follows_pi() -> None:
+    # Silent overflow (z.ai): a completed response whose input exceeds the window.
+    assert _is_context_overflow(AssistantMessage(stop_reason="stop", usage=Usage(input=9000)), 8192)
+    # Truncated input filling the window with no output (Xiaomi MiMo).
+    assert _is_context_overflow(AssistantMessage(stop_reason="length", usage=Usage(input=8120)), 8192)
+    assert not _is_context_overflow(
+        AssistantMessage(stop_reason="length", usage=Usage(input=8120, output=1)), 8192
     )
+    # Errors are classified by their text only; usage does not make them overflow.
+    message = AssistantMessage(stop_reason="error", error_message="HTTP 503", usage=Usage(input=9000))
+    assert not _is_context_overflow(message, 8192)
+    assert _is_retryable_error(message, 8192)
+    assert not _is_context_overflow(AssistantMessage(stop_reason="stop", usage=Usage(output=9000)), 8192)
+
+
+@pytest.mark.parametrize(
+    "provider, error, expected",
+    [
+        ("cerebras", "400 status code (no body)", True),
+        ("other", "400 status code (no body)", False),
+        # HTTP 413 is request-size overflow for every provider.
+        ("other", "413 status code (no body)", True),
+        ("other", 'anthropic API error (413): {"message":"too big"}', True),
+    ],
+)
+def test_bodyless_overflow_is_provider_specific(provider: str, error: str, expected: bool) -> None:
+    message = AssistantMessage(stop_reason="error", provider=provider, error_message=error)
     assert _is_context_overflow(message, 8192) == expected

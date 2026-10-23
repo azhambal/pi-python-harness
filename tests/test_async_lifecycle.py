@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
 
 import pytest
 
@@ -411,23 +410,15 @@ async def test_custom_async_tool_remains_borrowed(config):
     assert not tool.closed
 
 
-async def test_async_close_cleans_bash_spill_even_when_owned_resource_fails(config):
-    from pi_agent.tools.bash import BashTool
-
-    tool = BashTool(config.cwd, max_bytes=8)
+async def test_async_close_releases_journal_even_when_owned_resource_fails(config):
     owner = ResourceOwner()
     resource = TrackedResource(fail=True)
     owner.add(resource)
-    session = await create_harness(
-        FauxProvider([]), config=config, session="new", tools=[tool], resource_owner=owner
-    )
+    session = await create_harness(FauxProvider([]), config=config, session="new", resource_owner=owner)
     session.store.append_message(UserMessage())
-    result = await tool.execute("spill", {"command": "printf 'abcdefghijklmnop'"})
-    spill = Path(result.details["full_output_path"])
     try:
         with pytest.raises(ExceptionGroup, match="Session cleanup failed"):
             await session.aclose()
-        assert not spill.exists()
         reopened = SessionStore.open(session.session_file)
         reopened.close()
     finally:

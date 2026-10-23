@@ -82,7 +82,7 @@ async def test_single_flight_paginated_discovery_and_result_progress(tmp_path, m
         assert len(updates) == 2
         assert "synthetic-meta-secret" not in json.dumps(result.to_json())
         assert echo.provenance.server == "fixture" and echo.provenance.tool == "echo"
-        assert not echo.parallel_safe
+        assert echo.execution_mode is None  # MCP calls run in parallel batches, as in pi.
         names = {tool.name for tool in tools}
         assert binding_name("fixture", "a-b") in names and binding_name("fixture", "a_b") in names
         assert binding_name("fixture", "a-b") != binding_name("fixture", "a_b")

@@ -117,8 +117,9 @@ class AgentConfig:
     #: (global <agent_dir>/AGENTS.md, then every AGENTS.md from cwd up to /).
     instruction_files: list[Path] | None = None
     permissions: PermissionPolicy = field(default_factory=PermissionPolicy)
-    tool_execution: Literal["sequential", "parallel"] = "sequential"
-    max_parallel_tools: int = 4
+    #: Pi's ``toolExecution``: "parallel" (default) prepares calls in order and
+    #: then runs them concurrently; "sequential" runs one call at a time.
+    tool_execution: Literal["sequential", "parallel"] = "parallel"
     skills: SkillSettings = field(default_factory=SkillSettings)
 
     def validate(self) -> None:
@@ -134,12 +135,6 @@ class AgentConfig:
         self.skills.validate()
         if self.tool_execution not in ("sequential", "parallel"):
             raise ValueError("tool_execution must be sequential or parallel")
-        if (
-            isinstance(self.max_parallel_tools, bool)
-            or not isinstance(self.max_parallel_tools, int)
-            or self.max_parallel_tools < 1
-        ):
-            raise ValueError("max_parallel_tools must be a positive integer")
         if self.bash_default_timeout_s is not None:
             timeout = self.bash_default_timeout_s
             if isinstance(timeout, bool) or not isinstance(timeout, (int, float)):

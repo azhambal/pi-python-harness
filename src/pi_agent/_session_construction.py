@@ -59,9 +59,8 @@ def _resolve_cwd(value: Path | str) -> Path:
 def _effective_thinking_level(model: ModelInfo, level: ThinkingLevel) -> ThinkingLevel:
     if not isinstance(level, str) or level not in ("off", "minimal", "low", "medium", "high", "xhigh", "max"):
         raise ValueError("thinking_level is invalid")
-    effective = level if model.reasoning else "off"
-    model.validate_thinking_level(effective)
-    return effective
+    # Pi clamps to the nearest supported level (clampThinkingLevel).
+    return model.clamp_thinking_level(level)
 
 
 def _validate_runtime_model(provider: Provider, model: ModelInfo, level: ThinkingLevel) -> None:
@@ -101,7 +100,6 @@ def _config_json(config: AgentConfig, model: ModelInfo, cwd: Path | str) -> dict
         ),
         "permissions": config.permissions.to_json(),
         "tool_execution": config.tool_execution,
-        "max_parallel_tools": config.max_parallel_tools,
         "skills": config.skills.to_json(),
     }
 
@@ -148,8 +146,7 @@ def _config_from_snapshot(
         permissions=PermissionPolicy.from_json(snapshot["permissions"])
         if "permissions" in snapshot
         else PermissionPolicy(),
-        tool_execution=cast(Literal["sequential", "parallel"], snapshot.get("tool_execution", "sequential")),
-        max_parallel_tools=cast(int, snapshot.get("max_parallel_tools", 4)),
+        tool_execution=cast(Literal["sequential", "parallel"], snapshot.get("tool_execution", "parallel")),
         skills=SkillSettings.from_json(snapshot.get("skills", {})),
     )
     config.validate()
@@ -266,7 +263,6 @@ def _resolve_session_config(
             instruction_files=config.instruction_files,
             permissions=config.permissions,
             tool_execution=config.tool_execution,
-            max_parallel_tools=config.max_parallel_tools,
             skills=config.skills,
         )
     elif resumed and stored_snapshot:
@@ -415,16 +411,22 @@ def _prepare_session_prompt(
             # Refresh only tool-derived sections, preserving recorded project instructions.
             existing = get_current_system_message(agent_messages)
             if existing is not None and existing.sections:
-                sections = {name: text for name, text in existing.sections.items() if text is not None}
+                kept = {name: text for name, text in existing.sections.items() if text is not None}
                 rendered = build_system_prompt_sections(
-                    SystemPromptInput(cwd=effective_cwd, tools=active_tools)
+                    SystemPromptInput(cwd=effective_cwd, tools=active_tools, skills_section=skills_section)
                 )
                 for name in ("tools", "rules", "cwd"):
                     if name in rendered:
-                        sections[name] = rendered[name]
-                sections.pop("skills", None)
-                if skills_section is not None:
-                    sections["skills"] = skills_section
+                        kept[name] = rendered[name]
+                kept.pop("skills", None)
+                # Skills sit right before cwd, as Pi orders them.
+                sections = {}
+                for name, text in kept.items():
+                    if name == "cwd" and "skills" in rendered:
+                        sections["skills"] = rendered["skills"]
+                    sections[name] = text
+                if "skills" in rendered and "skills" not in sections:
+                    sections["skills"] = rendered["skills"]
         agent_messages = _align_resumed_prompt(
             store,
             agent_messages,
@@ -623,6 +625,9 @@ def construct_session(
         async def prepare_request(context: PrepareRequestContext) -> PrepareRequestUpdate | None:
             return await holder[0]._prepare_request(context)
 
+        async def prepare_next_turn(context: PrepareRequestContext) -> PrepareRequestUpdate | None:
+            return await holder[0]._prepare_next_turn(context)
+
         agent = Agent(
             provider,
             model=active_model,
@@ -631,6 +636,7 @@ def construct_session(
             thinking_level=cfg.thinking_level,
             session_id=store.session_id,
             prepare_request=prepare_request,
+            prepare_next_turn=prepare_next_turn,
             # Check raw-history IDs, including hidden entries, before commit/execution.
             # This collision set is never sent to the model.
             historical_call_ids=lambda: _raw_call_ids(store),
@@ -639,7 +645,6 @@ def construct_session(
             confirm_permission=confirm_permission,
             cwd=effective_cwd,
             tool_execution=cfg.tool_execution,
-            max_parallel_tools=cfg.max_parallel_tools,
         )
         instance = session_cls(
             agent=agent, store=store, config=cfg, provider=provider, tools=active_tools, resources=resources

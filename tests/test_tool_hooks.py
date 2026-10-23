@@ -1,4 +1,5 @@
 import asyncio
+from dataclasses import replace
 
 import pytest
 
@@ -207,23 +208,23 @@ async def test_hook_failures_are_explicit_and_preserve_known_execution(
     try:
         await session.prompt("write")
         result = next(message for message in session.messages if isinstance(message, ToolResultMessage))
-        assert result.is_error
-        if stage == "before":
-            assert not (config.cwd / "result.txt").exists()
-            assert "not executed" in result.content[0].text
-        else:
-            assert (config.cwd / "result.txt").read_text() == "written"
-            assert result.details["executed"] is True
-            assert "Successfully wrote" in result.content[0].text
-            assert "already executed" in result.content[-1].text
-        assert "RuntimeError:" not in " ".join(block.text for block in result.content)
+        # As in pi, the hook's error message becomes the whole result.
+        assert result.is_error and result.details == {}
+        expected = (
+            f"{'Before' if stage == 'before' else 'After'}-tool hook must return "
+            f"{'BeforeToolCallResult' if stage == 'before' else 'AfterToolCallResult'} or None"
+            if invalid
+            else "host hook failed"
+        )
+        assert [block.text for block in result.content] == [expected]
+        assert (config.cwd / "result.txt").exists() is (stage == "after")
     finally:
         session.dispose()
 
 
 @pytest.mark.parametrize("stage", ["before", "after"])
 @pytest.mark.parametrize("external", [False, True])
-async def test_cancelling_hanging_hook_pairs_batch_and_keeps_known_results(
+async def test_cancelling_hanging_hook_keeps_known_results(
     config: AgentConfig, stage: str, external: bool
 ) -> None:
     entered = asyncio.Event()
@@ -240,7 +241,7 @@ async def test_cancelling_hanging_hook_pairs_batch_and_keeps_known_results(
     hooks = ToolHooks(before_tool_call=hanging) if stage == "before" else ToolHooks(after_tool_call=hanging)
     session = create_agent_session(
         FauxProvider([response(write_call(), write_call("second", "never.txt"))]),
-        config=config,
+        config=replace(config, tool_execution="parallel"),
         session="new",
         hooks=hooks,
     )
@@ -255,15 +256,20 @@ async def test_cancelling_hanging_hook_pairs_batch_and_keeps_known_results(
             await asyncio.wait_for(session.abort(), 1)
             await task
         assert closed.is_set()
-        assert not (config.cwd / "never.txt").exists()
         results = [message for message in session.messages if isinstance(message, ToolResultMessage)]
-        assert [message.tool_call_id for message in results] == ["write", "second"]
         assert not any(message.interrupted for message in results)
         if stage == "before":
-            assert not (config.cwd / "result.txt").exists()
+            # Preparation stops at the aborted call, as in pi: the second call gets no
+            # result here (the projection answers it later) and nothing runs.
+            assert [message.tool_call_id for message in results] == ["write"]
             assert results[0].is_error
+            assert not (config.cwd / "result.txt").exists() and not (config.cwd / "never.txt").exists()
         else:
+            # Parallel calls all execute before their after-hooks run, as in pi; the
+            # cancelled hooks keep the known results.
+            assert [message.tool_call_id for message in results] == ["write", "second"]
             assert (config.cwd / "result.txt").read_text() == "written"
+            assert (config.cwd / "never.txt").exists()
             assert not results[0].is_error and results[0].details["executed"]
         assert session.is_idle
     finally:
@@ -312,7 +318,8 @@ async def test_bare_agent_hook_guard_applies_to_child_tasks(config: AgentConfig)
     assert result.is_error and not (config.cwd / "result.txt").exists()
 
 
-async def test_later_hook_context_includes_earlier_batch_results(config: AgentConfig) -> None:
+async def test_hook_context_excludes_results_of_the_current_batch(config: AgentConfig) -> None:
+    # pi adds a batch's results to the context only after the whole batch.
     observed = []
 
     def before(context, token):
@@ -327,7 +334,7 @@ async def test_later_hook_context_includes_earlier_batch_results(config: AgentCo
     )
     try:
         await session.prompt("write")
-        assert observed == [[], ["a"]]
+        assert observed == [[], []]
     finally:
         session.dispose()
 
@@ -357,7 +364,7 @@ async def test_block_termination_requires_every_batch_result(
         AfterToolCallResult(is_error="false"),
     ],
 )
-async def test_invalid_after_patch_preserves_execution_and_a_valid_journal(
+async def test_invalid_after_patch_becomes_an_error_result_and_a_valid_journal(
     config: AgentConfig, override
 ) -> None:
     session = create_agent_session(
@@ -371,7 +378,7 @@ async def test_invalid_after_patch_preserves_execution_and_a_valid_journal(
     try:
         await session.prompt("write")
         result = next(message for message in session.messages if isinstance(message, ToolResultMessage))
-        assert result.is_error and result.details["executed"]
+        assert result.is_error and result.details == {}  # The hook error replaces the result, as in pi.
         assert (config.cwd / "result.txt").read_text() == "written"
         end = next(event for event in events if isinstance(event, ToolExecutionEnd))
         assert end.is_error == end.result["is_error"] == result.is_error

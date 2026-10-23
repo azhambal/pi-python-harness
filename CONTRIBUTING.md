@@ -6,7 +6,7 @@ the repository name is `pi-python-harness`.
 
 ## Environment
 
-Install Git and ripgrep (`rg`) separately, then:
+Install Git, ripgrep (`rg`) and fd (`fd` or `fdfind`) separately, then:
 
 ```bash
 python3.12 -m venv .venv
@@ -38,6 +38,22 @@ Optional benchmarks report observations, not CI timing thresholds:
 .venv/bin/python scripts/benchmark_projection.py
 .venv/bin/python scripts/benchmark_startup.py
 ```
+
+## Pi parity fixtures
+
+`tests/parity` compares model-facing behavior with fixtures produced by pi's own
+TypeScript: tool results and declarations, the system prompt, history
+transformation, JSON parsing, provider request bodies and stream decoding, and
+compaction. To regenerate them from a pi checkout (default `../pi`, after
+`npm ci && npm run build`; Node.js 24 runs the `.ts` runners directly):
+
+```bash
+scripts/pi_reference/generate.sh [path-to-pi]
+```
+
+Provider and compaction cases are written by `make_provider_cases.py` and
+`make_compaction_cases.py` in the same directory. `rg` and `fd` must be on `PATH`.
+Record intentional differences in [docs/compatibility.md](docs/compatibility.md).
 
 ## Credentials and artifacts
 

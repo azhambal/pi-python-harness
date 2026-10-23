@@ -579,7 +579,7 @@ def anthropic_response() -> httpx.Response:
     return httpx.Response(
         200,
         headers={"content-type": "text/event-stream"},
-        text="".join(f"data: {json.dumps(event)}\n\n" for event in events),
+        text="".join(f"event: {event['type']}\ndata: {json.dumps(event)}\n\n" for event in events),
     )
 
 
@@ -644,14 +644,14 @@ async def test_cli_switch_provider_and_reject_invalid_thinking_without_config_co
             == 0
         )
         capsys.readouterr()
-        assert payloads[-1][0] == "/v1/messages" and payloads[-1][1]["thinking"] == {"type": "adaptive"}
+        assert payloads[-1][0] == "/v1/messages" and payloads[-1][1]["thinking"]["type"] == "enabled"
         assert await cli._cmd_run(parser.parse_args(argv + ["--continue", "--thinking", "off"])) == 0
         capsys.readouterr()
         path = SessionStore.list_sessions(tmp_path / "sessions")[0].path
         before = path.read_bytes()
         requests_before = len(payloads)
-        monkeypatch.setenv("ANTHROPIC_THINKING_MODE", "budget")
-        with pytest.raises(ValueError, match="max_tokens"):
+        monkeypatch.setenv("ANTHROPIC_THINKING_MODE", "invalid")
+        with pytest.raises(ValueError, match="ANTHROPIC_THINKING_MODE"):
             await cli._cmd_run(parser.parse_args(argv + ["--continue", "--thinking", "high"]))
         assert len(payloads) == requests_before and path.read_bytes() == before
         store = SessionStore.open(path)

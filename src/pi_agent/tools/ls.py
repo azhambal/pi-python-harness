@@ -1,43 +1,49 @@
-"""One-directory listing; contents are never read."""
+"""List one directory, translated from Pi's ``core/tools/ls.ts``."""
 
 from __future__ import annotations
 
-import asyncio
-import heapq
 import os
+import stat
 from collections.abc import Mapping
 from pathlib import Path
 
-from pi_agent.cancellation import Cancellation
-from pi_agent.types import JsonValue
+from pi_agent._collation import collation_key
+from pi_agent._js import number_to_string
+from pi_agent.cancellation import Cancellation, OperationAbortedError
+from pi_agent.tools._paths import node_fs_error, path_exists, resolve_to_cwd
+from pi_agent.tools.base import Tool, ToolResult, ToolUpdateCallback
+from pi_agent.tools.output import DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES, format_size, truncate_head
+from pi_agent.types import JsonValue, TextBlock
 
-from ._search import MAX_RESULTS, SearchOutput, display, integer, path_item, search_path
-from .base import Tool, ToolResult, ToolUpdateCallback
-from .output import DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES
+DEFAULT_LIMIT = 500
+#: ``Number.MAX_SAFE_INTEGER``: byte truncation only, the entry limit caps rows.
+_NO_LINE_LIMIT = 2**53 - 1
 
 
 class LsTool(Tool):
     name = "ls"
-    parallel_safe = True
+    argument_conversion = "typebox"
     description = (
-        "List a directory, including dotfiles, sorted by name; directories end in '/'. Results are bounded."
+        "List directory contents. Returns entries sorted alphabetically, with '/' suffix for directories. "
+        f"Includes dotfiles. Output is truncated to {DEFAULT_LIMIT} entries or {DEFAULT_MAX_BYTES // 1024}KB "
+        "(whichever is hit first)."
     )
     prompt_snippet = "List directory contents"
-    guidelines = ("Use ls to list directories.",)
+    guidelines = ()
     parameters: dict[str, JsonValue] = {
         "type": "object",
         "properties": {
-            "path": {"type": "string", "minLength": 1},
-            "limit": {"type": "integer", "minimum": 1, "maximum": MAX_RESULTS},
+            "path": {"type": "string", "description": "Directory to list (default: current directory)"},
+            "limit": {"type": "number", "description": "Maximum number of entries to return (default: 500)"},
         },
-        "additionalProperties": False,
     }
 
     def __init__(
         self, cwd: Path | str, max_lines: int = DEFAULT_MAX_LINES, max_bytes: int = DEFAULT_MAX_BYTES
     ) -> None:
+        del max_lines  # The entry limit caps rows, as in Pi.
         self.cwd = Path(cwd)
-        self.max_lines, self.max_bytes = max_lines, max_bytes
+        self.max_bytes = max_bytes
 
     async def execute(
         self,
@@ -47,45 +53,60 @@ class LsTool(Tool):
         on_update: ToolUpdateCallback | None = None,
     ) -> ToolResult:
         del tool_call_id, on_update
-        if cancellation is not None:
-            cancellation.raise_if_aborted()
-        path = search_path(args, self.cwd)
-        if not path.is_dir():
-            raise NotADirectoryError(f"Not a directory: {path}")
-        limit = integer(args, "limit", 500, MAX_RESULTS)
-        output = SearchOutput(self.max_lines, self.max_bytes)
-        # Keep only the smallest limit+1 entries, not the entire directory.
-        selected: list[_Entry] = []
-        with os.scandir(path) as entries:
-            for index, entry in enumerate(entries):
-                if cancellation is not None:
-                    cancellation.raise_if_aborted()
-                candidate = _Entry(entry.name, entry.is_dir(), entry.is_symlink())
-                if len(selected) < limit + 1:
-                    heapq.heappush(selected, candidate)
-                elif candidate.key < selected[0].key:
-                    heapq.heapreplace(selected, candidate)
-                if index % 64 == 0:
-                    await asyncio.sleep(0)
-        ordered = sorted(selected, key=lambda item: item.key)
-        if cancellation is not None:
-            cancellation.raise_if_aborted()
-        for item in ordered[:limit]:
-            suffix = "/" if item.directory else ""
-            if not output.add(
-                display(item.name) + suffix,
-                {**path_item(item.name, "name"), "directory": item.directory, "symlink": item.symlink},
-            ):
+        if cancellation is not None and cancellation.aborted:
+            raise OperationAbortedError("Operation aborted")
+        path = args.get("path")
+        limit = args.get("limit")
+        dir_path = resolve_to_cwd(path if isinstance(path, str) and path else ".", self.cwd)
+        effective_limit: int | float = limit if isinstance(limit, (int, float)) else DEFAULT_LIMIT
+
+        if not path_exists(dir_path):
+            raise FileNotFoundError(f"Path not found: {dir_path}")
+        try:
+            dir_stat = os.stat(dir_path)
+        except OSError as error:
+            raise node_fs_error(error, "stat", dir_path) from None
+        if not stat.S_ISDIR(dir_stat.st_mode):
+            raise NotADirectoryError(f"Not a directory: {dir_path}")
+
+        try:
+            names = os.listdir(dir_path)
+        except OSError as error:
+            raise OSError(f"Cannot read directory: {node_fs_error(error, 'scandir', dir_path)}") from None
+        # Node decodes names as UTF-8 with replacement characters.
+        entries = [(os.fsencode(name).decode("utf-8", errors="replace"), name) for name in names]
+        entries.sort(key=lambda entry: collation_key(entry[0].lower()))
+
+        results: list[str] = []
+        entry_limit_reached = False
+        for display_name, name in entries:
+            if cancellation is not None:
+                cancellation.raise_if_aborted()
+            if len(results) >= effective_limit:
+                entry_limit_reached = True
                 break
-        if len(ordered) > limit and output.reason is None:
-            output.reason = "entry limit"
-        return output.result("(empty directory)")
+            try:
+                entry_stat = os.stat(os.path.join(dir_path, name))
+            except OSError:
+                continue  # Skip entries we cannot stat, such as broken symlinks.
+            results.append(display_name + ("/" if stat.S_ISDIR(entry_stat.st_mode) else ""))
 
+        if not results:
+            return ToolResult(content=[TextBlock(text="(empty directory)")], details=None)
 
-class _Entry:
-    def __init__(self, name: str, directory: bool, symlink: bool) -> None:
-        self.name, self.directory, self.symlink = name, directory, symlink
-        self.key = (name.casefold(), name)
-
-    def __lt__(self, other: _Entry) -> bool:
-        return self.key > other.key  # Reverse heap keeps the largest retained name at the root.
+        truncation = truncate_head("\n".join(results), max_lines=_NO_LINE_LIMIT, max_bytes=self.max_bytes)
+        output = truncation.content
+        details: dict[str, JsonValue] = {}
+        notices: list[str] = []
+        if entry_limit_reached:
+            notices.append(
+                f"{number_to_string(effective_limit)} entries limit reached. "
+                f"Use limit={number_to_string(effective_limit * 2)} for more"
+            )
+            details["entryLimitReached"] = effective_limit
+        if truncation.truncated:
+            notices.append(f"{format_size(self.max_bytes)} limit reached")
+            details["truncation"] = truncation.to_json()
+        if notices:
+            output += f"\n\n[{'. '.join(notices)}]"
+        return ToolResult(content=[TextBlock(text=output)], details=details or None)

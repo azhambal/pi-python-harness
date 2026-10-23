@@ -175,7 +175,6 @@ def _build_parser() -> argparse.ArgumentParser:
         help="JSON session defaults and runtime request settings (global/project files also load)",
     )
     run_parser.add_argument("--tool-execution", choices=("sequential", "parallel"))
-    run_parser.add_argument("--max-parallel-tools", type=_positive_int)
     _add_skill_options(run_parser)
     _add_mcp_options(run_parser)
     run_parser.add_argument(
@@ -282,11 +281,15 @@ async def _cmd_run(args: argparse.Namespace) -> int:
 
     printed = False
     run_aborted = False
+    # The last response of the run, even when recovery omitted it from the projection.
+    final: AssistantMessage | None = None
 
     def output(event: SessionEvent) -> None:
-        nonlocal printed, run_aborted
+        nonlocal printed, run_aborted, final
         if isinstance(event, AgentSettled):
             run_aborted = event.aborted
+        if isinstance(event, MessageEnd) and isinstance(event.message, AssistantMessage):
+            final = event.message
         if args.json:
             print(json.dumps(event_to_json(event), ensure_ascii=False, allow_nan=False), flush=True)
         elif isinstance(event, MessageUpdate) and isinstance(event.stream_event, TextDelta):
@@ -328,9 +331,6 @@ async def _cmd_run(args: argparse.Namespace) -> int:
         if run_aborted:
             print("Operation aborted", file=_diagnostics())
             return 130
-        final = next(
-            (message for message in reversed(session.messages) if isinstance(message, AssistantMessage)), None
-        )
         if final is None:
             raise ValueError("Run produced no assistant response")
         if final.stop_reason in ("error", "aborted", "length"):
@@ -364,11 +364,8 @@ def _apply_cli_changes(
             )
         elif args.thinking is not None:
             session.set_thinking_level(cast(ThinkingLevel, args.thinking))
-        if args.tool_execution is not None or args.max_parallel_tools is not None:
-            session.set_tool_execution(
-                args.tool_execution or session.config.tool_execution,
-                max_parallel_tools=args.max_parallel_tools,
-            )
+        if args.tool_execution is not None:
+            session.set_tool_execution(args.tool_execution)
         if any(
             value is not None
             for value in (
@@ -391,7 +388,8 @@ def _runtime_provider(settings: RuntimeSettings) -> Provider:
             api_key=settings.api_key,
             base_url=settings.base_url,
             timeout=settings.timeout,
-            thinking_mode=cast(Literal["adaptive", "budget"], settings.anthropic_thinking_mode),
+            thinking_mode=cast(Literal["adaptive", "budget"] | None, settings.anthropic_thinking_mode),
+            thinking_budgets=settings.thinking_budgets,
         )
     else:
         provider = OpenAICompatProvider(
@@ -399,6 +397,7 @@ def _runtime_provider(settings: RuntimeSettings) -> Provider:
             base_url=settings.base_url,
             timeout=settings.timeout,
             request_settings=settings.openai_request,
+            thinking_budgets=settings.thinking_budgets,
         )
     return provider
 
@@ -511,6 +510,7 @@ def _session_options(
         chat_template_kwargs=args.chat_template_kwargs
         if args.chat_template_kwargs is not None
         else defaults.get("chat_template_kwargs"),
+        thinking_budgets=defaults.get("thinking_budgets"),
         thinking_level_map=defaults.get("thinking_level_map") if session_path is None else None,
     )
     if (
@@ -566,9 +566,6 @@ def _session_options(
             tool_execution=cast(
                 Literal["sequential", "parallel"], args.tool_execution or config.tool_execution
             ),
-            max_parallel_tools=args.max_parallel_tools
-            if args.max_parallel_tools is not None
-            else config.max_parallel_tools,
         )
         options.update(
             config=config,
@@ -762,7 +759,8 @@ def _cmd_show(args: argparse.Namespace) -> int:
                     print(f"    tool-call {block.name}({json.dumps(block.arguments, ensure_ascii=False)})")
         elif isinstance(message, ToolResultMessage):
             status = "interrupted" if message.interrupted else ("error" if message.is_error else "ok")
-            text = (message.content[0].text if message.content else "").strip()
+            first = message.content[0] if message.content else None
+            text = (first.text if isinstance(first, TextBlock) else "").strip()
             print(f"[{role:<11}] {entry.timestamp} {message.tool_name} {status}")
             for line in text.splitlines()[:3]:
                 print(f"    {line}")

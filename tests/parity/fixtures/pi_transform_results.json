@@ -1,0 +1,923 @@
+[
+  {
+    "name": "same model keeps thinking and signatures",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "plan",
+            "thinkingSignature": "sig"
+          },
+          {
+            "type": "text",
+            "text": "x",
+            "textSignature": "ts"
+          },
+          {
+            "type": "toolCall",
+            "id": "c1",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            },
+            "thoughtSignature": "th"
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "c1",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  },
+  {
+    "name": "other model drops thinking and signatures",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "text",
+            "text": "x"
+          },
+          {
+            "type": "toolCall",
+            "id": "call_with_odd_chars_",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "call_with_odd_chars_",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  },
+  {
+    "name": "empty and redacted thinking",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "",
+            "redacted": true,
+            "thinkingSignature": "opaque"
+          },
+          {
+            "type": "thinking",
+            "thinking": "",
+            "thinkingSignature": "s2"
+          },
+          {
+            "type": "text",
+            "text": "done"
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "stop",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "orphan calls answered at user turn and at end",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "a",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          },
+          {
+            "type": "toolCall",
+            "id": "b",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "a",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "b",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "No result provided"
+          }
+        ],
+        "isError": true
+      },
+      {
+        "role": "user",
+        "content": "interrupt"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "c",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "c",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "No result provided"
+          }
+        ],
+        "isError": true
+      }
+    ]
+  },
+  {
+    "name": "error and aborted assistants are skipped with their calls",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "x",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      },
+      {
+        "role": "user",
+        "content": "again"
+      }
+    ]
+  },
+  {
+    "name": "system message between call and results is held",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "a",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          },
+          {
+            "type": "toolCall",
+            "id": "b",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "a",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "b",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      },
+      {
+        "role": "system",
+        "content": "changed"
+      },
+      {
+        "role": "user",
+        "content": "next"
+      }
+    ]
+  },
+  {
+    "name": "system message held while a call stays unanswered",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "a",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "a",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "No result provided"
+          }
+        ],
+        "isError": true
+      },
+      {
+        "role": "system",
+        "content": "changed"
+      },
+      {
+        "role": "user",
+        "content": "next"
+      }
+    ]
+  },
+  {
+    "name": "non vision model downgrades images",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "text",
+            "text": "look"
+          },
+          {
+            "type": "text",
+            "text": "(image omitted: model does not support images)"
+          },
+          {
+            "type": "text",
+            "text": "and"
+          },
+          {
+            "type": "text",
+            "text": "(image omitted: model does not support images)"
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "a",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "a",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "(tool image omitted: model does not support images)"
+          },
+          {
+            "type": "text",
+            "text": "(tool image omitted: model does not support images)"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  },
+  {
+    "name": "vision model keeps images",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image",
+            "data": "AAAA",
+            "mimeType": "image/png"
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "a",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "a",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "image",
+            "data": "AAAA",
+            "mimeType": "image/png"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  },
+  {
+    "name": "duplicate and unknown results pass through",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "a",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "a",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "a",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "again"
+          }
+        ],
+        "isError": false
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "zzz",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  },
+  {
+    "name": "openai normalizer truncates long ids for other model",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  },
+  {
+    "name": "same model ids are never normalized",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "bad|id",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "bad|id",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  },
+  {
+    "name": "string user content and empty assistant",
+    "messages": [
+      {
+        "role": "user",
+        "content": "plain"
+      },
+      {
+        "role": "assistant",
+        "content": [],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "stop",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "user",
+        "content": "more"
+      }
+    ]
+  },
+  {
+    "name": "openai normalizer splits pipe ids",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "call_1_fc_2",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          },
+          {
+            "type": "toolCall",
+            "id": "call_abc_15wp525b",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "call_1_fc_2",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "call_abc_15wp525b",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  },
+  {
+    "name": "openai normalizer keeps long ids for other providers",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "toolCall",
+            "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "name": "read",
+            "arguments": {
+              "path": "a"
+            }
+          }
+        ],
+        "provider": "anthropic",
+        "api": "anthropic-messages",
+        "model": "claude",
+        "stopReason": "toolUse",
+        "usage": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "totalTokens": 0,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "toolName": "read",
+        "content": [
+          {
+            "type": "text",
+            "text": "ok"
+          }
+        ],
+        "isError": false
+      }
+    ]
+  }
+]

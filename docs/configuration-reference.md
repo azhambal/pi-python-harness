@@ -26,14 +26,21 @@ Non-secret CLI defaults. Session defaults apply to new sessions; resume retains 
 - `compaction` (object): History compaction thresholds; these do not cap summary output.
 - `retry` (object): Bounded transient-error retries for conversation and summary requests.
 - `bash_default_timeout_s` (number | null): Default Bash timeout in seconds; null leaves it unset. Default: `null`.
-- `tool_execution` (enum): Tool batch scheduling mode. Default: `"sequential"`. Values: `"sequential"`, `"parallel"`.
-- `max_parallel_tools` (integer): Maximum admitted concurrent tool calls in parallel mode. Default: `4`.
+- `tool_execution` (enum): Tool batch scheduling mode, as Pi's toolExecution: parallel prepares calls in order, then runs them concurrently. Default: `"parallel"`. Values: `"sequential"`, `"parallel"`.
 - `permissions` (object): Admission policy, not an OS sandbox. Replaces the whole lower-priority policy.
 - `tools` (array): Absolute builtin selection for new sessions. An empty list disables builtins; relative edits belong in CLI --tools.
 - `skills` (object): Trusted Markdown skill discovery and prompt budget.
 - `temperature` (number | null): OpenAI-compatible sampling temperature; runtime-only.
 - `seed` (integer | null): OpenAI-compatible sampling seed; runtime-only.
 - `chat_template_kwargs` (object | null): OpenAI-compatible template arguments. SGLang enable_thinking follows the selected level.
+- `thinking_budgets` (object): Pi's thinkingBudgets: token budgets per thinking level for budget-based thinking; runtime-only.
+
+### thinking_budgets
+
+- `minimal` (integer): Thinking token budget for the minimal level. Default: `1024`.
+- `low` (integer): Thinking token budget for the low level. Default: `2048`.
+- `medium` (integer): Thinking token budget for the medium level. Default: `8192`.
+- `high` (integer): Thinking token budget for the high level, also used for xhigh and max. Default: `16384`.
 
 ### compaction
 

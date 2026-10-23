@@ -25,14 +25,26 @@ _FIELDS = {
     "retry",
     "bash_default_timeout_s",
     "tool_execution",
-    "max_parallel_tools",
     "permissions",
     "tools",
     "skills",
     "temperature",
     "seed",
     "chat_template_kwargs",
+    "thinking_budgets",
 }
+
+#: Pi's ``thinkingBudgets``: token budgets per thinking level for budget-based providers.
+THINKING_BUDGET_LEVELS = ("minimal", "low", "medium", "high")
+
+
+def validate_thinking_budgets(value: object) -> dict[str, int]:
+    if not isinstance(value, dict) or set(value) - set(THINKING_BUDGET_LEVELS):
+        raise ValueError("Settings thinking_budgets may only set minimal, low, medium and high")
+    for level, budget in value.items():
+        if isinstance(budget, bool) or not isinstance(budget, int) or budget < 0:
+            raise ValueError(f"Settings thinking_budgets.{level} must be a non-negative integer")
+    return dict(value)
 
 
 def _object(pairs):
@@ -68,7 +80,7 @@ def _validate(data: object) -> dict:
                 "thinking_level_map": data["thinking_level_map"],
             }
         )
-    for key in ("context_window", "max_tokens", "max_parallel_tools"):
+    for key in ("context_window", "max_tokens"):
         if key in data and (isinstance(data[key], bool) or not isinstance(data[key], int) or data[key] <= 0):
             raise ValueError(f"Settings {key} must be a positive integer")
     if "http_timeout" in data and (
@@ -87,6 +99,8 @@ def _validate(data: object) -> dict:
             if not isinstance(value, dict) or set(value) - fields:
                 raise ValueError(f"Invalid settings {key} fields")
             parser(value)
+    if "thinking_budgets" in data:
+        validate_thinking_budgets(data["thinking_budgets"])
     if "permissions" in data:
         PermissionPolicy.from_json(data["permissions"])
     if "skills" in data:
@@ -103,7 +117,7 @@ def _validate(data: object) -> dict:
 def _merge(base: dict, overlay: dict) -> dict:
     result = dict(base)
     for key, value in overlay.items():
-        if key in ("compaction", "retry", "skills") and isinstance(result.get(key), dict):
+        if key in ("compaction", "retry", "skills", "thinking_budgets") and isinstance(result.get(key), dict):
             result[key] = {**result[key], **value}
         else:
             result[key] = value
@@ -154,7 +168,6 @@ def config_from_settings(cwd: Path, model: ModelInfo, settings: dict) -> AgentCo
         retry=RetrySettings.from_json(settings.get("retry", {})),
         bash_default_timeout_s=settings.get("bash_default_timeout_s"),
         permissions=PermissionPolicy.from_json(settings.get("permissions", {})),
-        tool_execution=settings.get("tool_execution", "sequential"),
-        max_parallel_tools=settings.get("max_parallel_tools", 4),
+        tool_execution=settings.get("tool_execution", "parallel"),
         skills=SkillSettings.from_json(settings.get("skills", {})),
     )

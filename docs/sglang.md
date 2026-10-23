@@ -24,10 +24,13 @@ Select a different URL with `--base-url`; the default SGLang URL is
 ## Thinking and request settings
 
 `--provider sglang` maps the session's thinking level to
-`chat_template_kwargs.enable_thinking`. In particular, `--thinking off` sends
-`false` even if the server defaults to thinking enabled. This behavior depends
+`chat_template_kwargs.enable_thinking` (pi's `chat-template` thinking format with
+`{"enable_thinking": {"$var": "thinking.enabled"}}`). In particular, `--thinking
+off` sends `false` even if the server defaults to thinking enabled. This depends
 on provider identity, not on guessing a URL or model name. The session setting
-takes precedence over a conflicting template `enable_thinking` value.
+takes precedence over a conflicting template `enable_thinking` value. pi has no
+SGLang provider; this default is a port extension, and a model `compat` with a
+different `thinkingFormat` replaces it.
 
 Both `run` and `chat` accept `--temperature`, `--seed` and
 `--chat-template-kwargs` with a JSON object. The backend must support the supplied
@@ -56,7 +59,7 @@ results across hardware or serving configurations.
 
 ## Reasoning usage
 
-The decoder accepts `usage.completion_tokens_details.reasoning_tokens` and the
-flat `usage.reasoning_tokens`. The standard nested field takes precedence,
-including an explicit zero. Missing counts remain unknown. Cumulative updates
-replace previous values; invalid counts produce a protocol error.
+The decoder reads `usage.completion_tokens_details.reasoning_tokens`, as pi does,
+and for SGLang also the flat `usage.reasoning_tokens`. The standard nested field
+takes precedence, including an explicit zero. Missing or unusable counts read as
+zero, as in pi. Cumulative updates replace previous values.

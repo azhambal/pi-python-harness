@@ -137,7 +137,7 @@ active work on exit and then closes. Concurrent close callers share one operatio
 Cancellation of a waiter propagates only after cleanup has settled; registered
 resources must implement bounded, idempotent `aclose()`. Cleanup runs in reverse
 registration order and attempts all resources. Successful resources are removed;
-failures remain retryable. The journal lock and Bash spills are cleaned even when
+failures remain retryable. The journal lock is released even when
 an async resource fails. Observer tasks are joined, including those stopped by a
 prior sync dispose. Session lifecycle reentry from cleanup callbacks is rejected,
 including child tasks inheriting that callback context.
@@ -238,11 +238,10 @@ ordered observer delivery; `await session.wait_for_idle()` settles pending event
 History, tool declarations, instructions, permissions and queued input are
 preserved. Provider normalization removes foreign thinking signatures only from
 the request copy; returning to a previous identity can replay its original signed
-blocks. Prior token usage becomes untrustworthy after a provider/API/model
-identity change, including a return to an earlier model. Context estimation uses
-the heuristic until the new model produces valid usage. Same-identity limit or
-thinking changes retain trustworthy usage; compaction uses the new context limit
-and transport, with its existing thinking-off summarization policy.
+blocks. As in pi, recorded token usage stays in effect across a model switch;
+only compactions and omissions invalidate it. An overflow reported by a previous
+model does not trigger recovery for the new one. Compaction uses the new context
+limit and transport, and summaries use the session's current thinking level.
 
 CLI example:
 

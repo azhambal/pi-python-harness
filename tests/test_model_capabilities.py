@@ -1,4 +1,3 @@
-from copy import deepcopy
 from dataclasses import replace
 
 import pytest
@@ -24,16 +23,25 @@ def test_thinking_capabilities_roundtrip_and_are_copied(model):
     assert data["thinking_level_map"]["high"] == "high"
 
 
-@pytest.mark.parametrize(
-    "mapping", [{}, {"high": True}, {"high": ""}, {"unknown": "high"}, {"high": None}, []]
-)
+@pytest.mark.parametrize("mapping", [{"high": True}, {"high": ""}, {"unknown": "high"}, []])
 def test_invalid_capabilities_are_rejected(model, mapping):
     with pytest.raises(ValueError, match="thinking_level_map"):
         ModelInfo.from_json({**model.to_json(), "thinking_level_map": mapping})
 
 
+def test_supported_levels_and_clamping_follow_pi():
+    # Pi: null marks a level unsupported; absent xhigh/max are unsupported; others default.
+    model = ModelInfo(
+        "m", "M", "anthropic", reasoning=True, thinking_level_map={"off": None, "xhigh": "xhigh"}
+    )
+    assert model.supported_thinking_levels() == ["minimal", "low", "medium", "high", "xhigh"]
+    assert model.clamp_thinking_level("off") == "minimal"
+    assert model.clamp_thinking_level("max") == "xhigh"
+    assert ModelInfo("m", "M", "anthropic").supported_thinking_levels() == ["off"]
+
+
 @pytest.mark.parametrize("kind", ["openai", "deepseek", "anthropic"])
-def test_native_effort_map_is_used_and_unsupported_levels_fail_before_requests(kind):
+def test_native_effort_map_is_used(kind):
     model = ModelInfo(
         "test",
         "Test",
@@ -42,6 +50,7 @@ def test_native_effort_map_is_used_and_unsupported_levels_fail_before_requests(k
         reasoning=True,
         max_tokens=8192,
         thinking_level_map={"off": "none", "high": "native-effort"},
+        compat={"forceAdaptiveThinking": True} if kind == "anthropic" else None,
     )
     provider = (
         AnthropicProvider(api_key="synthetic")
@@ -52,23 +61,16 @@ def test_native_effort_map_is_used_and_unsupported_levels_fail_before_requests(k
     payload = provider.payload(request, ProviderOptions(thinking_level="high"))
     effort = payload["output_config"]["effort"] if kind == "anthropic" else payload["reasoning_effort"]
     assert effort == "native-effort"
-    with pytest.raises(ValueError, match="does not support"):
-        provider.payload(request, ProviderOptions(thinking_level="xhigh"))
-    if kind == "openai":
-        assert provider.payload(request, ProviderOptions())["reasoning_effort"] == "none"
 
 
-async def test_unsupported_thinking_change_does_not_touch_journal_and_resume_keeps_map(config):
+async def test_unsupported_thinking_level_is_clamped_and_resume_keeps_map(config):
     config.model = replace(config.model, reasoning=True, thinking_level_map={"off": "none", "high": "high"})
     provider = FauxProvider([AssistantMessage(stop_reason="stop", content=[TextBlock(text="done")])])
     session = create_agent_session(provider, config=config, session="new")
     try:
         await session.prompt("seed")
-        before = deepcopy(session.store.entries)
-        with pytest.raises(ValueError, match="does not support"):
-            session.set_thinking_level("xhigh")
-        assert session.store.entries == before
-        session.set_thinking_level("high")
+        # As in Pi, xhigh is not declared, so the nearest lower supported level is used.
+        assert session.set_thinking_level("xhigh") == "high"
         path = session.session_file
     finally:
         session.dispose()
@@ -89,10 +91,11 @@ def test_new_cli_model_can_declare_reasoning_without_a_catalog():
     assert runtime.model.thinking_level_map == {"off": "none", "high": "high"}
 
 
-async def test_summary_uses_lowest_declared_level_when_off_is_unsupported(model):
+async def test_summary_keeps_off_when_off_is_unsupported(model):
+    # Pi omits reasoning for an "off" summary; the provider maps it like any "off" request.
     class Provider(FauxProvider):
         async def stream(self, request, options):
-            assert options.thinking_level == "low"
+            assert options.thinking_level == "off"
             async for event in super().stream(request, options):
                 yield event
 

@@ -266,7 +266,7 @@ def test_provider_validation_is_local_and_failure_does_not_commit(config):
         session.dispose()
 
 
-async def test_usage_invalidated_across_switch_and_return_including_resume(config):
+async def test_usage_survives_model_switch_and_resume(config):
     config.model.reasoning = True
     provider = FauxProvider([done(usage=Usage(input=50000, total_tokens=50000)), done(usage=Usage(input=77))])
     session = create_agent_session(provider, config=config, session="new")
@@ -275,16 +275,18 @@ async def test_usage_invalidated_across_switch_and_return_including_resume(confi
         assert session._projection_tokens() >= 50000
         session.set_thinking_level("high")
         assert session._projection_tokens() >= 50000  # Same tokenizer/identity.
+        # Pi's estimateProjectedContextTokens keeps usage across model switches;
+        # only omissions and compactions invalidate it.
         session.set_model(replace(config.model, id="second"))
-        assert session._projection_tokens() == projection_system_tokens(session.messages)
+        assert session._projection_tokens() >= 50000
         session.set_model(config.model)
-        assert session._projection_tokens() == projection_system_tokens(session.messages)
+        assert session._projection_tokens() >= 50000
         path = session.session_file
     finally:
         session.dispose()
     resumed = create_agent_session(provider, session=path)
     try:
-        assert resumed._projection_tokens() == projection_system_tokens(resumed.messages)
+        assert resumed._projection_tokens() >= 50000
         await resumed.prompt("second")
         assert resumed._projection_tokens() >= 77
     finally:
@@ -297,7 +299,8 @@ async def test_new_provider_model_and_limits_used_for_threshold_compaction(confi
     try:
         for index in range(3):
             await session.prompt(str(index) + "x" * 400)
-        replacement = FauxProvider([done("## Goal\nSummary"), done("new model answer")])
+        # The cut splits the last turn: history and turn-prefix summaries, then the answer.
+        replacement = FauxProvider([done("## Goal\nSummary"), done("Prefix"), done("new model answer")])
         # Small new window triggers summary before the next conversation request.
         session.config.compaction = CompactionSettings(enabled=True, reserve_tokens=0, keep_recent_tokens=1)
         new_window = projection_system_tokens(session.messages) - 150
@@ -307,8 +310,9 @@ async def test_new_provider_model_and_limits_used_for_threshold_compaction(confi
         )
         await session.prompt("continue")
         assert seed.requests[-1].model.id == config.model.id
-        assert len(replacement.requests) == 2
-        assert replacement.requests[0].tools == [] and replacement.requests[1].tools
+        assert len(replacement.requests) == 3
+        assert replacement.requests[0].tools == replacement.requests[1].tools == []
+        assert replacement.requests[2].tools
         assert all(
             request.model.id == "small" and request.model.max_tokens == 2048
             for request in replacement.requests
@@ -318,7 +322,8 @@ async def test_new_provider_model_and_limits_used_for_threshold_compaction(confi
 
 
 def frame(data):
-    return f"data: {json.dumps(data)}\n\n".encode()
+    event = f"event: {data['type']}\n" if isinstance(data, dict) and "type" in data else ""
+    return f"{event}data: {json.dumps(data)}\n\n".encode()
 
 
 def anthropic_body(*blocks, stop="end_turn"):
@@ -446,25 +451,6 @@ def test_builtin_transport_mismatch_rejected_before_switch(config, provider_name
         session.dispose()
 
 
-def test_anthropic_budget_validation_precedes_persistence(config):
-    provider = AnthropicProvider(
-        api_key="synthetic-only", base_url="https://unit.test", thinking_mode="budget"
-    )
-    model = ModelInfo("target", "target", "anthropic", "anthropic-messages", True, 100000, 1024)
-    session = create_agent_session(FauxProvider([]), config=config)
-    try:
-        before = session.store.entries
-        with pytest.raises(ValueError, match="max_tokens"):
-            session.set_model(model, provider=provider, thinking_level="high")
-        assert session.store.entries == before
-        session.set_model(model, provider=provider, thinking_level="off")
-        with pytest.raises(ValueError, match="max_tokens"):
-            session.set_thinking_level("high")
-        assert session.thinking_level == "off"
-    finally:
-        session.dispose()
-
-
 @pytest.mark.parametrize("level", [None, "invalid", 1])
 async def test_malformed_stored_thinking_rejects_resume_and_releases_lock(config, level):
     session = create_agent_session(FauxProvider([done()]), config=config, session="new")
@@ -530,6 +516,6 @@ async def test_switching_model_within_anthropic_drops_thinking_only_from_new_req
             assert not any(block.get("text") == "original plan" for block in blocks)
             assert any(block.get("text") == "first answer" for block in blocks)
             assert session.messages[: len(before)] == before
-            assert payloads[-1]["model"] == "second" and payloads[-1]["output_config"]["effort"] == "high"
+            assert payloads[-1]["model"] == "second" and payloads[-1]["thinking"]["type"] == "enabled"
         finally:
             session.dispose()

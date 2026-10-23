@@ -6,9 +6,8 @@ import asyncio
 import time
 import uuid
 from collections.abc import Awaitable, Callable, Sequence
-from contextlib import nullcontext
 from copy import deepcopy
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Literal
 
@@ -50,11 +49,11 @@ from .tool_hooks import (
     validate_tool_result,
 )
 from .tools import is_builtin_search
-from .tools._mutation import file_lock
 from .tools.base import Tool, ToolResult, ToolValidationError, error_tool_result, validate_tool_arguments
 from .types import (
     AssistantMessage,
     ContentBlock,
+    JsonValue,
     Message,
     ModelInfo,
     TextBlock,
@@ -88,6 +87,9 @@ class PrepareRequestUpdate:
 
 
 PrepareRequestHook = Callable[[PrepareRequestContext], Awaitable[PrepareRequestUpdate | None]]
+#: Pi's ``prepareNextTurn``: runs before every turn after the first one of a loop
+#: (e.g. threshold compaction), before queued steering is delivered.
+PrepareNextTurnHook = Callable[[PrepareRequestContext], Awaitable[PrepareRequestUpdate | None]]
 #: Supplies the set of tool-call IDs already used across RAW session history
 #: (including omitted attempts and pre-compaction entries). Called per
 #: response so omissions and checkpoints recorded mid-session are reflected;
@@ -120,15 +122,14 @@ class AgentLoopConfig:
     get_steering_messages: SteeringSource | None = None
     get_follow_up_messages: FollowUpSource | None = None
     prepare_request: PrepareRequestHook | None = None
+    prepare_next_turn: PrepareNextTurnHook | None = None
     historical_call_ids: HistoricalCallIds | None = None
     session_id: str | None = None
     hooks: ToolHooks = field(default_factory=ToolHooks)
     permissions: PermissionPolicy = field(default_factory=PermissionPolicy)
     confirm_permission: PermissionPrompt | None = None
     cwd: Path | None = None
-    tool_execution: Literal["sequential", "parallel"] = "sequential"
-    max_parallel_tools: int = 4
-    admission_lock: asyncio.Lock | None = None
+    tool_execution: Literal["sequential", "parallel"] = "parallel"
 
 
 @dataclass
@@ -224,6 +225,16 @@ async def _run_loop(
                 return
 
             if not first_iteration:
+                if config.prepare_next_turn is not None:
+                    snapshot = await config.prepare_next_turn(
+                        PrepareRequestContext(messages=current, tools=config.tools)
+                    )
+                    if snapshot is not None and snapshot.messages is not None:
+                        current = list(snapshot.messages)
+                    # Preparation can be long-running (compaction): pick up steering
+                    # queued meanwhile, unless one-at-a-time already delivered one.
+                    if not pending and config.get_steering_messages:
+                        pending = await config.get_steering_messages()
                 # Every additional tool/follow-up turn starts like the first
                 # one did in the prelude (Pi emits turn_start per iteration).
                 await emit(TurnStart())
@@ -259,11 +270,7 @@ async def _run_loop(
                 batch = (
                     await _fail_tool_calls_from_truncated_message(tool_calls, emit)
                     if message.stop_reason == "length"
-                    else await (
-                        _execute_tool_calls_parallel
-                        if config.tool_execution == "parallel"
-                        else _execute_tool_calls_sequential
-                    )(config, tool_calls, current, message, emit, cancellation)
+                    else await _execute_tool_calls(config, tool_calls, current, message, emit, cancellation)
                 )
                 tool_results = batch.messages
                 has_more_tool_calls = not batch.terminate
@@ -557,6 +564,74 @@ def _make_update_sink(
     return on_update
 
 
+@dataclass
+class _ToolOutcome:
+    result: ToolResult
+    duration_ms: int | None = None
+    cancelled_caller: bool = False
+    interrupted: bool = False
+
+
+@dataclass
+class _PreparedToolCall:
+    tool: Tool
+    call: ToolCallBlock
+    args: dict[str, JsonValue]
+    context: BeforeToolCallContext
+
+
+async def _emit_tool_result(
+    call: ToolCallBlock, outcome: _ToolOutcome, emit: EventSink, messages: list[ToolResultMessage]
+) -> None:
+    message = _tool_result_message(call, outcome.result, outcome.result.is_error, outcome.duration_ms)
+    message.interrupted = outcome.interrupted
+    await emit(MessageStart(message=message))
+    await emit(MessageEnd(message=message))
+    messages.append(message)
+
+
+async def _emit_start(call: ToolCallBlock, emit: EventSink) -> None:
+    await emit(
+        ToolExecutionStart(
+            tool_call_id=call.id,
+            tool_name=call.name,
+            args=deepcopy(call.arguments) if isinstance(call.arguments, dict) else {},
+        )
+    )
+
+
+async def _emit_end(call: ToolCallBlock, outcome: _ToolOutcome, emit: EventSink) -> None:
+    await _emit_tool_execution_end(
+        call, outcome.result, emit, is_error=outcome.result.is_error, duration_ms=outcome.duration_ms
+    )
+
+
+def _terminates(outcomes: Sequence[_ToolOutcome]) -> bool:
+    return bool(outcomes) and all(outcome.result.terminate is True for outcome in outcomes)
+
+
+async def _execute_tool_calls(
+    config: AgentLoopConfig,
+    tool_calls: Sequence[ToolCallBlock],
+    current: Sequence[Message],
+    assistant_message: AssistantMessage,
+    emit: EventSink,
+    cancellation: Cancellation,
+) -> ExecutedToolBatch:
+    """Pi's ``executeToolCalls``."""
+    tools = {tool.name: tool for tool in config.tools}
+    has_sequential = any(
+        (tool := tools.get(call.name)) is not None and tool.execution_mode == "sequential"
+        for call in tool_calls
+    )
+    executor = (
+        _execute_tool_calls_sequential
+        if config.tool_execution == "sequential" or has_sequential
+        else _execute_tool_calls_parallel
+    )
+    return await executor(config, tool_calls, current, assistant_message, emit, cancellation)
+
+
 async def _execute_tool_calls_sequential(
     config: AgentLoopConfig,
     tool_calls: Sequence[ToolCallBlock],
@@ -565,69 +640,34 @@ async def _execute_tool_calls_sequential(
     emit: EventSink,
     cancellation: Cancellation,
 ) -> ExecutedToolBatch:
+    """Pi's ``executeToolCallsSequential``: stop after the call during which the run was aborted.
+
+    Calls after that one get no result here; the provider projection answers
+    them with "No result provided", as Pi's transformMessages does.
+    """
     tools = {tool.name: tool for tool in config.tools}
     messages: list[ToolResultMessage] = []
-    terminate = True
+    outcomes: list[_ToolOutcome] = []
     cancelled_caller = False
 
-    for index, original_call in enumerate(tool_calls):
-        tool_call = deepcopy(original_call)
-        # Pair every requested call even when the batch is interrupted:
-        # unstarted calls get an aborted error result in this same batch.
-        if cancellation.aborted:
-            for remaining in tool_calls[index:]:
-                result = error_tool_result("Operation aborted")
-                await _emit_tool_execution_end(remaining, result, emit, is_error=True, duration_ms=None)
-                tool_result = _tool_result_message(remaining, result, is_error=True, duration_ms=None)
-                await emit(MessageStart(message=tool_result))
-                await emit(MessageEnd(message=tool_result))
-                messages.append(tool_result)
-            break
-
-        await emit(
-            ToolExecutionStart(
-                tool_call_id=tool_call.id,
-                tool_name=tool_call.name,
-                args=deepcopy(tool_call.arguments) if isinstance(tool_call.arguments, dict) else {},
-            )
-        )
-
+    for original_call in tool_calls:
+        call = deepcopy(original_call)
+        await _emit_start(call, emit)
         outcome = await _run_tool_call(
-            config,
-            tools.get(tool_call.name),
-            tool_call,
-            assistant_message,
-            [*current, *messages],
-            emit,
-            cancellation,
+            config, tools.get(call.name), call, assistant_message, [*current, *messages], emit, cancellation
         )
-        result = outcome.result
         cancelled_caller |= outcome.cancelled_caller
         if outcome.cancelled_caller:
             cancellation.abort()
-        await _emit_tool_execution_end(
-            tool_call, result, emit, is_error=result.is_error, duration_ms=outcome.duration_ms
-        )
-        tool_result = _tool_result_message(
-            tool_call, result, is_error=result.is_error, duration_ms=outcome.duration_ms
-        )
-        tool_result.interrupted = outcome.interrupted
-        await emit(MessageStart(message=tool_result))
-        await emit(MessageEnd(message=tool_result))
-        messages.append(tool_result)
-        terminate = terminate and result.terminate is True
+        await _emit_end(call, outcome, emit)
+        await _emit_tool_result(call, outcome, emit, messages)
+        outcomes.append(outcome)
+        if cancellation.aborted:
+            break
 
     if cancelled_caller:
         raise asyncio.CancelledError
-    return ExecutedToolBatch(messages=messages, terminate=terminate and bool(messages))
-
-
-@dataclass
-class _ToolOutcome:
-    result: ToolResult
-    duration_ms: int | None = None
-    cancelled_caller: bool = False
-    interrupted: bool = False
+    return ExecutedToolBatch(messages=messages, terminate=_terminates(outcomes))
 
 
 async def _execute_tool_calls_parallel(
@@ -638,94 +678,81 @@ async def _execute_tool_calls_parallel(
     emit: EventSink,
     cancellation: Cancellation,
 ) -> ExecutedToolBatch:
-    """Bounded concurrency; resolved-path FIFO queues; ordered final commits.
+    """Pi's ``executeToolCallsParallel``.
 
-    Non-opted-in custom tools are barriers. Admission/confirmation is serialized,
-    execution updates may interleave, and final results follow source order.
+    Calls are prepared (validated, hooked, admitted) one at a time in source
+    order, then every prepared call runs concurrently. Each call reports its
+    end as it finishes; result messages follow source order.
     """
     tools = {tool.name: tool for tool in config.tools}
-    semaphore = asyncio.Semaphore(config.max_parallel_tools)
-    guarded = replace(config, admission_lock=asyncio.Lock())
-    messages: list[ToolResultMessage] = []
-    terminate = True
-    caller_cancelled = False
+    entries: list[tuple[ToolCallBlock, _ToolOutcome | _PreparedToolCall]] = []
 
-    async def execute(call: ToolCallBlock, context: list[Message]) -> _ToolOutcome:
-        tool = tools.get(call.name)
-        path = call.arguments.get("path") if isinstance(call.arguments, dict) else None
-        lock = None
-        if tool is not None and call.name in ("read", "write", "edit") and isinstance(path, str):
-            from .tools.base import resolve_path
-
-            cwd = getattr(tool, "cwd", None) or config.cwd
-            if cwd is not None:
-                lock = file_lock(resolve_path(path, cwd))
-        try:
-            # Path queues precede the capacity gate so queued same-file calls don't
-            # monopolize capacity needed by independent calls.
-            async with lock if lock is not None else nullcontext():
-                async with semaphore:
-                    if cancellation.aborted:
-                        return _ToolOutcome(error_tool_result("Operation aborted; tool was not executed"))
-                    await emit(
-                        ToolExecutionStart(
-                            tool_call_id=call.id, tool_name=call.name, args=deepcopy(call.arguments)
-                        )
-                    )
-                    return await _run_tool_call(
-                        guarded, tool, call, assistant_message, context, emit, cancellation
-                    )
-        except asyncio.CancelledError:
-            return _ToolOutcome(
-                error_tool_result("Operation aborted; queued tool was not executed"), cancelled_caller=True
-            )
-
-    index = 0
-    while index < len(tool_calls):
-        end = index + 1
-        tool = tools.get(tool_calls[index].name)
-        if tool is not None and tool.parallel_safe:
-            while end < len(tool_calls):
-                following = tools.get(tool_calls[end].name)
-                if following is None or not following.parallel_safe:
-                    break
-                end += 1
-        calls = deepcopy(list(tool_calls[index:end]))
-        context = deepcopy([*current, *messages])
-        tasks = [asyncio.create_task(execute(call, deepcopy(context))) for call in calls]
-        joined = asyncio.gather(*tasks, return_exceptions=True)
-        try:
-            outcomes = await asyncio.shield(joined)
-        except asyncio.CancelledError:
-            caller_cancelled = True
+    for original_call in tool_calls:
+        call = deepcopy(original_call)
+        await _emit_start(call, emit)
+        prepared = await _prepare_tool_call(
+            config, tools.get(call.name), call, assistant_message, current, cancellation
+        )
+        if isinstance(prepared, _ToolOutcome):
+            await _emit_end(call, prepared, emit)
+        entries.append((call, prepared))
+        if prepared_cancelled(prepared):
             cancellation.abort()
-            for task in tasks:
-                task.cancel()
-            outcomes = await joined
-        finally:
-            for task in tasks:
-                task.cancel()
-            await asyncio.gather(*tasks, return_exceptions=True)
-        for call, outcome in zip(calls, outcomes, strict=True):
-            if isinstance(outcome, BaseException):
+        if cancellation.aborted:
+            break
+
+    async def run(call: ToolCallBlock, prepared: _PreparedToolCall) -> _ToolOutcome:
+        if cancellation.aborted:
+            outcome = _ToolOutcome(error_tool_result("Operation aborted"))
+        else:
+            outcome = await _execute_prepared_tool_call(config, prepared, emit, cancellation)
+        await _emit_end(call, outcome, emit)
+        return outcome
+
+    tasks: list[asyncio.Task[_ToolOutcome]] = []
+    slots: list[_ToolOutcome | int] = []
+    for call, prepared in entries:
+        if isinstance(prepared, _ToolOutcome):
+            slots.append(prepared)
+        else:
+            slots.append(len(tasks))
+            tasks.append(asyncio.create_task(run(call, prepared)))
+
+    caller_cancelled = any(prepared_cancelled(prepared) for _, prepared in entries)
+    joined = asyncio.gather(*tasks, return_exceptions=True)
+    try:
+        results = await asyncio.shield(joined)
+    except asyncio.CancelledError:
+        caller_cancelled = True
+        cancellation.abort()
+        for task in tasks:
+            task.cancel()
+        results = await joined
+
+    outcomes: list[_ToolOutcome] = []
+    messages: list[ToolResultMessage] = []
+    for (call, _), slot in zip(entries, slots, strict=True):
+        outcome = slot if isinstance(slot, _ToolOutcome) else results[slot]
+        if isinstance(outcome, BaseException):
+            if isinstance(outcome, asyncio.CancelledError):
+                outcome = _ToolOutcome(
+                    error_tool_result(
+                        "Tool execution interrupted; outcome unknown. Inspect effects before retrying."
+                    ),
+                    interrupted=True,
+                )
+            else:
                 raise outcome
-            caller_cancelled |= outcome.cancelled_caller
-            if outcome.cancelled_caller:
-                cancellation.abort()
-            result = outcome.result
-            await _emit_tool_execution_end(
-                call, result, emit, is_error=result.is_error, duration_ms=outcome.duration_ms
-            )
-            message = _tool_result_message(call, result, result.is_error, outcome.duration_ms)
-            message.interrupted = outcome.interrupted
-            await emit(MessageStart(message=message))
-            await emit(MessageEnd(message=message))
-            messages.append(message)
-            terminate = terminate and result.terminate
-        index = end
+        caller_cancelled |= outcome.cancelled_caller
+        outcomes.append(outcome)
+        await _emit_tool_result(call, outcome, emit, messages)
     if caller_cancelled:
         raise asyncio.CancelledError
-    return ExecutedToolBatch(messages, terminate and bool(messages))
+    return ExecutedToolBatch(messages, _terminates(outcomes))
+
+
+def prepared_cancelled(prepared: _ToolOutcome | _PreparedToolCall) -> bool:
+    return isinstance(prepared, _ToolOutcome) and prepared.cancelled_caller
 
 
 def _caller_is_cancelled() -> bool:
@@ -752,22 +779,25 @@ def _after_hook_failure(original: ToolResult, reason: str, *, cancelled: bool = 
     return result
 
 
-async def _run_tool_call(
+async def _prepare_tool_call(
     config: AgentLoopConfig,
     tool: Tool | None,
     call: ToolCallBlock,
     assistant_message: AssistantMessage,
     messages: Sequence[Message],
-    emit: EventSink,
     cancellation: Cancellation,
-) -> _ToolOutcome:
+) -> _PreparedToolCall | _ToolOutcome:
+    """Pi's prepareToolCall: resolve, prepare and validate arguments, run admission hooks."""
     if not _tool_call_is_usable(call):
         return _ToolOutcome(error_tool_result(f'Tool call "{call.name}" is unusable and was not executed.'))
     if tool is None:
         return _ToolOutcome(error_tool_result(f"Tool {call.name} not found"))
     try:
-        validated = validate_tool_arguments(tool, deepcopy(call.arguments))
-    except ToolValidationError as error:
+        prepared_args = tool.prepare_arguments(deepcopy(call.arguments))
+        if call.arguments_error is not None:
+            raise ToolValidationError(f'Invalid arguments for tool "{call.name}": {call.arguments_error}')
+        validated = validate_tool_arguments(tool, prepared_args)
+    except Exception as error:
         return _ToolOutcome(error_tool_result(str(error)))
     tool_cwd = getattr(tool, "cwd", None)
     cwd = Path(tool_cwd).resolve() if isinstance(tool_cwd, (str, Path)) else config.cwd
@@ -782,37 +812,61 @@ async def _run_tool_call(
         tool_provenance=deepcopy(tool.provenance),
     )
     try:
-        async with config.admission_lock if config.admission_lock is not None else nullcontext():
-            if config.hooks.before_tool_call is not None:
-                before = validate_before_result(
-                    await invoke_hook(config.hooks.before_tool_call, deepcopy(context), cancellation)
-                )
-                if before is not None and before.block:
-                    result = error_tool_result(before.reason or "Tool execution was blocked")
-                    result.terminate = before.terminate
-                    return _ToolOutcome(result)
-
-            async def permission_check(ctx: BeforeToolCallContext, token: Cancellation):
-                return await check_permission(
-                    ctx, token, policy=config.permissions, confirm=config.confirm_permission
-                )
-
-            decision = validate_before_result(
-                await invoke_hook(permission_check, deepcopy(context), cancellation)
+        if config.hooks.before_tool_call is not None:
+            before = validate_before_result(
+                await invoke_hook(config.hooks.before_tool_call, deepcopy(context), cancellation)
             )
-            if decision is not None and decision.block:
-                return _ToolOutcome(error_tool_result(decision.reason or "Tool execution denied"))
-            cancellation.raise_if_aborted()
+            if before is not None and before.block:
+                result = error_tool_result(before.reason or "Tool execution was blocked")
+                result.terminate = before.terminate
+                return _ToolOutcome(result)
+
+        async def permission_check(ctx: BeforeToolCallContext, token: Cancellation):
+            return await check_permission(
+                ctx, token, policy=config.permissions, confirm=config.confirm_permission
+            )
+
+        decision = validate_before_result(
+            await invoke_hook(permission_check, deepcopy(context), cancellation)
+        )
+        if decision is not None and decision.block:
+            return _ToolOutcome(error_tool_result(decision.reason or "Tool execution denied"))
+        cancellation.raise_if_aborted()
     except OperationAbortedError:
-        return _ToolOutcome(error_tool_result("Operation aborted; tool was not executed"))
+        return _ToolOutcome(error_tool_result("Operation aborted"))
     except asyncio.CancelledError:
         return _ToolOutcome(
             error_tool_result("Tool admission was cancelled; tool was not executed"),
             cancelled_caller=_caller_is_cancelled(),
         )
     except Exception as error:
-        return _ToolOutcome(error_tool_result(f"Tool admission failed; tool was not executed: {error}"))
+        return _ToolOutcome(error_tool_result(str(error)))
+    return _PreparedToolCall(tool=tool, call=call, args=validated, context=context)
 
+
+async def _run_tool_call(
+    config: AgentLoopConfig,
+    tool: Tool | None,
+    call: ToolCallBlock,
+    assistant_message: AssistantMessage,
+    messages: Sequence[Message],
+    emit: EventSink,
+    cancellation: Cancellation,
+) -> _ToolOutcome:
+    """Prepare and execute one call (Pi's runToolCall)."""
+    prepared = await _prepare_tool_call(config, tool, call, assistant_message, messages, cancellation)
+    if isinstance(prepared, _ToolOutcome):
+        return prepared
+    return await _execute_prepared_tool_call(config, prepared, emit, cancellation)
+
+
+async def _execute_prepared_tool_call(
+    config: AgentLoopConfig,
+    prepared: _PreparedToolCall,
+    emit: EventSink,
+    cancellation: Cancellation,
+) -> _ToolOutcome:
+    tool, call, validated, context = prepared.tool, prepared.call, prepared.args, prepared.context
     started = time.monotonic()
     try:
         result = await tool.execute(call.id, deepcopy(validated), cancellation, _make_update_sink(emit, call))
@@ -855,7 +909,8 @@ async def _run_tool_call(
             _after_hook_failure(result, "Callback cancelled", cancelled=True), duration, caller
         )
     except Exception as error:
-        return _ToolOutcome(_after_hook_failure(result, str(error)), duration)
+        # Pi replaces the result with the hook's error.
+        return _ToolOutcome(error_tool_result(str(error)), duration)
 
 
 def _tool_result_message(

@@ -20,17 +20,17 @@ or endpoints (providers own their credentials). It is validated before use:
   (explicit AGENTS.md paths; when unset, deterministic discovery runs).
 - `permissions`: a `PermissionPolicy` (default `allow`), serialized with the
   configuration. Callback functions are passed separately at construction.
-- `tool_execution`: `"sequential"` by default, or `"parallel"`;
-  `max_parallel_tools`: positive integer, default 4. Both persist on resume.
+- `tool_execution`: `"parallel"` by default (as in pi), or `"sequential"`.
+  It persists on resume.
 
 ## Settings files
 
 CLI `run` and `chat` load defaults in order:
 `~/.pi-agent/settings.json`, `<cwd>/.pi-agent/settings.json`, then an explicit
 `--settings PATH`. Automatic missing files are ignored; a missing explicit file
-is an error. Nested `compaction` and `retry` fields merge; a `permissions` object
-replaces the whole policy. Unknown fields, duplicate keys, invalid budgets and
-credential fields are rejected. Files are read without writing global defaults.
+is an error. Nested `compaction`, `retry`, `skills` and `thinking_budgets` fields
+merge; a `permissions` object replaces the whole policy. Unknown fields, duplicate
+keys, invalid budgets and credential fields are rejected. Files are read without writing global defaults.
 
 Settings and MCP JSON accept an optional UTF-8 BOM. Add `$schema` for editor
 validation; the runtime ignores that reference and never fetches it. Packaged
@@ -43,7 +43,7 @@ descriptions and the additional checks performed at runtime.
 
 ```bash
 .venv/bin/python -m pi_agent chat --settings examples/settings.example.json
-.venv/bin/python -m pi_agent run "Inspect the project" --tool-execution parallel --max-parallel-tools 2
+.venv/bin/python -m pi_agent run "Inspect the project" --tool-execution sequential
 ```
 
 The public [examples/settings.example.json](../examples/settings.example.json) shows supported fields.
@@ -66,6 +66,18 @@ OpenAI-compatible runtime request settings also include `temperature`, `seed`,
 and `chat_template_kwargs`. These are loaded on each CLI invocation, including
 resume, and applied to conversation and compaction requests. They are not restored
 from the session journal. See [SGLang](sglang.md) for precedence details.
+
+`thinking_budgets` (pi's `thinkingBudgets`) overrides the token budget of each
+thinking level for budget-based thinking: Anthropic budget mode, and
+OpenAI-compatible endpoints whose `compat` names a budget field. Defaults are
+pi's (`minimal` 1024, `low` 2048, `medium` 8192, `high` 16384; `xhigh` and `max`
+use `high`). Like the request settings above, it is loaded on each invocation.
+
+`thinking_budgets` (pi's `thinkingBudgets`) overrides the token budget of each
+thinking level for budget-based thinking: Anthropic budget mode, and
+OpenAI-compatible endpoints whose `compat` names a budget field. Defaults are
+pi's (`minimal` 1024, `low` 2048, `medium` 8192, `high` 16384; `xhigh` and `max`
+use `high`). Like the request settings above, it is loaded on each invocation.
 
 `thinking_level_map` is an optional model capability map, for example
 `{"off": "none", "low": "low", "high": "high", "xhigh": null}`. Missing or null

@@ -110,7 +110,7 @@ async def test_explicit_resume_selection_patches_prompt_and_tools_in_one_record(
         assert entry.message.sections and entry.message.tools_added and entry.message.tools_removed
         assert "Use bash for file operations" in prompt
         assert "Use bash for file operations" not in restored.system_prompt
-        assert "Use grep" in restored.system_prompt
+        assert "- grep: Search file contents" in restored.system_prompt
     finally:
         restored.dispose()
     again = create_agent_session(FauxProvider([]), session=path)
@@ -148,7 +148,10 @@ async def test_failed_loadout_fsync_has_one_coherent_record_on_recovery(config, 
     restored = create_agent_session(FauxProvider([]), session=path)
     try:
         assert [tool.name for tool in restored.agent.tools] == ["grep"]
-        assert "Use grep" in restored.system_prompt and "Use bash" not in restored.system_prompt
+        assert (
+            "- grep: Search file contents" in restored.system_prompt
+            and "Use bash" not in restored.system_prompt
+        )
     finally:
         restored.dispose()
 

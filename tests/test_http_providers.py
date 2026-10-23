@@ -10,7 +10,7 @@ from pi_agent.error_policy import is_retryable_error
 from pi_agent.events import StreamDone, StreamError, TextDelta
 from pi_agent.provider import ProviderOptions, ProviderRequest
 from pi_agent.providers import AnthropicProvider, OpenAICompatProvider
-from pi_agent.providers._http import sse_data
+from pi_agent.providers.anthropic import iterate_sse_messages
 from pi_agent.types import (
     AssistantMessage,
     ModelInfo,
@@ -24,7 +24,9 @@ from pi_agent.types import (
 
 def frame(data: object) -> bytes:
     text = data if isinstance(data, str) else json.dumps(data, ensure_ascii=False)
-    return f"data: {text}\r\n\r\n".encode()
+    # Anthropic names each event, as the real API does; Chat Completions chunks have no type.
+    event = f"event: {data['type']}\r\n" if isinstance(data, dict) and "type" in data else ""
+    return f"{event}data: {text}\r\n\r\n".encode()
 
 
 def completion(delta: dict, finish: str | None = None) -> dict:
@@ -164,7 +166,7 @@ async def test_deepseek_interleaved_tools_reasoning_usage_and_replay() -> None:
         ]
         final = events[-1].message
         assert final.stop_reason == "toolUse"
-        assert final.content[0] == ThinkingBlock(thinking="plan")
+        assert final.content[0] == ThinkingBlock(thinking="plan", thinking_signature="reasoning_content")
         assert [
             (block.id, block.arguments) for block in final.content if isinstance(block, ToolCallBlock)
         ] == [
@@ -190,27 +192,8 @@ async def test_deepseek_interleaved_tools_reasoning_usage_and_replay() -> None:
     "body",
     [
         frame(completion({"content": "partial"})),
-        frame(completion({"content": "partial"}, "stop")),
         frame("[DONE]"),
         frame(completion({}, "content_filter")) + frame("[DONE]"),
-        frame(
-            completion(
-                {"tool_calls": [{"index": 0, "id": "id", "function": {"name": "write", "arguments": "[]"}}]},
-                "tool_calls",
-            )
-        )
-        + frame("[DONE]"),
-        frame(
-            completion(
-                {
-                    "tool_calls": [
-                        {"index": 0, "id": "id", "function": {"name": "write", "arguments": '{"x":NaN}'}}
-                    ]
-                },
-                "tool_calls",
-            )
-        )
-        + frame("[DONE]"),
         b'data: {"choices": []}',
         b"data: not-json\n\n",
     ],
@@ -226,6 +209,30 @@ async def test_invalid_or_incomplete_stream_is_error(body: bytes) -> None:
         assert isinstance(events[-1], StreamError)
         assert events[-1].error.stop_reason == "error"
         assert not any(isinstance(event, StreamDone) for event in events)
+
+
+@pytest.mark.parametrize(
+    "arguments,error",
+    [("[]", "Tool arguments must be a JSON object"), ('{"x":NaN}', "Unexpected token 'N'")],
+)
+async def test_non_object_tool_arguments_become_an_arguments_error(arguments: str, error: str) -> None:
+    # As in Pi, the call finishes and validation reports argumentsError back to the model.
+    body = frame(
+        completion(
+            {"tool_calls": [{"index": 0, "id": "id", "function": {"name": "write", "arguments": arguments}}]},
+            "tool_calls",
+        )
+    )
+    async with httpx.AsyncClient(
+        transport=httpx.MockTransport(
+            lambda _: httpx.Response(200, headers={"content-type": "text/event-stream"}, content=body)
+        )
+    ) as client:
+        provider = OpenAICompatProvider(api_key="test-only", base_url="https://unit.test", client=client)
+        events = [event async for event in provider.stream(ProviderRequest(model()), ProviderOptions())]
+        assert isinstance(events[-1], StreamDone)
+        (call,) = events[-1].message.content
+        assert call.arguments == {} and call.arguments_error.startswith(error)
 
 
 @pytest.mark.parametrize("phase", ["connect", "stream"])
@@ -359,7 +366,8 @@ async def test_anthropic_signed_and_redacted_thinking_cache_usage() -> None:
         assert payload["messages"][1]["content"][1] == {"type": "redacted_thinking", "data": "opaque"}
         assert payload["messages"][2]["content"][0]["type"] == "tool_result"
         assert payload["messages"][2]["content"][0]["cache_control"] == {"type": "ephemeral"}
-        assert payload["thinking"] == {"type": "adaptive"}
+        # A model without compat.forceAdaptiveThinking uses budget thinking, as in Pi.
+        assert payload["thinking"]["type"] == "enabled"
 
 
 @pytest.mark.parametrize("provider_name", ["deepseek", "anthropic"])
@@ -454,20 +462,8 @@ async def test_sse_multiline_comments_bom_and_line_endings(terminator: bytes) ->
         transport=httpx.MockTransport(lambda _: httpx.Response(200, stream=stream))
     ) as client:
         async with client.stream("GET", "https://unit.test") as response:
-            values = [value async for value in sse_data(response)]
-            assert values == ['{"value":\n"ok"}']
-
-
-async def test_sse_bounds_unterminated_lines(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("pi_agent.providers._http.MAX_EVENT_CHARS", 64)
-    stream = Chunks(b"data: " + b"x" * 1000, hang=True)
-    async with httpx.AsyncClient(
-        transport=httpx.MockTransport(lambda _: httpx.Response(200, stream=stream))
-    ) as client:
-        async with client.stream("GET", "https://unit.test") as response:
-            with pytest.raises(ValueError, match="exceeds"):
-                await asyncio.wait_for(anext(sse_data(response)), 1)
-    assert stream.closed
+            values = [(name, data) async for name, data, _ in iterate_sse_messages(response)]
+            assert values == [("chunk", '{"value":\n"ok"}')]
 
 
 async def test_early_generator_close_releases_body() -> None:
@@ -504,10 +500,7 @@ async def test_transport_failure_is_terminal_without_hidden_retry(exception: Exc
 
 @pytest.mark.parametrize(
     "body,expected",
-    [
-        (b'{"ok":1e999}', "error"),
-        (b'{"ok":', "length"),
-    ],
+    [(b'{"ok":', "length")],
 )
 async def test_truncated_tool_is_length_without_execution(
     config: AgentConfig, body: bytes, expected: str
@@ -559,8 +552,10 @@ async def test_truncated_tool_is_length_without_execution(
             session.dispose()
 
 
-@pytest.mark.parametrize("finish,expected", [("max_tokens", "length"), ("tool_use", "error")])
-async def test_anthropic_incomplete_tool_obeys_stop_reason(finish: str, expected: str) -> None:
+@pytest.mark.parametrize("finish,expected", [("max_tokens", "length"), ("tool_use", "toolUse")])
+async def test_anthropic_incomplete_tool_arguments_become_an_arguments_error(
+    finish: str, expected: str
+) -> None:
     body = b"".join(
         frame(event)
         for event in [
@@ -589,23 +584,26 @@ async def test_anthropic_incomplete_tool_obeys_stop_reason(finish: str, expected
         events = [
             event async for event in provider.stream(ProviderRequest(model("anthropic")), ProviderOptions())
         ]
-        if expected == "length":
-            assert isinstance(events[-1], StreamDone)
-            assert events[-1].message.stop_reason == expected
-        else:
-            assert isinstance(events[-1], StreamError)
+        # As in Pi, the stop reason is kept and the call carries argumentsError for the model.
+        assert isinstance(events[-1], StreamDone) and events[-1].reason == expected
+        (call,) = events[-1].message.content
+        assert call.arguments == {} and call.arguments_error.startswith("Unexpected end of JSON input")
 
 
 @pytest.mark.parametrize("thinking", ["adaptive", "budget"])
 def test_anthropic_thinking_payload_modes(thinking: str) -> None:
     provider = AnthropicProvider(api_key="test-only", thinking_mode=thinking)
-    request = ProviderRequest(model("anthropic"), messages=[UserMessage(content="start")])
+    request = ProviderRequest(
+        replace(model("anthropic"), max_tokens=32000), messages=[UserMessage(content="start")]
+    )
     payload = provider.payload(request, ProviderOptions(thinking_level="high", max_tokens=4096))
-    assert payload["max_tokens"] == 4096
     if thinking == "budget":
-        assert payload["thinking"] == {"type": "enabled", "budget_tokens": 4095}
+        # Pi adds the thinking budget to the requested answer room, within the model cap.
+        assert payload["max_tokens"] == 4096 + 16384
+        assert payload["thinking"] == {"type": "enabled", "budget_tokens": 16384, "display": "summarized"}
     else:
-        assert payload["thinking"] == {"type": "adaptive"}
+        assert payload["max_tokens"] == 4096
+        assert payload["thinking"] == {"type": "adaptive", "display": "summarized"}
         assert payload["output_config"] == {"effort": "high"}
 
 

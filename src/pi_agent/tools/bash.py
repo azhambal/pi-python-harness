@@ -6,11 +6,13 @@ import asyncio
 import contextlib
 import math
 import os
+import shutil
 import signal
 import time
-from collections.abc import Awaitable, Mapping
+from collections.abc import Awaitable, Callable, Mapping
 from pathlib import Path
 
+from pi_agent._js import number_to_string
 from pi_agent.cancellation import Cancellation, OperationAbortedError
 from pi_agent.tools.base import Tool, ToolResult, ToolUpdateCallback
 from pi_agent.tools.output import (
@@ -21,8 +23,6 @@ from pi_agent.tools.output import (
     format_size,
 )
 from pi_agent.types import JsonValue, TextBlock
-
-from ._spill import SpillRegistry
 
 #: Structured output cap for programmatic callers (mirrors Pi's 1 MiB).
 STRUCTURED_OUTPUT_MAX_BYTES = 1024 * 1024
@@ -54,10 +54,22 @@ def resolve_timeout(timeout: object) -> float | None:
     return float(timeout)
 
 
-def _find_shell() -> tuple[str, list[str]]:
-    if os.path.exists("/bin/bash"):
+#: Session metadata Pi exposes to commands (``resolveSpawnContext``).
+SESSION_ENV_KEYS = ("PI_SESSION_ID", "PI_SESSION_FILE", "PI_PROVIDER", "PI_MODEL", "PI_REASONING_LEVEL")
+
+
+def find_shell(shell_path: str | None = None) -> tuple[str, list[str]]:
+    """Pi's ``getShellConfig`` on Unix: shellPath, /bin/bash, bash on PATH, then sh."""
+    if shell_path:
+        if os.access(shell_path, os.F_OK):
+            return shell_path, ["-c"]
+        raise FileNotFoundError(f"Custom shell path not found: {shell_path}")
+    if os.access("/bin/bash", os.F_OK):
         return "/bin/bash", ["-c"]
-    return "/bin/sh", ["-c"]
+    on_path = shutil.which("bash")
+    if on_path:
+        return on_path, ["-c"]
+    return "sh", ["-c"]
 
 
 def _signal_group(pgid: int, sig: signal.Signals) -> None:
@@ -114,22 +126,21 @@ class ProcessRegistry:
 
 class BashTool(Tool):
     name = "bash"
-    parallel_safe = True
     description = (
         "Execute a bash command in the current working directory. Returns stdout and stderr. "
         f"Output is truncated to last {DEFAULT_MAX_LINES} lines or {DEFAULT_MAX_BYTES // 1024}KB (whichever "
         "is hit first). If truncated, full output is saved to a temp file. Optionally provide a timeout "
         "in seconds."
     )
+    argument_conversion = "typebox"
     prompt_snippet = "Execute bash commands (ls, grep, find, etc.)"
-    guidelines = ("Use bash for file operations like ls, rg, find",)
     parameters: dict[str, JsonValue] = {
         "type": "object",
+        "required": ["command"],
         "properties": {
             "command": {"type": "string", "description": "Shell command to execute"},
             "timeout": {"type": "number", "description": "Timeout in seconds (optional, no default timeout)"},
         },
-        "required": ["command"],
     }
 
     def __init__(
@@ -138,20 +149,41 @@ class BashTool(Tool):
         default_timeout_s: float | None = None,
         max_lines: int = DEFAULT_MAX_LINES,
         max_bytes: int = DEFAULT_MAX_BYTES,
+        *,
+        command_prefix: str | None = None,
+        shell_path: str | None = None,
+        expose_session_environment: bool = True,
+        session_environment: Callable[[], Mapping[str, str]] | None = None,
     ) -> None:
         self.cwd = Path(cwd)
         self.default_timeout_s = resolve_timeout(default_timeout_s)
         self.max_lines = max_lines
         self.max_bytes = max_bytes
+        #: Prepended to every command on its own line (Pi's ``shellCommandPrefix``).
+        self.command_prefix = command_prefix
+        self.shell_path = shell_path
+        #: Pi's ``exposeSessionEnvironment``: export PI_* session metadata and
+        #: tell the model about it.
+        self.expose_session_environment = expose_session_environment
+        self.session_environment = session_environment
+        self.guidelines = (
+            ("You can inspect PI_* environment variables for current model and session details.",)
+            if expose_session_environment
+            else ()
+        )
         self.process_registry = ProcessRegistry()
-        self.spill_registry = SpillRegistry()
 
     def close(self) -> None:
-        """Terminate owned background groups and delete owned spill files."""
-        try:
-            self.process_registry.close()
-        finally:
-            self.spill_registry.close()
+        """Terminate owned background groups. Full-output files stay, as in Pi."""
+        self.process_registry.close()
+
+    def _spawn_env(self) -> dict[str, str]:
+        env = dict(os.environ)
+        for key in SESSION_ENV_KEYS:
+            env.pop(key, None)
+        if self.expose_session_environment and self.session_environment is not None:
+            env.update({key: value for key, value in self.session_environment().items() if value})
+        return env
 
     async def execute(
         self,
@@ -162,9 +194,10 @@ class BashTool(Tool):
     ) -> ToolResult:
         del tool_call_id
         command = str(args["command"])
-        timeout = resolve_timeout(
-            args.get("timeout") if args.get("timeout") is not None else self.default_timeout_s
-        )
+        if self.command_prefix:
+            command = f"{self.command_prefix}\n{command}"
+        raw_timeout = args.get("timeout") if args.get("timeout") is not None else self.default_timeout_s
+        timeout = resolve_timeout(raw_timeout)
         cwd = self.cwd
         if not cwd.exists():
             raise FileNotFoundError(f"Working directory does not exist: {cwd}\nCannot execute bash commands.")
@@ -174,10 +207,9 @@ class BashTool(Tool):
         accumulator = OutputAccumulator(
             max_lines=self.max_lines,
             max_bytes=self.max_bytes,
-            temp_file_prefix="pi-agent-bash",
-            spill_registry=self.spill_registry,
+            temp_file_prefix="pi-bash",
         )
-        shell, shell_args = _find_shell()
+        shell, shell_args = find_shell(self.shell_path)
         started_at = time.monotonic()
         try:
             process = await asyncio.create_subprocess_exec(
@@ -187,6 +219,7 @@ class BashTool(Tool):
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.STDOUT,
                 start_new_session=True,  # own process group; pgid == process.pid
+                env=self._spawn_env(),
             )
         except (OSError, ValueError) as error:
             raise RuntimeError(f"Failed to start shell: {error}") from error
@@ -238,7 +271,8 @@ class BashTool(Tool):
         try:
             accumulator.finish()
             snapshot = accumulator.snapshot(persist_if_truncated=True)
-            output_text, details = self._format_output(snapshot, accumulator)
+            empty_text = "" if outcome in ("aborted", "timeout") else "(no output)"
+            output_text, details = self._format_output(snapshot, accumulator, empty_text)
         finally:
             accumulator.close_temp_file()
         if reader_error is not None:
@@ -249,7 +283,12 @@ class BashTool(Tool):
         if outcome == "aborted":
             raise OperationAbortedError(_append_status(output_text, "Command aborted"))
         if outcome == "timeout":
-            raise TimeoutError(_append_status(output_text, f"Command timed out after {timeout} seconds"))
+            assert isinstance(raw_timeout, (int, float))  # resolve_timeout accepted it.
+            raise TimeoutError(
+                _append_status(
+                    output_text, f"Command timed out after {number_to_string(raw_timeout)} seconds"
+                )
+            )
 
         exit_code = process.returncode if process.returncode is not None else 1
         if process.returncode is not None and process.returncode < 0:
@@ -457,10 +496,10 @@ class BashTool(Tool):
     # ------------------------------------------------------------------
 
     def _format_output(
-        self, snapshot: OutputSnapshot, accumulator: OutputAccumulator
+        self, snapshot: OutputSnapshot, accumulator: OutputAccumulator, empty_text: str = "(no output)"
     ) -> tuple[str, dict[str, JsonValue] | None]:
         truncation = snapshot.truncation
-        text = snapshot.content or "(no output)"
+        text = snapshot.content or empty_text
         details: dict[str, JsonValue] | None = None
         if truncation.truncated:
             details = {

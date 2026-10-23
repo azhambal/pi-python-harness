@@ -20,27 +20,27 @@ from ._session_construction import (
     construct_session,
 )
 from ._session_dispatch import _IN_LISTENER, ObserverDispatcher, _BusyState
-from ._session_policy import recovery_decision
-from ._session_projection import _projection_entries, build_projection
-from ._session_recovery import INTERRUPTION_RESULT_TEXT, record_interruptions
+from ._session_projection import _projection_entries, build_projection, estimate_projected_context_tokens
 from .agent import Agent
 from .agent_loop import PrepareRequestContext, PrepareRequestUpdate
 from .cancellation import Cancellation
 from .compaction import (
     CompactionAbortedError,
+    CompactionPreparation,
     CompactionResult,
-    _CompactionMarker,
+    _entry_timestamp,
     prepare_compaction,
     run_compaction,
 )
 from .config import AgentConfig
 from .context import (
+    calculate_context_tokens,
     estimate_context_tokens,
-    has_valid_usage,
-    projection_system_tokens,
+    estimate_messages_tokens,
+    latest_compaction_entry,
     should_compact,
 )
-from .error_policy import is_context_overflow as _is_context_overflow
+from .error_policy import is_context_overflow, is_recoverable_length, is_retryable_error
 from .events import (
     AgentEnd,
     AgentEvent,
@@ -62,6 +62,7 @@ from .resources import ResourceSnapshot
 from .session_store import (
     SessionCompactionEntry,
     SessionMessageEntry,
+    SessionOmissionEntry,
     SessionStore,
     SessionUnusableError,
 )
@@ -112,7 +113,8 @@ class AgentSession:
         self._tools = list(tools)
         self._resources = resources or ResourceSnapshot()
         self._observers = ObserverDispatcher()
-        self._last_message_entry: tuple[Message, str] | None = None
+        #: Pi's ``_entryIdsByMessage``: journal entry of each live message, by identity.
+        self._entry_ids: dict[int, tuple[Message, str]] = {}
         self._pending_retry_success: int | None = None
         self._steering_texts: list[str] = []
         self._follow_up_texts: list[str] = []
@@ -131,7 +133,6 @@ class AgentSession:
         self._close_task: asyncio.Task[None] | None = None
         agent.set_internal_listener(self._on_agent_event)
         agent.set_post_reduce_hook(self._deliver_agent_event)
-        self._record_interruptions_if_needed()
 
     # ------------------------------------------------------------------
     # Construction
@@ -247,7 +248,7 @@ class AgentSession:
             self._idle_event.set()
 
     def set_thinking_level(self, level: ThinkingLevel) -> ThinkingLevel:
-        """Persist a valid thinking level while idle; non-reasoning models use off."""
+        """Persist a thinking level while idle, clamped to the model's supported levels as in Pi."""
         self._begin_configuration("set_thinking_level")
         try:
             effective = _effective_thinking_level(self.config.model, level)
@@ -260,18 +261,13 @@ class AgentSession:
             self._busy.release()
             self._idle_event.set()
 
-    def set_tool_execution(
-        self, mode: Literal["sequential", "parallel"], *, max_parallel_tools: int | None = None
-    ) -> None:
+    def set_tool_execution(self, mode: Literal["sequential", "parallel"]) -> None:
         """Durably select tool scheduling while idle."""
         self._begin_configuration("set_tool_execution")
         try:
             config = replace(
                 self.config,
                 tool_execution=mode,
-                max_parallel_tools=max_parallel_tools
-                if max_parallel_tools is not None
-                else self.config.max_parallel_tools,
             )
             config.validate()
             self._commit_configuration(config, self._provider)
@@ -301,7 +297,6 @@ class AgentSession:
         self.agent.model = deepcopy(config.model)
         self.agent.thinking_level = config.thinking_level
         self.agent.tool_execution = config.tool_execution
-        self.agent.max_parallel_tools = config.max_parallel_tools
         if config.model != previous.model:
             self._observers.emit_nowait(ModelChanged(deepcopy(previous.model), deepcopy(config.model)))
         if config.thinking_level != previous.thinking_level:
@@ -473,10 +468,10 @@ class AgentSession:
 
         if isinstance(event, MessageEnd):
             entry_id = self.store.append_message(event.message)  # fatal on write failure
-            self._last_message_entry = (event.message, entry_id)
+            self._entry_ids[id(event.message)] = (event.message, entry_id)
             if isinstance(event.message, AssistantMessage):
                 assistant = event.message
-                if assistant.stop_reason not in ("error", "aborted", "length"):
+                if assistant.stop_reason not in ("error", "length"):
                     self._overflow_attempted = False
                 if assistant.stop_reason not in ("error", "aborted") and self._retry_attempt > 0:
                     # The retry-success event is emitted by the post-reduce
@@ -485,20 +480,25 @@ class AgentSession:
                     self._retry_attempt = 0
 
     def _will_retry_after_agent_end(self) -> bool:
+        """Pi's ``_willRetryAfterAgentEnd``."""
+        if self._abort_requested:
+            return False
+        retry = self.config.retry
+        if not retry.enabled or self._retry_attempt >= retry.max_retries:
+            return False
         for message in reversed(self.agent.messages):
             if isinstance(message, AssistantMessage):
-                return (
-                    recovery_decision(
-                        message,
-                        self.config.retry,
-                        context_window=self.config.model.context_window,
-                        attempt=self._retry_attempt,
-                        aborted=self._abort_requested,
-                        overflow_attempted=self._overflow_attempted,
-                    ).action
-                    == "retry"
-                )
+                return self._is_retryable_error(message)
         return False
+
+    def _model_for_message(self, message: AssistantMessage) -> ModelInfo | None:
+        """Pi's ``_modelForMessage``: the current model when it produced ``message``."""
+        model = self.config.model
+        return model if (model.provider, model.id) == (message.provider, message.model) else None
+
+    def _is_retryable_error(self, message: AssistantMessage) -> bool:
+        model = self._model_for_message(message) or self.config.model
+        return is_retryable_error(message, model.context_window)
 
     # ------------------------------------------------------------------
     # Steering / follow-up
@@ -565,10 +565,12 @@ class AgentSession:
             self._run_cancellation = Cancellation()
             self._overflow_attempted = False
             self._idle_event.clear()
-            # Pre-prompt threshold check runs inside the claim (covers
-            # aborted responses too); an abort during it must not start a
-            # new model run.
-            await self._maybe_threshold_compact()
+            # Pi's _prepareRun: check compaction before sending (catches aborted
+            # responses too) inside the claim; an abort during it must not start
+            # a new model run. The prompt itself is sent below, so no retry here.
+            last_assistant = self._last_assistant_message()
+            if last_assistant is not None:
+                await self._check_compaction(last_assistant, skip_aborted_check=False)
             if self._abort_requested:
                 return
             user_message = UserMessage(content=[TextBlock(text=text)], timestamp=now_ms())
@@ -576,8 +578,6 @@ class AgentSession:
         finally:
             try:
                 self._finish_cancelled_retry()
-                if self.store.usable:
-                    self._record_interruptions_if_needed()
                 self._refresh_agent_messages()
                 # Settled is queued before settling so the final callback is
                 # included; wait_for_idle only returns once it has run.
@@ -613,66 +613,51 @@ class AgentSession:
             self._abort_requested = True
             raise
 
+    def _last_assistant_message(self) -> AssistantMessage | None:
+        for message in reversed(self.agent.messages):
+            if isinstance(message, AssistantMessage):
+                return message
+        return None
+
     async def _handle_post_run(self) -> bool:
-        """Retry / overflow / threshold handling after one agent run.
+        """Pi's ``_handlePostAgentRun``: retry, then overflow/threshold compaction.
 
         Continuation happens only for a retry, an overflow recovery, or
         genuinely queued input — never merely because a threshold compaction
         succeeded after a completed final answer.
         """
-        last_assistant: AssistantMessage | None = None
-        for message in reversed(self.agent.messages):
-            if isinstance(message, AssistantMessage):
-                last_assistant = message
-                break
         if self._abort_requested:
             return False
-        if last_assistant is None:
+        message = self._last_assistant_message()
+        if message is None:
             return self.agent.has_queued_messages()
 
-        decision = recovery_decision(
-            last_assistant,
-            self.config.retry,
-            context_window=self.config.model.context_window,
-            attempt=self._retry_attempt,
-            aborted=self._abort_requested,
-            overflow_attempted=self._overflow_attempted,
-        )
-        if decision.action in ("overflow", "overflow_exhausted"):
-            return await self._check_overflow(last_assistant) and not self._abort_requested
-
-        if decision.action == "retry" and await self._prepare_retry(last_assistant):
+        if self._is_retryable_error(message) and await self._prepare_retry(message):
             return not self._abort_requested
+        if self._abort_requested:
+            return False
 
-        if last_assistant.stop_reason == "error" and self._retry_attempt > 0:
+        if message.stop_reason == "error" and self._retry_attempt > 0:
             await self._observers.emit(
-                AutoRetryEnd(
-                    success=False,
-                    attempt=self._retry_attempt,
-                    final_error=last_assistant.error_message,
-                )
+                AutoRetryEnd(success=False, attempt=self._retry_attempt, final_error=message.error_message)
             )
             self._retry_attempt = 0
 
-        await self._maybe_threshold_compact()
-
+        if await self._check_compaction(message):
+            return not self._abort_requested
         return not self._abort_requested and self.agent.has_queued_messages()
 
     async def _prepare_retry(self, failed: AssistantMessage) -> bool:
-        """Apply the retry policy with cancellable backoff."""
+        """Pi's ``_prepareRetry``: bounded attempts with cancellable backoff."""
         retry = self.config.retry
-        decision = recovery_decision(
-            failed,
-            retry,
-            context_window=self.config.model.context_window,
-            attempt=self._retry_attempt,
-            aborted=self._abort_requested,
-            overflow_attempted=self._overflow_attempted,
-        )
-        if decision.action != "retry":
+        if not retry.enabled:
             return False
-        self._retry_attempt = decision.attempt
-        delay_ms = decision.delay_ms
+        self._retry_attempt += 1
+        if self._retry_attempt > retry.max_retries:
+            # Keep the completed attempt count so post-run handling reports the failure.
+            self._retry_attempt -= 1
+            return False
+        delay_ms = retry.delay_ms(self._retry_attempt)
         await self._observers.emit(
             AutoRetryStart(
                 attempt=self._retry_attempt,
@@ -681,7 +666,7 @@ class AgentSession:
                 error_message=failed.error_message or "Unknown error",
             )
         )
-        self._omit_failed_attempt(failed)
+        self._omit_recovery_attempt(failed)
         try:
             await asyncio.wait_for(self._run_cancellation.wait(), delay_ms / 1000)
             self._finish_cancelled_retry()
@@ -693,20 +678,36 @@ class AgentSession:
             self._finish_cancelled_retry()
             raise
 
-    def _omit_failed_attempt(self, failed: AssistantMessage) -> None:
-        """Durably omit one failed assistant message from the projection.
+    def _omit_recovery_attempt(self, failed: AssistantMessage) -> None:
+        """Pi's ``_omitRecoveryAttempt``: durably omit a failed attempt and its tool results.
 
-        Raw history keeps it. Fatal on persistence failure.
+        Raw history keeps them. Fatal on persistence failure.
         """
-        entry_id = self._entry_id_for_message(failed)
-        if entry_id is None:
-            raise RuntimeError("Cannot omit a failed attempt that was never persisted")
-        self.store.append_context_omission(entry_id)
+        call_ids = {block.id for block in failed.content if isinstance(block, ToolCallBlock)}
+        messages = self.agent.messages
+        index = next((i for i, message in enumerate(messages) if message is failed), -1)
+        targets: list[Message] = [failed]
+        for message in [] if index < 0 else messages[index + 1 :]:
+            if isinstance(message, AssistantMessage):
+                break
+            if isinstance(message, ToolResultMessage) and message.tool_call_id in call_ids:
+                targets.append(message)
+        target_ids = [self._entry_id_for_message(target) for target in targets]
+        if any(
+            target_id is None and any(target is message for message in messages)
+            for target, target_id in zip(targets, target_ids, strict=True)
+        ):
+            raise RuntimeError(
+                "Cannot persist recovery omission because a projected message has no source entry"
+            )
+        for target_id in target_ids:
+            if target_id is not None:
+                self.store.append_context_omission(target_id)
         self._refresh_agent_messages()
 
     def _entry_id_for_message(self, message: Message) -> str | None:
-        last = self._last_message_entry
-        return last[1] if last is not None and last[0] is message else None
+        known = self._entry_ids.get(id(message))
+        return known[1] if known is not None and known[0] is message else None
 
     def _finish_cancelled_retry(self) -> None:
         if self._retry_attempt == 0:
@@ -765,7 +766,7 @@ class AgentSession:
         self.agent.set_post_reduce_hook(None)
         self._observers.listeners.clear()
         self._observers.close()
-        self._last_message_entry = None
+        self._entry_ids.clear()
 
     def _close_sync_resources(self) -> list[Exception]:
         errors: list[Exception] = []
@@ -855,8 +856,15 @@ class AgentSession:
         self._idle_event.clear()
         try:
             await self._observers.emit(CompactionStart(reason="manual"))
+            preparation = self._prepare_compaction()
+            if preparation is None:
+                if isinstance(self.store.last_entry, SessionCompactionEntry):
+                    raise RuntimeError("Already compacted")
+                raise RuntimeError("Nothing to compact (session too small)")
             result = await self._run_compaction_core(
-                "manual", custom_instructions=custom_instructions, cancellation=self._compaction_cancellation
+                preparation,
+                custom_instructions=custom_instructions,
+                cancellation=self._compaction_cancellation,
             )
             await self._observers.emit(CompactionEnd(reason="manual", result=result, aborted=False))
             return result
@@ -884,20 +892,25 @@ class AgentSession:
                 self._active_task = None
                 self._idle_event.set()
 
-    async def _run_auto_compaction(self, reason: Literal["threshold", "overflow"]) -> bool:
-        """Threshold/overflow compaction; reports whether a checkpoint was added.
+    async def _run_auto_compaction(self, reason: Literal["threshold", "overflow"], will_retry: bool) -> bool:
+        """Pi's ``_runAutoCompaction``; reports whether the run should continue.
 
-        Contracts and failure semantics: docs/invariants.md.
+        Nothing to compact is silent. Contracts and failure semantics:
+        docs/invariants.md.
         """
+        preparation = self._prepare_compaction()
+        if preparation is None:
+            return False
         cancellation = Cancellation()
         self._compaction_cancellation = cancellation
         try:
             await self._observers.emit(CompactionStart(reason=reason))
             result = await self._run_compaction_core(
-                reason, custom_instructions=None, cancellation=cancellation
+                preparation, custom_instructions=None, cancellation=cancellation
             )
-            await self._observers.emit(CompactionEnd(reason=reason, result=result, aborted=False))
-            return True
+            await self._observers.emit(
+                CompactionEnd(reason=reason, result=result, aborted=False, will_retry=will_retry)
+            )
         except (SessionUnusableError, OSError) as error:
             # Durable write failed: the store is poisoned. Report, then let
             # the fatal error propagate out of the run.
@@ -920,33 +933,36 @@ class AgentSession:
             return False
         finally:
             self._compaction_cancellation = None
+        if will_retry:
+            return True
+        # Queued steering/follow-up input is delivered by one more run.
+        return self.agent.has_queued_messages()
+
+    def _prepare_compaction(self) -> CompactionPreparation | None:
+        """Pi's ``prepareCompaction`` over the current journal."""
+        if isinstance(self.store.last_entry, SessionCompactionEntry):
+            return None
+        return prepare_compaction(
+            build_projection(self.store),
+            tokens_before=self._projection_tokens(),
+            settings=self.config.compaction,
+        )
 
     async def _run_compaction_core(
         self,
-        reason: Literal["manual", "threshold", "overflow"],
+        preparation: CompactionPreparation,
         *,
         custom_instructions: str | None,
         cancellation: Cancellation,
     ) -> CompactionResult:
-        del reason
-        if isinstance(self.store.last_entry, SessionCompactionEntry):
-            raise RuntimeError("Already compacted")
-
-        tokens_before = self._projection_tokens()
-        preparation = prepare_compaction(
-            build_projection(self.store), tokens_before=tokens_before, settings=self.config.compaction
-        )
-        if preparation is None:
-            raise RuntimeError("Nothing to compact (session too small)")
         if cancellation.aborted:
             raise CompactionAbortedError()
-
         result = await run_compaction(
             preparation,
             provider=self._provider,
             model=self.config.model,
             cancellation=cancellation,
-            session_id=self.store.session_id,
+            thinking_level=self.config.thinking_level,
             custom_instructions=custom_instructions,
             retry=self.config.retry,
         )
@@ -964,117 +980,150 @@ class AgentSession:
             modified_files=result.modified_files,
         )
         self._refresh_agent_messages()
-        result.estimated_tokens_after = projection_system_tokens(self._projection_messages())
+        result.estimated_tokens_after = estimate_messages_tokens(self._projection_messages())
         return result
 
     async def _prepare_request(self, context: PrepareRequestContext) -> PrepareRequestUpdate | None:
-        """Refresh the projection before every provider request.
-
-        The projection is re-read unconditionally so a checkpoint (the
-        threshold check above may add one) and any omissions recorded between
-        requests are always reflected — never a stale snapshot.
-        """
+        """Pi's request projection: every provider request leaves from the journal projection."""
         del context
-        await self._maybe_threshold_compact()
         projection_messages = self._projection_messages()
         self.agent.messages = projection_messages
         return PrepareRequestUpdate(messages=projection_messages)
 
-    async def _maybe_threshold_compact(self) -> bool:
-        """Automatic pre-request threshold check.
+    async def _prepare_next_turn(self, context: PrepareRequestContext) -> PrepareRequestUpdate | None:
+        """Pi's ``_compactBeforeNextAssistantResponse``: threshold check between turns."""
+        del context
+        if self._exceeds_compaction_threshold():
+            await self._run_auto_compaction("threshold", False)
+        projection_messages = self._projection_messages()
+        self.agent.messages = projection_messages
+        return PrepareRequestUpdate(messages=projection_messages)
 
-        Returns whether a checkpoint was added (bounded: one attempt); it
-        does not express any continuation decision.
-        """
-        if not self.config.compaction.enabled:
-            return False
+    def _projection_has_omissions(self) -> bool:
+        """Whether an omission falls in the projected journal range (Pi's projected context edits)."""
+        journal = self.store._entries
+        compaction = latest_compaction_entry(journal)
+        start = self.store._entry_positions[compaction.first_kept_entry_id] if compaction is not None else 0
+        return any(isinstance(entry, SessionOmissionEntry) for entry in journal[start:])
+
+    def _exceeds_compaction_threshold(self) -> bool:
         window = self.config.model.context_window
         if window <= 0:
             return False
-        if should_compact(self._projection_tokens(), window, self.config.compaction):
-            return await self._run_auto_compaction("threshold")
-        return False
+        return should_compact(self._projection_tokens(), window, self.config.compaction)
 
-    async def _check_overflow(self, message: AssistantMessage) -> bool:
-        """At most one compact-and-retry attempt per failing request.
+    async def _check_compaction(self, message: AssistantMessage, skip_aborted_check: bool = True) -> bool:
+        """Pi's ``_checkCompaction``: overflow recovery, then threshold compaction.
 
-        Only context-overflow *errors* take this path. Completed answers and
-        generic output-length stops are not overflow retries: a ``length``
-        stop is an output truncation, not context exhaustion, and the model
-        simply re-issues its calls.
+        Returns whether the post-run loop should continue (an overflow
+        retry, or queued input after a compaction).
         """
-        if message.stop_reason != "error":
+        settings = self.config.compaction
+        if not settings.enabled:
             return False
-        if not _is_context_overflow(message, self.config.model.context_window):
+        if skip_aborted_check and message.stop_reason == "aborted":
             return False
 
-        if self._overflow_attempted:
-            await self._observers.emit(
-                CompactionEnd(
-                    reason="overflow",
-                    result=None,
-                    aborted=False,
-                    error_message=(
-                        "Context overflow recovery failed after one compact-and-retry attempt. Try "
-                        "reducing context or switching to a larger-context model."
-                    ),
-                )
+        # An overflow from another model must not compact for the current one.
+        message_model = self._model_for_message(message)
+        same_model = message_model is not None
+        context_window = (message_model or self.config.model).context_window
+
+        # Stale pre-compaction usage or errors must not retrigger compaction.
+        compaction = latest_compaction_entry(self.store._entries)
+        compaction_time = _entry_timestamp(compaction) if compaction is not None else None
+        if compaction_time is not None and message.timestamp <= compaction_time:
+            return False
+
+        entry_id = self._entry_id_for_message(message)
+        projection = _projection_entries(self.store)
+        is_projected = entry_id is None or any(
+            entry.entry_id == entry_id and any(isinstance(m, AssistantMessage) for m in entry.messages)
+            for entry in projection
+        )
+        position = self.store._entry_positions.get(entry_id) if entry_id is not None else None
+        later = self.store._entries[position + 1 :] if position is not None else []
+        has_later_omission = any(isinstance(entry, SessionOmissionEntry) for entry in later)
+        retained_for_explicit_recovery = entry_id is None or (
+            not any(isinstance(entry, SessionCompactionEntry) for entry in later)
+            and not any(
+                isinstance(entry, SessionOmissionEntry) and entry.target_entry_id == entry_id
+                for entry in later
             )
-            return False
+        )
+        usage_matches_projection = is_projected and not has_later_omission
+        explicit_overflow = message.stop_reason == "error" and is_context_overflow(message)
+        context_overflow = same_model and (
+            (explicit_overflow and retained_for_explicit_recovery)
+            or (usage_matches_projection and is_context_overflow(message, context_window))
+        )
+        recoverable_length = (
+            message_model is not None
+            and is_projected
+            and is_recoverable_length(message, message_model.max_tokens)
+        )
+        if context_overflow or recoverable_length:
+            will_retry = message.stop_reason != "stop"
+            # A completed response is compacted but not retried: there is nothing to continue.
+            if not will_retry:
+                return await self._run_auto_compaction("overflow", False)
+            if self._overflow_attempted:
+                error_message = (
+                    "Context overflow recovery failed after one compact-and-retry attempt. Try reducing "
+                    "context or switching to a larger-context model."
+                    if context_overflow
+                    else "Truncated response recovery failed after one compact-and-retry attempt."
+                )
+                await self._observers.emit(
+                    CompactionEnd(reason="overflow", result=None, aborted=False, error_message=error_message)
+                )
+                return False
+            # Durably omit the failed attempt so the retry leaves from the last
+            # user/tool-result message, then compact and re-request.
+            self._overflow_attempted = True
+            self._omit_recovery_attempt(message)
+            return await self._run_auto_compaction("overflow", True)
 
-        self._overflow_attempted = True
-        # Durably omit the failed attempt so the retried request leaves from
-        # the last user/tool-result message, then compact and re-request.
-        self._omit_failed_attempt(message)
-        return await self._run_auto_compaction("overflow")
+        # Threshold compaction without retry. Error and zero-usage responses
+        # are sized from the last valid response instead.
+        direct_tokens = calculate_context_tokens(message.usage) if message.usage else 0
+        if self._projection_has_omissions():
+            context_tokens = self._projection_tokens()
+        elif message.stop_reason == "error" or direct_tokens == 0:
+            messages = self.agent.messages
+            estimate = estimate_context_tokens(messages)
+            if estimate.last_usage_index is not None and compaction_time is not None:
+                usage_message = messages[estimate.last_usage_index]
+                if isinstance(usage_message, AssistantMessage) and usage_message.timestamp <= compaction_time:
+                    return False
+            context_tokens = estimate.tokens
+        else:
+            context_tokens = direct_tokens
+        if should_compact(context_tokens, context_window, settings):
+            return await self._run_auto_compaction("threshold", False)
+        return False
 
     # ------------------------------------------------------------------
     # Projection helpers
     # ------------------------------------------------------------------
 
     def _projection_messages(self) -> list[Message]:
-        return [message for entry in build_projection(self.store) for message in entry.messages]
+        messages: list[Message] = []
+        for entry in build_projection(self.store):
+            for message in entry.messages:
+                self._entry_ids[id(message)] = (message, entry.entry_id)
+                messages.append(message)
+        return messages
 
     def _projection_tokens(self) -> int:
-        """Provider usage where trustworthy, chars/3.5 estimate otherwise.
-
-        Contracts and failure semantics: docs/invariants.md.
-        """
-        entries = _projection_entries(self.store)
-        last_valid_usage_source = -1
-        last_compaction_source = -1
-        last_model_change_source = self.store.last_model_change_source
-        for entry in entries:
-            if isinstance(entry, _CompactionMarker):
-                last_compaction_source = entry.source_index
-                continue
-            if any(has_valid_usage(message) for message in entry.messages):
-                last_valid_usage_source = entry.source_index
-        messages = [message for entry in entries for message in entry.messages]
-        if last_valid_usage_source < max(last_compaction_source, last_model_change_source):
-            return projection_system_tokens(messages)
-        last_valid = next((message for message in reversed(messages) if has_valid_usage(message)), None)
-        if isinstance(last_valid, AssistantMessage) and (
-            last_valid.provider,
-            last_valid.api,
-            last_valid.model,
-        ) != (self.config.model.provider, self.config.model.api, self.config.model.id):
-            return projection_system_tokens(messages)
-        return estimate_context_tokens(messages).tokens
+        """Pi's ``estimateProjectedContextTokens``; see ``_session_projection``."""
+        return estimate_projected_context_tokens(self.store)
 
     def _refresh_agent_messages(self) -> None:
         """Between runs the projection is authoritative; during an active run
         the loop owns the transcript and ``_prepare_request`` refreshes it
         before each provider request."""
         if not self.agent.is_streaming:
-            self.agent.messages = self._projection_messages()
-
-    # ------------------------------------------------------------------
-    # Interrupted-batch recovery
-    # ------------------------------------------------------------------
-
-    def _record_interruptions_if_needed(self) -> None:
-        if record_interruptions(self.store) and not self.agent.is_streaming:
             self.agent.messages = self._projection_messages()
 
 
@@ -1121,5 +1170,4 @@ __all__ = [
     "SessionStore",
     "build_projection",
     "create_agent_session",
-    "INTERRUPTION_RESULT_TEXT",
 ]

@@ -245,6 +245,8 @@ class CompactionEnd:
     result: object | None = None
     aborted: bool = False
     error_message: str | None = None
+    #: Pi's ``willRetry``: an overflow recovery re-requests the failed response.
+    will_retry: bool = False
 
 
 @dataclass
@@ -400,6 +402,7 @@ def event_to_json(event: SessionEvent) -> dict[str, JsonValue]:
     elif isinstance(event, CompactionEnd):
         data["reason"] = event.reason
         data["aborted"] = event.aborted
+        data["will_retry"] = event.will_retry
         result = event.result
         data["result"] = result.to_json() if hasattr(result, "to_json") else None  # type: ignore[attr-defined]
         if event.error_message is not None:

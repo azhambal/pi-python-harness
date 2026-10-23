@@ -3,11 +3,12 @@
 import math
 import os
 from collections.abc import Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from dotenv import dotenv_values
 
+from .models import find_model
 from .providers.openai_compat import OpenAIRequestSettings
 from .types import JsonValue, ModelInfo
 
@@ -43,8 +44,11 @@ class RuntimeSettings:
     base_url: str
     api_key: str = field(repr=False)
     timeout: float = 300.0
-    anthropic_thinking_mode: str = "adaptive"
+    #: None follows the model catalog (adaptive for models that force it, as in Pi).
+    anthropic_thinking_mode: str | None = None
     openai_request: OpenAIRequestSettings = field(default_factory=OpenAIRequestSettings)
+    #: Pi's ``thinkingBudgets`` overrides of the per-level token budgets.
+    thinking_budgets: dict[str, int] | None = None
 
 
 def resolve_runtime(
@@ -61,6 +65,7 @@ def resolve_runtime(
     seed: int | None = None,
     chat_template_kwargs: dict[str, JsonValue] | None = None,
     thinking_level_map: dict[str, str | None] | None = None,
+    thinking_budgets: dict[str, int] | None = None,
 ) -> RuntimeSettings:
     provider = (
         provider
@@ -101,6 +106,17 @@ def resolve_runtime(
         if max_tokens is not None and max_tokens != restored_model.max_tokens:
             raise ValueError("--max-tokens differs from the resumed session")
         model = restored_model
+    elif (known := find_model(provider, model_id)) is not None:
+        # Pi's catalog entry; explicit CLI/settings values override it.
+        model = replace(
+            known,
+            context_window=context_window if context_window is not None else known.context_window,
+            max_tokens=max_tokens if max_tokens is not None else known.max_tokens,
+            reasoning=known.reasoning or thinking_level_map is not None,
+            thinking_level_map=dict(thinking_level_map)
+            if thinking_level_map is not None
+            else known.thinking_level_map,
+        )
     else:
         model = ModelInfo(
             id=model_id,
@@ -115,7 +131,15 @@ def resolve_runtime(
     seconds = timeout if timeout is not None else float(environment.get("PI_HTTP_TIMEOUT") or "300")
     if not math.isfinite(seconds) or seconds <= 0:
         raise ValueError("PI_HTTP_TIMEOUT must be finite and positive")
-    thinking_mode = environment.get("ANTHROPIC_THINKING_MODE") or "adaptive"
-    if thinking_mode not in ("adaptive", "budget"):
+    thinking_mode = environment.get("ANTHROPIC_THINKING_MODE") or None
+    if thinking_mode not in (None, "adaptive", "budget"):
         raise ValueError("ANTHROPIC_THINKING_MODE must be adaptive or budget")
-    return RuntimeSettings(model, url, api_key, seconds, thinking_mode, request_settings)
+    return RuntimeSettings(
+        model,
+        url,
+        api_key,
+        seconds,
+        thinking_mode,
+        request_settings,
+        dict(thinking_budgets) if thinking_budgets is not None else None,
+    )

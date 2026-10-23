@@ -18,7 +18,7 @@ from . import cli
 from .cancellation import Cancellation
 from .events import AgentSettled, MessageEnd, MessageUpdate, SessionEvent, TextDelta, event_to_json
 from .permissions import PermissionRequest
-from .runtime_config import read_environment, resolve_runtime
+from .runtime_config import RuntimeSettings, read_environment, resolve_runtime
 from .session import AgentSession
 from .types import AssistantMessage, TextBlock, ThinkingLevel
 
@@ -69,9 +69,12 @@ class LineInput:
 class _Chat:
     """Own terminal interaction state while the session owns agent execution."""
 
-    def __init__(self, args: argparse.Namespace, session: AgentSession) -> None:
+    def __init__(
+        self, args: argparse.Namespace, session: AgentSession, runtime: RuntimeSettings | None = None
+    ) -> None:
         self.args = args
         self.session = session
+        self.runtime = runtime
         self.printed = False
         self.fatal = False
         self.job: asyncio.Task[None] | None = None
@@ -175,6 +178,7 @@ class _Chat:
                 read_environment(Path(self.args.env_file).resolve()),
                 provider=provider_name,
                 model_id=identifier,
+                thinking_budgets=self.runtime.thinking_budgets if self.runtime is not None else None,
             )
             self.session.set_model(target.model, provider=cli._runtime_provider(target))
         else:
@@ -242,7 +246,7 @@ class _Chat:
         if command == "/help":
             print(
                 "/steer TEXT  /follow TEXT  /abort  /wait  /compact\n"
-                "/model [provider/]ID  /thinking LEVEL  /parallel MODE [LIMIT]\n"
+                "/model [provider/]ID  /thinking LEVEL  /parallel MODE\n"
                 "/mcp  /mcp reconnect NAME  /mcp reload [SELECTORS|all]\n"
                 "/skills  /skill:NAME [ARGS]  /reload  /status  /quit\nText entered during a run queues a follow-up.",
                 file=self.ui,
@@ -273,13 +277,9 @@ class _Chat:
         elif command == "/model":
             self.change_model(value)
         elif command == "/parallel":
-            tokens = value.split()
-            if not 1 <= len(tokens) <= 2:
-                raise ValueError("/parallel requires sequential|parallel [positive limit]")
-            self.session.set_tool_execution(
-                cast(Literal["sequential", "parallel"], tokens[0]),
-                max_parallel_tools=int(tokens[1]) if len(tokens) == 2 else None,
-            )
+            if value not in ("sequential", "parallel"):
+                raise ValueError("/parallel requires sequential|parallel")
+            self.session.set_tool_execution(cast(Literal["sequential", "parallel"], value))
         elif command == "/mcp":
             await self.handle_mcp(value)
         elif command == "/skills":
@@ -367,7 +367,7 @@ class _Chat:
 
 async def run_chat(args: argparse.Namespace) -> int:
     session, settings, switch, resumed = await cli._open_session_async(args)
-    chat = _Chat(args, session)
+    chat = _Chat(args, session, settings)
     installed = []
     unsubscribe = session.subscribe(chat.render_event)
     try:

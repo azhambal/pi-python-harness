@@ -1,0 +1,4360 @@
+[
+ {
+  "arguments": {}
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\u0001', \"\u0001\r\n \"a\": 1\"... is not valid JSON\n\nReceived arguments:\n\u0001\r\n \"a\": 1,\n\t\"bf\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\u0001', \"\u0001\"k\":\"прив\"... is not valid JSON\n\nReceived arguments:\n\u0001\"k\":\"привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\u0001', \"\u0001\"s3r\"\" is not valid JSON\n\nReceived arguments:\n\u0001\"s3r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\u0001', \"\u000123\" is not valid JSON\n\nReceived arguments:\n\u000123"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n\t123["
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n\t23:"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\n\"3str\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 8 (line 2 column 8)\n\nReceived arguments:\n\n\"e:its\":[{\"oldText\":\"a\\nb\",\"newText\"4\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 2 column 5)\n\nReceived arguments:\n\r\n \"a\": 1,\n\t\"b\": [\n 1 ]\r"
+ },
+ {
+  "arguments": {}
+ },
+ {
+  "arguments": {}
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n 31"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n {\"command\"é:\"ls -la\",\"timeout\":1.5e3}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"\u0001tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"\nstr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"\nétr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"-tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"1str\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"1tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"2s9r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"2str\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"3ét\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"8tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\":\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"Et3r\"\\"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}6"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"br\n"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n\"cmmand\":\"ls -la\",\"imeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n\"edits\":[{\"oldTe5xt\":\"a\\nb\",\"newText\":\"c\"}]],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n\"k\":\"привет 😀\",\"n\":-0.2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n\"k\":\"привет 😀\",\"n\":5-.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"nstr4"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"path\":\"src/a.p\",\"imit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"path\":\"src/a.py\",\"l+mit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"path\":\"src/a.py\",\"l4imit\":+10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"path\":\"src/a.py\",\"lim.t\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"path\":\"src/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"path\":\"src/a].py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n\"r\t"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n\"s\ntrx"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"s\rt"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"s-r😀\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"s2r\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"s3r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"s6tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"s8r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"s8tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n\"s9r"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n\"s[tr😀"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"s]5ra"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n\"sbr"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"sbtr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"sr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"st\u0001\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"st\rr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"st r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"st r\"n"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"st\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n\"st\",\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"st-\"+"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"st5r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"st6\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"stEr:"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"stan\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"stf\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n\"str"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"str\u0001\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"str\n"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"str\"3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"str\"7"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"str,"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"str-5"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"str4\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"str6 "
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"strE"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"stra\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"stre"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n\"strn"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"sttr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"s{\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n\"t1\"+"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n\"t4r"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n\"tn"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n\"tr"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"t😀r\"a"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"x\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n\"{\"k\":\"привет 😀\"\"n\"[-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n\"{stru"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"éstr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n\"😀tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '+', \"+\"\\u0001trn\" is not valid JSON\n\nReceived arguments:\n+\"\u0001trn"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '+', \"+\"st[r\"\" is not valid JSON\n\nReceived arguments:\n+\"st[r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '+', \"+{\"path\":\"\"... is not valid JSON\n\nReceived arguments:\n+{\"path\":\"src/a.py\",\"lim4t\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \",\"btr\"\" is not valid JSON\n\nReceived arguments:\n,\"btr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n-123"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "No number after minus sign in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n-:1+23"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "No number after minus sign in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n-sr"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "No number after minus sign in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n-{k\":\"привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '.', \".{\"k\":\"при\"... is not valid JSON\n\nReceived arguments:\n.{\"k\":\"при:вет {😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '.', \".{\"path\":\"\"... is not valid JSON\n\nReceived arguments:\n.{\"path\":\"src/a.py\",}limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n0\"str+"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n0128"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n02"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n1"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n1\tt53"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n1 "
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n1 23"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1\"23"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1,2,\"a\":[true,false,null}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1,2,{\"a\":[tr+ue,fase,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1,2,{\"a\":[tru.,false,null}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1,2,{\"a\":[true,fal[se,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n123\t"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 4 (line 2 column 1)\n\nReceived arguments:\n123\r:,"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n123b"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n124\u0001"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n129"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Exponent part is missing a number in JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n12e"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n12t"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n12{3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n12}6"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n12😀"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n13"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n132"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1a"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1a3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1f3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1n\t"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1n 23{"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1un23"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1x823"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1{"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1é23"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1é3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n1😀"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n21{3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n2203"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n2{\r\n \"a\": 1,\n\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n2}{"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n2😀9"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n31\"23"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n3123"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 2 column 1)\n\nReceived arguments:\n41\r2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n51,2,{\"a\":[truefalse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n72x3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n8\"a\":{\"b\":{\"c\":\"xxxxxexxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n8\"command\":\"ls -la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n8\"sbtr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n81 23"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n8s0tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ':', \":\" is not valid JSON\n\nReceived arguments:\n:"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ':', \":\"path\":\"s\"... is not valid JSON\n\nReceived arguments:\n:\"path\":\"src/a.py\",\"limit\":510}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ':', \":13\" is not valid JSON\n\nReceived arguments:\n:13"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', \"E\"str\" is not valid JSON\n\nReceived arguments:\nE\"str"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', \"E{\"path-\":\"... is not valid JSON\n\nReceived arguments:\nE{\"path-\":b\"src/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "\"NaN\" is not valid JSON\n\nReceived arguments:\nNaN"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \"[,2,\"a\":[tr\"... is not valid JSON\n\nReceived arguments:\n[,2,\"a\":[true,alse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \"[,2,{\"a\":[t\"... is not valid JSON\n\nReceived arguments:\n[,2,{\"a\":[true,false9n8ull]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \"[,2,{ea\":[t\"... is not valid JSON\n\nReceived arguments:\n[,2,{ea\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n[1"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n[1\",2,{\"a\":[tuue,false,nul]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \"[1,,{\"a\":[tue\"... is not valid JSON\n\nReceived arguments:\n[1,,{\"a\":[tue,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n[1,2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n[1,2,"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\u0001', \"[1,2,\u0001{\"a\":[tru\"... is not valid JSON\n\nReceived arguments:\n[1,2,\u0001{\"a\":[truea,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n[1,2,\"a\":[true,false-,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'b', \"[1,2,b{\"a\":[tru\"... is not valid JSON\n\nReceived arguments:\n[1,2,b{\"a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n[1,2,{"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\r\"a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\"\ra\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', ...\"\":[true,fase,null]}]\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"\":[true,fase,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 14 (line 1 column 15)\n\nReceived arguments:\n[1,2,{\"\":[true5,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\"1\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n[1,2,{\"a"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\"a \":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 31 (line 1 column 32)\n\nReceived arguments:\n[1,2,{\"a\":\"{[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\"a\":[\ttrue,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\"a\":[ true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'e', ...\"1,2,{\"a\":[etrue,flse\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[etrue,flse{null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n[1,2,{\"a\":[t"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', ...\",2,{\"a\":[tErue,false\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[tErue,false,null]}a]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', ...\",2,{\"a\":[tarue,false\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[tarue,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', ...\",2,{\"a\":[taue,false,\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[taue,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'e', ...\",2,{\"a\":[terue,false\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[terue,false,null]{}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n[1,2,{\"a\":[tr"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n[1,2,{\"a\":[tr0ue,false,null}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n[1,2,{\"a\":[tr4ue,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n[1,2,{\"a\":[tr5ue,false,null\r]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n[1,2,{\"a\":[tr6\u0001ue,fale,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n[1,2,{\"a\":[tr8e,flse,null}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'b', ...\"2,{\"a\":[trb,fals,nul\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[trb,fals,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n[1,2,{\"a\":[tru"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 14 (line 1 column 15)\n\nReceived arguments:\n[1,2,{\"a\":[tru7e,falsenull]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n[1,2,{\"a\":[true"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 16 (line 2 column 1)\n\nReceived arguments:\n[1,2,{\"a\":[true\rfalse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n[1,2,{\"a\":[true,"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', ...\"\"a\":[true,alse,null]\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,alse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\n', ...\"a\":[true,f\nalse,null\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,f\nalse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', ...\"a\":[true,fEalse,null\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,fEalse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n[1,2,{\"a\":[true,fa2lse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n[1,2,{\"a\":[true,fa9se,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ':', ...\"\":[true,fa:se,null]}\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,fa:se,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n[1,2,{\"a\":[true,fal"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'e', ...\":[true,fale,null]}:\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,fale,null]}:"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', ...\"ue,false,n,ul l.}]\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,false,n,ul l.}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'f', ...\"ue,false,nfl]}]\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,false,nfl]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', ...\"e,false,nuall]}]9\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,false,nuall]}]9"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 25 (line 1 column 26)\n\nReceived arguments:\n[1,2,{\"a\":[true,false,nul1l]}😀]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ']', ...\",false,nul]}]2\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,false,nul]}]2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 26 (line 1 column 27)\n\nReceived arguments:\n[1,2,{\"a\":[true,false,null7]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\"a\":[true,false,null]\t}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n[1,2,{\"a\":[true,false,null]]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n[1,2,{\"a\":[true,false,null]}3]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\"a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'u', ...\"rue,false,ul6]}]\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,false,ul6]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'u', ...\"rue,false,ull]}]\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,false,ull]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n[1,2,{\"a\":[true,false1nule]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n[1,2,{\"a\":[true,falsea,null]]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', ...\"\":[true,fase,n7ull]}\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,fase,n7ull]}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'l', ...\"a\":[true,flse,null9]\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,flse,null9]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'l', ...\"a\":[true,flse,null]}\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,flse,null]}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'l', ...\"a\":[true,flse,null]}\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,flse,null]}] "
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'é', ...\"a\":[true,féalse,null\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[true,féalse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n[1,2,{\"a\":[truefalse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n[1,2,{\"a\":[true}false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'u', ...\",2,{\"a\":[tue,flse,nu\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"a\":[tue,flse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n[1,2,{\"a\":true,fale,null]n}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n[1,2,{\"a\":true,false,null]}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n[1,2,{\"a\"E:[true,false,nul]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n[1,2,{\"a\"E[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n[1,2,{\"a\"[traue,false,null]}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n[1,2,{\"a\"[true,fasenull]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n[1,2,{\"a\"]:[true,false,null]}.]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n[1,2,{\"a\"u:].[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1,2,{\"a.\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'f', ...\"ue,false,nfll]}]\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"a:\":[true,false,nfll]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n[1,2,{\"a:[tru,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n[1,2,{\"a:[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n[1,2,{\"a:[true,false.,nll]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n[1,2,{\"a:[true,fflse,nul]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\ud83d', ...\"e,false,nu😀ll]}]\" is not valid JSON\n\nReceived arguments:\n[1,2,{\"ta\":[true,false,nu😀ll]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', ...\"\"}\":[true,Efalse,nul\"... is not valid JSON\n\nReceived arguments:\n[1,2,{\"}\":[true,Efalse,null0]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n[1,2,{2\"a\":[true,false,nll]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n[1,2,{a\":true,fase,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n[1,2,{é\"a\":[tre,false,null]}+"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n[1,2{\"a\":[rue,fale,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n[1,2}{\"a\":[true,false,null]}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n[1,2😀,{a\":[true,fals,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n[1,2😀{\"a\":[true2,false,nu\rll]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'b', \"[1,b2,{\"a\":[t\"... is not valid JSON\n\nReceived arguments:\n[1,b2,{\"a\":[true,false,n8ull]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \"[1,f,{\"a:[true\"... is not valid JSON\n\nReceived arguments:\n[1,f,{\"a:[truefalse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'l', ...\"ue,false,nll]}]\" is not valid JSON\n\nReceived arguments:\n[11,2,{\"a\":[true,false,nll]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[11,2,{\"a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 16 (line 1 column 17)\n\nReceived arguments:\n[12,2,{\"a\":[true7,balse,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', ...\"[true,fals,null]}]:\" is not valid JSON\n\nReceived arguments:\n[12,{\"a\":[true,fals,null]}]:"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 14 (line 1 column 15)\n\nReceived arguments:\n[12,{\"a\":true,false,nul]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n[12,{8\"a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n[12,{\\a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n[13"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Tool arguments must be a JSON object\n\nReceived arguments:\n[1]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n[1n2,{{a\":[true,fal4se,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n[1u2,{1\"a\":[true,false,nu5ll]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n[1}2,{\"\\\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n[1é,2,{\"a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '.', ...\"rue,false,.null]}]\" is not valid JSON\n\nReceived arguments:\n[81,2,{\"a\":[true,false,.null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n[9,2,{\"a\":[true,false,null][}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 2 (line 1 column 3)\n\nReceived arguments:\n[f1,2,{\"a\":[true,fals3,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "\"[object Object]\" is not valid JSON\n\nReceived arguments:\n[object Object]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'u', \"[u1,2{\"a\":[\"... is not valid JSON\n\nReceived arguments:\n[u1,2{\"a\":[tru,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\ud83d', \"[😀1,2,{\"a\"\"... is not valid JSON\n\nReceived arguments:\n[😀1,2,{\"a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\\', \"\\\"command\"\"... is not valid JSON\n\nReceived arguments:\n\\\"command\":\"ls -a\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ']', \"]\"ebdits\":\"... is not valid JSON\n\nReceived arguments:\n]\"ebdits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ']', \"]\"str\"\" is not valid JSON\n\nReceived arguments:\n]\"str\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', \"a\"path\":\"s\"... is not valid JSON\n\nReceived arguments:\na\"path\":\"src/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', \"aa+\" is not valid JSON\n\nReceived arguments:\naa+"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'b', \"b[11,2,{\"a\"... is not valid JSON\n\nReceived arguments:\nb[11,2,{\"a\":[true,false,null]}]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'b', \"bs8tr\"\" is not valid JSON\n\nReceived arguments:\nbs8tr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\nf2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\t', \"n\t:3\" is not valid JSON\n\nReceived arguments:\nn\t:3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\nn1x23"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', \"ns[r\"\" is not valid JSON\n\nReceived arguments:\nns[r\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'p', \"path\":\"s😀\"... is not valid JSON\n\nReceived arguments:\npath\":\"s😀rc/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', \"sftra\"\" is not valid JSON\n\nReceived arguments:\nsftra\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', \"sr\"\" is not valid JSON\n\nReceived arguments:\nsr\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', \"st\" is not valid JSON\n\nReceived arguments:\nst"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', \"str 😀\" is not valid JSON\n\nReceived arguments:\nstr 😀"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', \"str2E\" is not valid JSON\n\nReceived arguments:\nstr2E"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\nt"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected string in JSON at position 2 (line 1 column 3)\n\nReceived arguments:\ntr\"0"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '{', \"t{\"edits\":[\"... is not valid JSON\n\nReceived arguments:\nt{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c{\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'u', \"u\"k\":приве\"... is not valid JSON\n\nReceived arguments:\nu\"k\":привет 😀\",\",\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'u', \"u12\" is not valid JSON\n\nReceived arguments:\nu12"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 24 (line 5 column 1)\n\nReceived arguments:\n{\t\r\n \"a\": 1,\n\t\"b\": [\n 1\r}"
+ },
+ {
+  "arguments": {
+   ",": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 3 (line 2 column 2)\n\nReceived arguments:\n{\n a\": 1,\n\t\"b\": [\n0 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 2 (line 2 column 1)\n\nReceived arguments:\n{\r"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 28 (line 3 column 16)\n\nReceived arguments:\n{\r\n \t\"a\": 1,\n\t\"b: [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 16 (line 3 column 6)\n\nReceived arguments:\n{\r\n \"\": 1,\n\t\"b\" [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 18 (line 3 column 8)\n\nReceived arguments:\n{\r\n \"\": 1,\n\t\"b\": 1[\n 1 ]\rn"
+ },
+ {
+  "arguments": {
+   "": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '}', ...\"1,\n\t\"b\": [}\n 1 ]\r\" is not valid JSON\n\nReceived arguments:\n{\r\n \"\": 1,\n\t\"b\": [}\n 1 ]\r"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 6 (line 2 column 4)\n\nReceived arguments:\n{\r\n \"\"a\":f 1,\n\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 24 (line 5 column 1)\n\nReceived arguments:\n{\r\n \"1a\": 1,\n\t\"b\":[\n 1 \r}"
+ },
+ {
+  "arguments": {
+   ":a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {
+   "a ": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 2 column 6)\n\nReceived arguments:\n{\r\n \"a\" 1,\n\t\"b\":  [\n 1]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 2 column 6)\n\nReceived arguments:\n{\r\n \"a\" 1,\n\t\"b: [\n 1 ]\r}"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \"{\r\n \"a\": ,\n\t\"b\": [\n\"... is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": ,\n\t\"b\": [\n 1 ]}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \"{\r\n \"a\": ,\n\t\"b\": [ \"... is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": ,\n\t\"b\": [ 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ',', \"{\r\n \"a\": ,\n\t\"b\": 😀\"... is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": ,\n\t\"b\": 😀\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 12 (line 3 column 1)\n\nReceived arguments:\n{\r\n \"a\": 1,\n"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "\n": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 15 (line 3 column 4)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 26 (line 5 column 1)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\n\": [\n 1 \r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 21 (line 4 column 2)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": 9\n \\13 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', ...\" 1,\n\t\"b\": E[\n 1 ]\r}\" is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": E[\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 22 (line 4 column 3)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [\n 1\u0001]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 25 (line 5 column 1)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [\n 1 ]\r5"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 26 (line 5 column 2)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [\n 1 ]\r},"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 26 (line 5 column 2)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [\n 1 ]\r}a"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 22 (line 4 column 3)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [\n 1f ]\r}"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": []
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'é', ...\"\n\t\"b\": [\n é1 ]\r}\" is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [\n é1 ]\r}"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', ...\",\n\t\"b\": [\nE 1 ]\r}\" is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [\nE 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'e', ...\",\n\t\"b\": [\ne1 ]\r}\" is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [\ne1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', ...\"1,\n\t\"b\": [a\n 1 ]😀\r}\" is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": [a\n 1 ]😀\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'b', ...\" 1,\n\t\"b\": b\n 1 ]\r4}\" is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\": b\n 1 ]\r4}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 19 (line 3 column 8)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\":4 [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 16 (line 3 column 5)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"b\"t [\n 1 ]\r}"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b2": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 27 (line 3 column 16)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t\"é: [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 13 (line 3 column 2)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t]a\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 13 (line 3 column 2)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\ta\"\": [\n 1 ]\r2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 13 (line 3 column 2)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\tb\":[\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 13 (line 3 column 2)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\tt😀\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 13 (line 3 column 2)\n\nReceived arguments:\n{\r\n \"a\": 1,\n\t{\"b\"} [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 12 (line 3 column 1)\n\nReceived arguments:\n{\r\n \"a\": 1,\n-\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 11 (line 2 column 9)\n\nReceived arguments:\n{\r\n \"a\": 1,4\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 11 (line 2 column 9)\n\nReceived arguments:\n{\r\n \"a\": 1,8\t\"b\" [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 11 (line 2 column 9)\n\nReceived arguments:\n{\r\n \"a\": 1,9\n\tb\": [\n 1 ]\r\t}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 11 (line 2 column 9)\n\nReceived arguments:\n{\r\n \"a\": 1,u\n\t\"b\": [\n 1 ]\r7"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 11 (line 2 column 9)\n\nReceived arguments:\n{\r\n \"a\": 1,{\n\t\"b\": [\n 1]😀\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 11 (line 2 column 9)\n\nReceived arguments:\n{\r\n \"a\": 1.,\n\t\"x\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 13 (line 3 column 2)\n\nReceived arguments:\n{\r\n \"a\": 14\n\t\"b\": [\n1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 10 (line 2 column 8)\n\nReceived arguments:\n{\r\n \"a\": 1{,\n\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'u', \"{\r\n \"a\": u1,\n\t\"{b\":\"... is not valid JSON\n\nReceived arguments:\n{\r\n \"a\": u1,\n\t\"{b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {
+   "a": -18,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '}', ...\",\n\t\"b\": [\n} 1 ]\r9}\" is not valid JSON\n\nReceived arguments:\n{\r\n \"a\":1,\n\t\"b\": [\n} 1 ]\r9}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 9 (line 2 column 7)\n\nReceived arguments:\n{\r\n \"a\":1a\n\t\"b\": 8[\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 10 (line 2 column 8)\n\nReceived arguments:\n{\r\n \"a\":4 1,\n\t\"b\": n[\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 10 (line 2 column 8)\n\nReceived arguments:\n{\r\n \"a\":7 71,\n\t\"b\": [\n 1 \r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 7 (line 2 column 5)\n\nReceived arguments:\n{\r\n \"a\"a: 1,\n\t\"\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {
+   "fa": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 4 (line 2 column 2)\n\nReceived arguments:\n{\r\n 8\"a\":1,\n\t\"b\": [\n 1 ]\r}1"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 4 (line 2 column 2)\n\nReceived arguments:\n{\r\n aa\": 1,\n\t\"b\u0001\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 4 (line 2 column 2)\n\nReceived arguments:\n{\r\n e\"a\": 1,\n2\t\"e\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 24 (line 5 column 1)\n\nReceived arguments:\n{\r\n\"a\": 1,\n\t\"b\": [\n 1 ]\r"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 8 (line 2 column 6)\n\nReceived arguments:\n{\r\n\"a\":t1,E\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 14 (line 2 column 12)\n\nReceived arguments:\n{\r\n\"a: 1,\n\t\"b\": [\n1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 3 (line 2 column 1)\n\nReceived arguments:\n{\r\n1\"\": 1,\n\t\"n\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 3 (line 2 column 1)\n\nReceived arguments:\n{\r\n1\"a\": 1{\n\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 3 (line 2 column 1)\n\nReceived arguments:\n{\r\n6 \"a\": 1,\n\t\"b\": [\n 1 ]"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 3 (line 2 column 1)\n\nReceived arguments:\n{\r\na\": 1,\n\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 3 (line 2 column 1)\n\nReceived arguments:\n{\r\né \"a-: 1,\n\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {
+   "a": 1,
+   "b": [
+    1
+   ]
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 26 (line 3 column 16)\n\nReceived arguments:\n{\r \"a\": 1,\n\t\"b: [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', ...\"\n\t\"b\": [\n E1 ]\r}\" is not valid JSON\n\nReceived arguments:\n{\r\"a\": 1,\n\t\"b\": [\n E1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 2 (line 2 column 1)\n\nReceived arguments:\n{\r0\n \"a: 1,\n\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 2 (line 2 column 1)\n\nReceived arguments:\n{\rn \"a: 1,\n\t\"b\": [\n 1a]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 2 (line 2 column 1)\n\nReceived arguments:\n{\r{\n \"a\": 1,\n\ttb\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"\":\"пр\"ивет é😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {
+   "": "привет 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 24 (line 1 column 25)\n\nReceived arguments:\n{\"\":\"привет 😀\",\"n\":0.25"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 13 (line 2 column 5)\n\nReceived arguments:\n{\"\":{\"b\"\n:\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {
+   "": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 50 (line 1 column 51)\n\nReceived arguments:\n{\"\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}x"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"-path\"\"src/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 23 (line 1 column 24)\n\nReceived arguments:\n{\".\":\"привет 😀\",\"n\":-025}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 38 (line 1 column 39)\n\nReceived arguments:\n{\"3edits\":[{\"oldText\":\"a\\nb\",\"newText\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "5path": "rc/a.y",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 31 (line 2 column 1)\n\nReceived arguments:\n{\"9ommand\":\"ls ]-la\",\"timeout\"\n1.5e2}"
+ },
+ {
+  "arguments": {
+   "[a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 17 (line 1 column 18)\n\nReceived arguments:\n{\"[k\":\"ривет 😀\",u\"n\":-0.25}"
+ },
+ {
+  "arguments": {
+   "\\.": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n{\"a\"9{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxx5xxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n{\"a\":\t\"b\":{\"c\":\"xxxxxxxxxxxxxx\"xxxxxxxxxxxxxxx}}}"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxx1xxxxxxxxxxxx0xxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": "\t"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"a\":\"b\":{\"c\":\"x[xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"a\":\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxx\txxxxxx\"}e}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"a\":\"b\":{\"c\":\"xxxxxxxxxxxxxxx{xxxxaxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {
+   "a": "x\ny"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 61 (line 1 column 62)\n\nReceived arguments:\n{\"a\":1,\"a\":1,\"a\":1,\"a\":1,\"a\":1,\"a\":1,\"a\":1,\"a\":1,\"a\":1,\"a\":1,x}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"a\":4{\"b1\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxfxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'b', \"{\"a\":b{ab\":{\"c\"\"... is not valid JSON\n\nReceived arguments:\n{\"a\":b{ab\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxx.xxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"a\":{"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"a\":{\"\":{5c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {
+   "a": {
+    ".b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 49 (line 1 column 50)\n\nReceived arguments:\n{\"a\":{\"]b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}3"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n{\"a\":{\"b\""
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 10 (line 2 column 1)\n\nReceived arguments:\n{\"a\":{\"b\"\r{\"c\":\"xxxxxxxxxxxxxxxxxxxxxx\nxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n{\"a\":{\"b\".{\"c:\"xxxxxxxxxxxxxxxxxxxxxx1xxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n{\"a\":{\"b\":"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n{\"a\":{\"b\":\"c\":\"xxxxxxxxxxxx3xxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', ...\"{\"a\":{\"b\":E{\"c\"\"xxxx\"... is not valid JSON\n\nReceived arguments:\n{\"a\":{\"b\":E{\"c\"\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'E', ...\"{\"a\":{\"b\":E{\"c\":\"xxx\"... is not valid JSON\n\nReceived arguments:\n{\"a\":{\"b\":E{\"c\":\"xxxxxxxxxxx:xxxxxxxxxxxxxxxxxx\"}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected string in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"a\":{\"b\":n\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected string in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"a\":{\"b\":n\"c\":\"xxéxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 48 (line 1 column 49)\n\nReceived arguments:\n{\"a\":{\"b\":{\"\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 17 (line 1 column 18)\n\nReceived arguments:\n{\"a\":{\"b\":{\"3ct:\"xxx xxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 16 (line 1 column 17)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\""
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xx"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xx+xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxExxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxuxxxxxxxxxxxfxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxx\"xxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxx7xxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxnxxxxxxxxx\txxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxx\u0001xxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 24 (line 1 column 25)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxx"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxx xxxxxxxxxxxnxxxxxx:xxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 25 (line 1 column 26)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxx"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxx\nxxxxxxxxxxxxxxxx,xxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxx2xxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxexxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxx0xxxxxxxx:xxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxx8xxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxx[xxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxexxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxtxxx9xxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxx\txxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxtxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxx0xxxxxxxxx9xxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxx8xxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxx\txxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxx,xxxxxxxxxxx😀"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 50 (line 1 column 51)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxuxxxxxxxxxxxx\"}}}\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 35 (line 1 column 36)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxx"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxx,xxxxxxxx\tx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxx\u0001xxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxx3xxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxx\rxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxx+xxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxx5xxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 44 (line 1 column 45)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx2"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 47 (line 1 column 48)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\".}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 47 (line 1 column 48)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"f}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 49 (line 1 column 50)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}1}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 49 (line 1 column 50)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}2"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 50 (line 1 column 51)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}+"
+ },
+ {
+  "arguments": {
+   "a": {
+    "b": {
+     "c": "xxxxxxxxxxxxx😀xxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'x', ...\"{\"b\":{\"c\":xxxxxaxxxx\"... is not valid JSON\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":xxxxxaxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'é', ...\"{\"b\":{\"c\":éxxxxxxxxx\"... is not valid JSON\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\":éxxxxxxxxxxxxxxxxx{xxxxxxxx\rxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 14 (line 1 column 15)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c\"xxxxxxx]xxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 16 (line 1 column 17)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c4:\"xxxxxxxxxx0xxxxxxxxxxxxxxxxxx.xx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n{\"a\":{\"b\":{\"c:\"xxxxxxxxxxxxxxxxxxxxxxxxxtxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"a\":{\"b\":{:\"c\":\"xxxxxxxxxxxxuxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"a\":{\"b\":{c\":\"xxxxx6xxxxxxxxxxxxxxxxxxx\rxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"a\":{\"b\":{c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '}', ...\"{\"a\":{\"b\":}{\"c\":\"xxx\"... is not valid JSON\n\nReceived arguments:\n{\"a\":{\"b\":}{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n{\"a\":{\"b\"{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"7}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n{\"a\":{\"b\"{:{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {
+   "a": {
+    "bt": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"a\":{bb\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n{\"a\"]:{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n{\"a\"u:{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {
+   "a4": {
+    "b": {
+     "c": "xxxx9xxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a9": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxx,xxxéxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {
+   "a:": {
+    "b": {
+     "c": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"a:{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxx8xxxxxxxxxxxxx\"}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"a:{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"a\\:{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {
+   "ab": {
+    "b": {
+     "c": "xxxxxx8xxxxxxxxxxxxxxxxxxxxxxx"
+    }
+   }
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"ath\":\"src/a.4py\",\"limit\":t10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'l', ...\"tomEmand\":ls -la\",\"t\"... is not valid JSON\n\nReceived arguments:\n{\"c\tomEmand\":ls -la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"c4mmand\"8:\"ls -la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 34 (line 1 column 35)\n\nReceived arguments:\n{\"cmma.d\":\"ls -la\",\"timeout\":1.5e2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 33 (line 1 column 34)\n\nReceived arguments:\n{\"cmmand\":\t\"ls -la\",\"timeout\":1.5u2}"
+ },
+ {
+  "arguments": {
+   "cmmand": "ls -la",
+   "tim out": 150
+  }
+ },
+ {
+  "arguments": {
+   "cmmand": "ls -la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n{\"co"
+ },
+ {
+  "arguments": {
+   "co4mand": "lsn-la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"com\"and\":\"ls -la\",\"timeout\":1.5e[2}"
+ },
+ {
+  "arguments": {
+   "com0n": "ls -la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 37 (line 1 column 38)\n\nReceived arguments:\n{\"com2mand\":\"ls -la\",\"timeout\":1.5e2}1"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 31 (line 1 column 32)\n\nReceived arguments:\n{\"comand\":\"ls -la\",\"timeout\":1.ée:}"
+ },
+ {
+  "arguments": {
+   "comand": "ls -la",
+   "timeout": 1500
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"comand\":\"lés -la\",atimeout\":1.5e2}"
+ },
+ {
+  "arguments": {
+   "comanéa": "ls -la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "comfmand": "ls -la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "comm+nd": "l -a",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"comm0nd\"\"ls -la\",\"timeout\":1.5e2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 22 (line 1 column 23)\n\nReceived arguments:\n{\"comm3nd\":\"ls -la\",\"\"imeout\":1.5e2}"
+ },
+ {
+  "arguments": {
+   "commEand": "ls -la",
+   "tim6out": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n{\"comma"
+ },
+ {
+  "arguments": {
+   "comma nd": "ls -la",
+   ".t+imeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "comma[nd": "ls -la",
+   "tim2out": 150
+  }
+ },
+ {
+  "arguments": {
+   "commad": "ls -la",
+   "timeout": 1500
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Exponent part is missing a number in JSON at position 32 (line 1 column 33)\n\nReceived arguments:\n{\"comman\":\"ls -la\",\"imeout\":1.5e\t2}"
+ },
+ {
+  "arguments": {
+   "command\t": "ls -la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"command\"\":\"ls-la\",\"timeout\":1.ee2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"command\"5\"ls -la\",\"t\\imeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\u0001', ...\"\"command\":\u0001ls-la\",\"t\"... is not valid JSON\n\nReceived arguments:\n{\"command\":\u0001ls-la\",\"timeout}\":1.5e2}"
+ },
+ {
+  "arguments": {
+   "command": "\\s 5-la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"command\":\"l -la\"3\"timeou\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '+', ...\"\"timeout\":+1.5e2}\" is not valid JSON\n\nReceived arguments:\n{\"command\":\"l -laE\",\"timeout\":+1.5e2}"
+ },
+ {
+  "arguments": {
+   "command": "l5 -la",
+   "tmeout": 1500
+  }
+ },
+ {
+  "arguments": {
+   "command": "l: -la",
+   "timeout": 1500
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 14 (line 1 column 15)\n\nReceived arguments:\n{\"command\":\"ls"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Exponent part is missing a number in JSON at position 35 (line 1 column 36)\n\nReceived arguments:\n{\"command\":\"ls\r-la\",\"timeout\":1.5Ee2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n{\"command\":\"ls "
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 16 (line 1 column 17)\n\nReceived arguments:\n{\"command\":\"ls -"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 17 (line 1 column 18)\n\nReceived arguments:\n{\"command\":\"ls -\"la\",\"timeout\":1.5e2n}"
+ },
+ {
+  "arguments": {
+   "command": "ls -9a",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls -l\u0001",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls -l",
+   "timeut": 1500
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"command\":\"ls -l,\"tieout\":1.5e2}"
+ },
+ {
+  "arguments": {
+   "command": "ls -lEa",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls -la\u0001",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"command\":\"ls -la\"\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"command\":\"ls -la\"\"timeout\":1.5fe2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"command\":\"ls -la\"\"timeout:1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"command\":\"ls -la\","
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 35 (line 1 column 36)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"5imeout\":1.5e2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 32 (line 1 column 33)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"Eimeout\":1}.5e2,"
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "imeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 22 (line 1 column 23)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"t"
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "t2meout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "tieoutt": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 36 (line 1 column 37)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"tieoutu\":1.5e20"
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "tieut": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 24 (line 1 column 25)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"tim"
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "timeot": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 31 (line 1 column 32)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeou\":1.\"2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 33 (line 1 column 34)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeouft\":1.]5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 33 (line 1 column 34)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeouft\":1.e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 29 (line 1 column 30)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeout\"1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 32 (line 1 column 33)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeout\":1.\"5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 33 (line 1 column 34)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeout\":1.5.}"
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "timeout": 1.52
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 36 (line 1 column 37)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeout\":1.5e2}:"
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "timeout": 1500
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', ...\"\"timeout\":a10.55e2}\" is not valid JSON\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeout\":a10.55e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 29 (line 1 column 30)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timeout\"b145e2}"
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "timeout6": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "timet": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 35 (line 1 column 36)\n\nReceived arguments:\n{\"command\":\"ls -la\",\"timout\":1.5e2}n"
+ },
+ {
+  "arguments": {
+   "command": "ls -la",
+   "t😀imeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"command\":\"ls -la\",aimeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"command\":\"ls -la\"3,\"timeout\":10.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"command\":\"ls -la,\"timeout\"1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"command\":\"ls -la,\"timeout\":.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n{\"command\":\"ls -la:,\"t{imeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n{\"command\":\"ls -la},\"t\nimeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 37 (line 1 column 38)\n\nReceived arguments:\n{\"command\":\"ls -{la\",\"timeout5:1.5x2}"
+ },
+ {
+  "arguments": {
+   "command": "ls -éla",
+   "ti3meut": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 29 (line 1 column 30)\n\nReceived arguments:\n{\"command\":\"ls 3-la\",\"tmeout\"n1.5e2}"
+ },
+ {
+  "arguments": {
+   "command": "ls [la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"command\":\"ls la\"-\"timeout\":1.5e2"
+ },
+ {
+  "arguments": {
+   "command": "ls u-[la",
+   "tieout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls-la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls2 -la",
+   "t:meout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls4 -la",
+   "tEmeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "command": "ls7 -la",
+   "ti1meout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 33 (line 1 column 34)\n\nReceived arguments:\n{\"command\":\"lsb -la\",\"timeout\":1.e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'b', ...\"\"command\":b\"ls -la\",\"... is not valid JSON\n\nReceived arguments:\n{\"command\":b\"ls -la\",\"timeout\":1.52}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'l', ...\"\"command\":l -la\",\"ti\"... is not valid JSON\n\nReceived arguments:\n{\"command\":l -la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'l', ...\"\"command\":ls -la\",\"t\"... is not valid JSON\n\nReceived arguments:\n{\"command\":ls -la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"command\"a\"ls-la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"command\"u\"ls -la\",\"tieo6t\":1.5e2}"
+ },
+ {
+  "arguments": {
+   "command,": "ls-la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"command:bls -la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Exponent part is missing a number in JSON at position 34 (line 1 column 35)\n\nReceived arguments:\n{\"commnd\":\"ls+ -la\",\"timeout\":1.5e:2}"
+ },
+ {
+  "arguments": {
+   "commxand": "lsx-la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "comnd": "ls -la",
+   "timeot": 150
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Exponent part is missing a number in JSON at position 35 (line 1 column 36)\n\nReceived arguments:\n{\"ctommand\":\"ls -la\",\"timeout\":1.5e}"
+ },
+ {
+  "arguments": {
+   "dits": [
+    {
+     "old:Text": "a\nb",
+     "newTet": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 4 (line 1 column 5)\n\nReceived arguments:\n{\"ed"
+ },
+ {
+  "arguments": {
+   "edis": [
+    {
+     "olbText": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"edis\":[{\"oldText\"\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n{\"edis\":[{\"oldText\":\"a\\nb\",énewText\":\"c\"}],\"path\":\"x\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n{\"edit\":[{\"oldText\":\"a\\nb\",4\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n{\"edit\"s\":[{\"oldText\":\"a\\nb\",ne2wText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"edit:s\":[{\"oldText\":\"a\\n\",newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 45 (line 1 column 46)\n\nReceived arguments:\n{\"edit:s\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],[\"path\":\"x\"\u0001}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'c', ...\"ewTex\\r\":\tc\"}],\"path\"... is not valid JSON\n\nReceived arguments:\n{\"editfs\":[{\"oldText\":\"a\\nb\",\"newTex\r\":\tc\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n{\"edits"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n{\"edits\t:[{\"olText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"edits\"7:[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"edits\":6[{\"oldTe4xt\":\"a\\nb\",\"newText\":\"c\"😀}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n{\"edits\":["
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"edits\":[\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"edits\":[\"oldText\":\"a\\nb\",\"newText\":\"c\"}],pbath\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"edits\":[6\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n{\"edits\":[{\"\tldText\"\"a\\nb\",\"newText\":\"c\"],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', ...\"{\"odText\":a\\nb\",\"new\"... is not valid JSON\n\nReceived arguments:\n{\"edits\":[{\"odText\":a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"edits\":[{\"odTxt:\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 26 (line 1 column 27)\n\nReceived arguments:\n{\"edits\":[{\"ol\u0001dText\"\"a\\nb\",\"newText\":\"c\"}],\"p,ath\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 16 (line 1 column 17)\n\nReceived arguments:\n{\"edits\":[{\"oldT"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldT\next": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldT xt": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n{\"edits\":[{\"oldTet\":\"a\\nb\",aewText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 52 (line 1 column 53)\n\nReceived arguments:\n{\"edits\":[{\"oldTex\nt\":\"a\\nb\",\"newTex{t\":\"c\"},\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldTex5": "a\nb",
+     "newTfxt": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 29 (line 1 column 30)\n\nReceived arguments:\n{\"edits\":[{\"oldTexet\":\"a\\nb\",x\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 22 (line 1 column 23)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 44 (line 1 column 45)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"0\\nb\",\"newText\":\"c\"}],path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 54 (line 1 column 55)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"7a\\nb\",\"newText\":\"c\"}],\"ath\":\"x\".}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": ":\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 25 (line 1 column 26)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\n"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\n",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 30 (line 2 column 1)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\n0b\",\rnewText\":\"c\"}],\"pa\u0001h\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\n:b",
+     "newT2ext": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\""
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\","
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "3newTex8": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"n"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 31 (line 1 column 32)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"ne"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 45 (line 1 column 46)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newTe5xt\":\"c\"}],7\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newTex": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 37 (line 1 column 38)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\"\":\"c\"}],tpath:\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 39 (line 1 column 40)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\""
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newText": ""
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newText": "2"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 40 (line 1 column 41)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 41 (line 1 column 42)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 41 (line 1 column 42)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 41 (line 1 column 42)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 43 (line 1 column 44)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}]"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "5path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "\\path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 49 (line 1 column 50)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"ath\"u\"x\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 46 (line 1 column 47)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"p"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 49 (line 1 column 50)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 50 (line 1 column 51)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 53 (line 1 column 54)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 54 (line 1 column 55)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"e"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 55 (line 1 column 56)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x3}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 44 (line 1 column 45)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 44 (line 1 column 45)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],x\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 43 (line 1 column 44)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}]E\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 43 (line 1 column 44)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}]a\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newText": "t"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newTtext": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newTxt": "c"
+    }
+   ],
+   "pth": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newext": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "newxext": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb",
+     "new}ext": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",0newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",3\"ewText\":\"c\"}],\"path\":\"xn\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\",newText\":\"c3\"}],\"pfth\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\"],\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb\"b,\"newText\"9\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\nb0",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 44 (line 1 column 45)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nb7\",\"newText\":\"c\"}]e,\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 42 (line 1 column 43)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\nbE\",\"newText\":\"c\"u}],\"5path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 43 (line 1 column 44)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"a\\neb\",\"newTxt\":\"c\"}]u,\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "a\n}b",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "aanb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldText": "ab\nb",
+     "newText": "c"
+    }
+   ],
+   "pah": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 40 (line 1 column 41)\n\nReceived arguments:\n{\"edits\":[{\"oldText\":\"anb\",\"newText\":\"c\"],\"patth\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'a', ...\"\"oldText\":a\\nb\",\"new\"... is not valid JSON\n\nReceived arguments:\n{\"edits\":[{\"oldText\":a\\nb\",\"newTextx:\"c\"}],\"path\":\"x\""
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldTextE": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "pat3h": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"edits\":[{\"oldTexut\":\"a\\nb8,\"newEText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldTxt": "a\nb",
+     "ewText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 53 (line 1 column 54)\n\nReceived arguments:\n{\"edits\":[{\"oldTxt\":\"a\\nb\",\"newText\":\"c\"}],\"patu\":\"x\"-}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 42 (line 1 column 43)\n\nReceived arguments:\n{\"edits\":[{\"oldext\":\"a\\nb\",\"newText\":\"c\"}]8,\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "oldnext": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "old}ext": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edits": [
+    {
+     "uldText": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"edits\":[{oldText\":\"a\\nb\",\"newText\":\"c\"}],\tpath\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"edits\":[{oldText\":\"anb\",\"newText\":\"c\"}]t,\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 40 (line 1 column 41)\n\nReceived arguments:\n{\"edits\":{\"oldTex\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 41 (line 1 column 42)\n\nReceived arguments:\n{\"edits\":{\"oldText\":\"a\\b\",\"newTexft\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"edits\"[{\"oldText\":\"a\\n\",\"newText\":\"c\"}],\"path\":\".x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"edits:[{\"old5Text\":\"a\\n2\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"edits:[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\"u:\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n{\"edits\\\"9[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {
+   "edt[s": [
+    {
+     "oldText": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path": "x"
+  }
+ },
+ {
+  "arguments": {
+   "edts": [
+    {
+     "oldText": "a\nb",
+     "newText": "c"
+    }
+   ],
+   "path\r": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 53 (line 1 column 54)\n\nReceived arguments:\n{\"eedits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":0\"x\"}"
+ },
+ {
+  "arguments": {
+   "efits": [
+    {
+     "oldText": "a\nb",
+     "newTe\\xt": "c"
+    }
+   ],
+   "p😀th": "x"
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 23 (line 1 column 24)\n\nReceived arguments:\n{\"e}dits\":[{\"oldText[:\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 3 (line 1 column 4)\n\nReceived arguments:\n{\"k"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n{\"k\t:\"привт 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 5 (line 2 column 1)\n\nReceived arguments:\n{\"k\"\r\"привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"k\":\"\nпривет 😀\"\"n\":-025}"
+ },
+ {
+  "arguments": {
+   "k": "uпривет 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 17 (line 1 column 18)\n\nReceived arguments:\n{\"k\":\"uпривет 😀\"0,\"n\":-0.25-}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n{\"k\":\"п"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 17 (line 1 column 18)\n\nReceived arguments:\n{\"k\":\"п-ивет 😀,\"n\":-0.5}"
+ },
+ {
+  "arguments": {
+   "k": "п8ривет 😀",
+   "n": -0.5
+  }
+ },
+ {
+  "arguments": {
+   "k": "п}ривет 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {
+   "k": "пр\u0001вет 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {
+   "k": "прве 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {
+   "k": "првет 😀",
+   "": -0.252
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 16 (line 1 column 17)\n\nReceived arguments:\n{\"k\":\"првет 😀\",+E\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n{\"k\":\"при"
+ },
+ {
+  "arguments": {
+   "k": "при5ет 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {
+   "k": "при7ет 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 12 (line 1 column 13)\n\nReceived arguments:\n{\"k\":\"приaе\"т 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 23 (line 1 column 24)\n\nReceived arguments:\n{\"k\":\"приeет 😀\",\"n\":-025}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n{\"k\":\"привuет 😀\",\"n\"E:-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"k\":\"приве"
+ },
+ {
+  "arguments": {
+   "k": "приве  😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {
+   "k": "приве т 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {
+   "k": "приве 😀",
+   "n": 0.25
+  }
+ },
+ {
+  "arguments": {
+   "k": "приве 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n{\"k\":\"привет "
+ },
+ {
+  "arguments": {
+   "k": "привет ",
+   "na": -0.25
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 23 (line 1 column 24)\n\nReceived arguments:\n{\"k\":\"привет é\",\"n\":-0.-5}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n{\"k\":\"привет 😀"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 16 (line 1 column 17)\n\nReceived arguments:\n{\"k\":\"привет 😀\""
+ },
+ {
+  "arguments": {
+   "k": "привет 😀",
+   "": -0.25
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "No number after minus sign in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"\":-\\0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\"0[.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "No number after minus sign in JSON at position 22 (line 1 column 23)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 24 (line 1 column 25)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-0. 25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 26 (line 1 column 27)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-0.25"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 26 (line 1 column 27)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-0.25:}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-0.25}6"
+ },
+ {
+  "arguments": {
+   "k": "привет 😀",
+   "n": -0.2
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 24 (line 1 column 25)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-0.:25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated fractional number in JSON at position 24 (line 1 column 25)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-0.é}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "No number after minus sign in JSON at position 22 (line 1 column 23)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-t0.2{}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "No number after minus sign in JSON at position 22 (line 1 column 23)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":-x0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 22 (line 1 column 23)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\":2-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\"a:-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\"t:-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\"😀-0.5}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 29 (line 1 column 30)\n\nReceived arguments:\n{\"k\":\"привет 😀\",\"n\\\":-0.u25}"
+ },
+ {
+  "arguments": {
+   "k": "привет 😀",
+   "na": -0.2
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 17 (line 1 column 18)\n\nReceived arguments:\n{\"k\":\"привет 😀\",f\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 17 (line 1 column 18)\n\nReceived arguments:\n{\"k\":\"привет 😀\",n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 17 (line 1 column 18)\n\nReceived arguments:\n{\"k\":\"привет 😀,\"n\"6-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 21 (line 1 column 22)\n\nReceived arguments:\n{\"k\":\"привет 😀6\",\"n\"5:00.25}"
+ },
+ {
+  "arguments": {
+   "k": "привет,😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {
+   "k": "привет\\ 😀",
+   "n": -0.25
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected number in JSON at position 22 (line 1 column 23)\n\nReceived arguments:\n{\"k\":\"приет 😀\",\"n\":-025}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '+', \"{\"k\":+\"6привет \"... is not valid JSON\n\nReceived arguments:\n{\"k\":+\"6привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "No number after minus sign in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"k\":-\"привaет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"k\":8\"привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or ']' after array element in JSON at position 20 (line 1 column 21)\n\nReceived arguments:\n{\"k\":[\"првет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'п', \"{\"k\":[привет 😀\"\"... is not valid JSON\n\nReceived arguments:\n{\"k\":[привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\\', \"{\"k\":\\\"привет \ud83d\"... is not valid JSON\n\nReceived arguments:\n{\"k\":\\\"привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token ']', \"{\"k\":]привет 😀\"... is not valid JSON\n\nReceived arguments:\n{\"k\":]привет 😀\",\"n\":-5\r.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected string in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"k\":n\"приет 😀\",\"n\"\t-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '}', \"{\"k\":}привет 😀\"... is not valid JSON\n\nReceived arguments:\n{\"k\":}привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'п', \"{\"k\":привет 😀\"\"... is not valid JSON\n\nReceived arguments:\n{\"k\":привет 😀\",\"n\"-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'п', \"{\"k\":привет 😀\"\"... is not valid JSON\n\nReceived arguments:\n{\"k\":привет 😀\",\"n\":-b.25"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'п', \"{\"k\":привет 😀\"\"... is not valid JSON\n\nReceived arguments:\n{\"k\":привет 😀\",é\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'п', \"{\"k\":привет{3😀\"... is not valid JSON\n\nReceived arguments:\n{\"k\":привет{3😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"k3:\"привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n{\"k:\"привет 😀\",\"n\":-0-825}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n{\"k:\"привет 😀\",\"n\":-0.285}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n{\"k:\"привет 😀\",\"n\":60.25}6"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 6 (line 1 column 7)\n\nReceived arguments:\n{\"k{.\"привет 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {
+   "ommand": "ls -la",
+   "timeout": 150
+  }
+ },
+ {
+  "arguments": {
+   "p": "C:\\dir\f"
+  }
+ },
+ {
+  "arguments": {
+   "p": "a\\qb"
+  }
+ },
+ {
+  "arguments": {
+   "pa\nth": "src/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"pa.th\":\"src/a.py\",\"limit\":10f"
+ },
+ {
+  "arguments": {
+   "pa7th": "src/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "paEh": "src/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "pah": "\\src/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"pah\":\"src/a,.py\",\"limit\":10}t"
+ },
+ {
+  "arguments": {
+   "pah": "src/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 27 (line 1 column 28)\n\nReceived arguments:\n{\"pah\":\"src/a.py\",\"limit\":1😀0}"
+ },
+ {
+  "arguments": {
+   "panth": "src/a.9y",
+   "lim{it": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 5 (line 1 column 6)\n\nReceived arguments:\n{\"pat"
+ },
+ {
+  "arguments": {
+   "pat\nh": "src/a.py",
+   "lii": 10
+  }
+ },
+ {
+  "arguments": {
+   "pat": "bsrc/a.p",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "pat": "src/a.Epyn",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "pat": "src/apEy",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 26 (line 1 column 27)\n\nReceived arguments:\n{\"pat3\":\"src/a.py\",\"limit\"10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 31 (line 1 column 32)\n\nReceived arguments:\n{\"path\":\"\rrc/a.py\",\"9limit\":10"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'é', ...\"\",\"limit\":é0}\" is not valid JSON\n\nReceived arguments:\n{\"path\":\".rc/a.py\",\"limit\":é0}"
+ },
+ {
+  "arguments": {
+   "path": "rc/a.py",
+   "l.imit": 110
+  }
+ },
+ {
+  "arguments": {
+   "path": "rc/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"path\":\"s"
+ },
+ {
+  "arguments": {
+   "path": "s rc/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected non-whitespace character after JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"path\":\"s4c/a.py\",\"limit\":10}}"
+ },
+ {
+  "arguments": {
+   "path": "sEc/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "s\\c/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "s\rc/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 11 (line 1 column 12)\n\nReceived arguments:\n{\"path\":\"sr"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 29 (line 1 column 30)\n\nReceived arguments:\n{\"path\":\"sr/a.py\",\"léimit:10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 12 (line 1 column 13)\n\nReceived arguments:\n{\"path\":\"src"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n{\"path\":\"src\"/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {
+   "path": "src.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 13 (line 1 column 14)\n\nReceived arguments:\n{\"path\":\"src/"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"path\":\"src/.py\",x\"lim-it\":10}"
+ },
+ {
+  "arguments": {
+   "path": "src/a\u0001pyé",
+   "limt": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 15 (line 1 column 16)\n\nReceived arguments:\n{\"path\":\"src/a."
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 29 (line 1 column 30)\n\nReceived arguments:\n{\"path\":\"src/a.p\",\"limi+t\":10"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"path\":\"src/a.p\",\"limit\":10"
+ },
+ {
+  "arguments": {
+   "path": "src/a.p0y",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"path\":\"src/a.pfy\",\"li7it:10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"path\":\"src/a.py\""
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"al9imit\"\\:10}"
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "imit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "inmit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "l7mi1t": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "l8imit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "lEmit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"liit\":10"
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "liit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 23 (line 1 column 24)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"lim"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"lim0it:10}"
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "limi4t": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "limi[t": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unterminated string in JSON at position 35 (line 1 column 36)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limit\u0001:10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 26 (line 1 column 27)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limit\"10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected end of JSON input\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limit\":"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 29 (line 1 column 30)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limit\":10t"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limit\":1\\0}"
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "limit": 1
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'e', ...\"\",\"limit\":e10}\" is not valid JSON\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limit\":e10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 26 (line 1 column 27)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limit\"f:10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 25 (line 1 column 26)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limt\"30}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 29 (line 2 column 1)\n\nReceived arguments:\n{\"path\":\"src/a.py\",\"limt\":10\r"
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "limt": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "lnimit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "src/a.py",
+   "uimit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"path\":\"src/a.py\",limi5t\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"path\":\"src/a.py\",limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"path\":\"src/a.py\"8,😀\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"path\":\"src/a.py[\",\"limit\":10"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 28 (line 1 column 29)\n\nReceived arguments:\n{\"path\":\"src/a.y\",\"limit\":10"
+ },
+ {
+  "arguments": {
+   "path": "src/a.éy",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected double-quoted property name in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"path\":\"src/a3py\",élimit\":10}"
+ },
+ {
+  "arguments": {
+   "path": "src/apy",
+   "li5mit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 19 (line 1 column 20)\n\nReceived arguments:\n{\"path\":\"src/nb.py\"6\"limit\":10}"
+ },
+ {
+  "arguments": {
+   "path": "src2a.pye",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "srca\t.p",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "srca.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {
+   "path": "src{a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 30 (line 1 column 31)\n\nReceived arguments:\n{\"path\":\"src😀a.py\",\"limit\":10"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 18 (line 1 column 19)\n\nReceived arguments:\n{\"path\":\"}rc/a.py\"1\"limit:10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', \"{\"path\":src/a.py\",\"... is not valid JSON\n\nReceived arguments:\n{\"path\":src/a.py\",\"limit\"6:0}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 's', \"{\"path\":src/a.py\",\"... is not valid JSON\n\nReceived arguments:\n{\"path\":src/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'x', \"{\"path\":x\"src/a.}y\"... is not valid JSON\n\nReceived arguments:\n{\"path\":x\"src/a.}y\",\"limit\":10n"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 7 (line 1 column 8)\n\nReceived arguments:\n{\"path\"b:\"src/a.py+,\"limit\"f:10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n{\"path,:\"sr/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"path:\"src+/a.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"path:\"src/a.py\",\"limi\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"path:\"src/a.py0\",8\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 8 (line 1 column 9)\n\nReceived arguments:\n{\"path:\"src/a3.py\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 10 (line 1 column 11)\n\nReceived arguments:\n{\"path\\:\"src/a.py\",+limit\":10}"
+ },
+ {
+  "arguments": {
+   "pathx": "src/a.py",
+   "imit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ':' after property name in JSON at position 9 (line 1 column 10)\n\nReceived arguments:\n{\"pathx:\"sr+/a.py\",\"3limit\":10}"
+ },
+ {
+  "arguments": {
+   "pt": "}rc/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\\', ...\"\",\"limit\":\\10}\" is not valid JSON\n\nReceived arguments:\n{\"pth\":\"src/a.py\",\"limit\":\\10}"
+ },
+ {
+  "arguments": {
+   "p}th": "src/a.py",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected ',' or '}' after property value in JSON at position 50 (line 1 column 51)\n\nReceived arguments:\n{\"ua\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxx7xxxxx\"}}"
+ },
+ {
+  "arguments": {
+   "xpath": "src/a.py",
+   "lmit": 10
+  }
+ },
+ {
+  "arguments": {
+   "épata": "src/a.y",
+   "limit": 10
+  }
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{+\"edits\":[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{,\"pat3h\":\"src/a.py,\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{,. \"a\": 1,\n\t\"b\": [\n1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{.éedits\\:[{\"oldText\":\"a\\nb\",\"newText\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{0\"edits\":[{\"oldText\"+:\"a\\nb\",\"newTex5t\":\"c\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{1n2"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{2\"a\":{\"b\":{\"c\":\"xxxxxxxxxx{xxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{2n"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{3command\":\"ls -la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{5\"path\":\"src/a.p:y\",\"limit\":10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{E\r\n \"a\": 1,\n\t\"b\":u[\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{[\"a\"é:{\"b\":\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{]path\":\"src/a.py\",\"limit\"10}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{a\":{\"9b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{a\":{\"b\":]\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{a\":{\"b\":{\"\"\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}}}b"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{a\":{\"b\":{\"c\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}\\}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{a1:{\"b\":{\"c\":\"xxxxxxxxxxbxxxxxxxxxxxxxxxxxxxx\"}}}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{b\r\n \"a\": 1,\n\t\"b\": \n 1\r ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{b\"\":\"привт 😀\",\"n\":-0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{command\":\"ls -la\",\"timeout\":1.5e2}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{n\"k\":\"привет 😀\",\"n\":\"0.25}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{t\"e😀dits\":[{\"oldText\":\"a\\nb\",\"newText\":\"tc\"}],\"path\":\"x\"}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Expected property name or '}' in JSON at position 1 (line 1 column 2)\n\nReceived arguments:\n{u\r \"a\": ,\n\t\"b\": [\n 1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'é', \"éstr\" is not valid JSON\n\nReceived arguments:\néstr"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token 'é', \"é{\r\n \"a\": \"... is not valid JSON\n\nReceived arguments:\né{\r\n \"a\": 1,\n\t\"b\":b [\n1 ]\r}"
+ },
+ {
+  "arguments": {},
+  "argumentsError": "Unexpected token '\ud83d', \"😀\"stfr\"\" is not valid JSON\n\nReceived arguments:\n😀\"stfr\""
+ }
+]

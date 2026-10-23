@@ -41,8 +41,11 @@ async def test_compaction_checkpoint_survives_resume(config: AgentConfig) -> Non
         resumed.dispose()
 
 
-@pytest.mark.parametrize("stop_reason", ["error", "length", "aborted", "toolUse"])
-async def test_failed_summary_does_not_commit_checkpoint(config: AgentConfig, stop_reason) -> None:
+@pytest.mark.parametrize(
+    ("stop_reason", "error"),
+    [("error", RuntimeError), ("length", RuntimeError), ("aborted", CompactionAbortedError)],
+)
+async def test_failed_summary_does_not_commit_checkpoint(config: AgentConfig, stop_reason, error) -> None:
     config.compaction.keep_recent_tokens = 10
     failed = AssistantMessage(
         content=[TextBlock(text="partial summary")], stop_reason=stop_reason, error_message="failure"
@@ -52,7 +55,7 @@ async def test_failed_summary_does_not_commit_checkpoint(config: AgentConfig, st
     try:
         await populate(session)
         before = session.store.entries
-        with pytest.raises(RuntimeError):
+        with pytest.raises(error):
             await session.compact()
         assert session.store.entries == before
     finally:

@@ -33,7 +33,6 @@ def test_settings_order_nested_merge_and_policy_replacement(tmp_path, model):
             "model": "project",
             "retry": {"base_delay_ms": 3},
             "tool_execution": "parallel",
-            "max_parallel_tools": 2,
         },
     )
     save(explicit, {"model": "explicit", "permissions": {"read_only": True}})
@@ -42,7 +41,7 @@ def test_settings_order_nested_merge_and_policy_replacement(tmp_path, model):
     config = config_from_settings(project, model, settings)
     config.validate()
     assert config.permissions.read_only and config.permissions.rules == ()
-    assert config.tool_execution == "parallel" and config.max_parallel_tools == 2
+    assert config.tool_execution == "parallel"
     assert not any("KEY" in name for name in settings_environment(settings))
 
 
@@ -55,7 +54,7 @@ def test_settings_order_nested_merge_and_policy_replacement(tmp_path, model):
         '{"retry":{"typo":1}}',
         '{"compaction":{"enabled":"false"}}',
         '{"http_timeout":NaN}',
-        '{"max_parallel_tools":true}',
+        '{"max_parallel_tools":2}',
         '{"tool_execution":"invalid"}',
         '{"thinking_level":"invalid"}',
         '{"retry":{"base_delay_ms":2,"max_delay_ms":1}}',
@@ -97,7 +96,6 @@ async def test_cli_file_defaults_environment_cli_precedence_and_resume(tmp_path,
             "model": "file-model",
             "thinking_level": "high",
             "tool_execution": "parallel",
-            "max_parallel_tools": 2,
             "permissions": {"read_only": True},
             "compaction": {"enabled": False},
         },
@@ -147,3 +145,28 @@ async def test_cli_file_defaults_environment_cli_precedence_and_resume(tmp_path,
         finally:
             session.dispose()
     assert "synthetic-only" not in capsys.readouterr().out
+
+
+def test_thinking_budgets_merge_validate_and_reach_providers(tmp_path):
+    global_dir = tmp_path / "global"
+    project = tmp_path / "project"
+    save(global_dir / "settings.json", {"thinking_budgets": {"low": 1000, "high": 30000}})
+    save(project / ".pi-agent/settings.json", {"thinking_budgets": {"high": 20000}})
+    settings = load_settings(project, agent_dir=global_dir)
+    assert settings["thinking_budgets"] == {"low": 1000, "high": 20000}
+    for bad in ({"xhigh": 1}, {"low": -1}, {"low": 1.5}, {"low": True}, []):
+        save(project / ".pi-agent/settings.json", {"thinking_budgets": bad})
+        with pytest.raises(ValueError, match="thinking_budgets"):
+            load_settings(project, agent_dir=global_dir)
+
+    from pi_agent.providers import AnthropicProvider
+    from pi_agent.runtime_config import resolve_runtime
+
+    for environment in (
+        {"PI_PROVIDER": "anthropic", "ANTHROPIC_API_KEY": "k", "ANTHROPIC_MODEL": "m"},
+        {"OPENAI_API_KEY": "k", "OPENAI_MODEL": "m"},
+    ):
+        runtime = resolve_runtime(environment, thinking_budgets={"medium": 4000})
+        provider = cli._runtime_provider(runtime)
+        assert isinstance(provider, (AnthropicProvider, OpenAICompatProvider))
+        assert provider.thinking_budgets == {"medium": 4000}

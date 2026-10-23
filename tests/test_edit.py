@@ -3,19 +3,17 @@ from pathlib import Path
 import pytest
 
 from pi_agent.tools import EditTool
-from pi_agent.tools.edit import Edit, apply_edits, first_changed_line, generate_unified_patch
+from pi_agent.tools.edit import Edit, apply_edits, generate_diff_string, generate_unified_patch
 
 
-async def test_edit_rejects_invalid_utf8_without_changing_file(tmp_path: Path) -> None:
-    # CODE_REVIEW 4.8: decoding with replacement silently corrupted unrelated bytes.
+async def test_edit_decodes_invalid_utf8_with_replacement_like_pi(tmp_path: Path) -> None:
+    # pi reads files with readFile(path, "utf-8"), so invalid bytes become U+FFFD on write.
     path = tmp_path / "latin1.py"
-    original = b"caf\xe9 = 1\nx = 2\n"
-    path.write_bytes(original)
-    with pytest.raises(ValueError, match="UTF-8"):
-        await EditTool(tmp_path).execute(
-            "c", {"path": path.name, "edits": [{"oldText": "x = 2", "newText": "x = 3"}]}
-        )
-    assert path.read_bytes() == original
+    path.write_bytes(b"caf\xe9 = 1\nx = 2\n")
+    await EditTool(tmp_path).execute(
+        "c", {"path": path.name, "edits": [{"oldText": "x = 2", "newText": "x = 3"}]}
+    )
+    assert path.read_bytes() == "caf\ufffd = 1\nx = 3\n".encode()
 
 
 async def test_edit_preserves_bom_crlf_and_rejects_overlap(tmp_path: Path) -> None:
@@ -109,10 +107,16 @@ def test_two_disjoint_edits_on_one_fuzzy_line() -> None:
     assert result.new_content == 'a = 22; b = "y"; keep = "z"\n'
 
 
-def test_fuzzy_preserves_last_whitespace_only_line() -> None:
+def test_fuzzy_on_trailing_whitespace_only_line_fails_like_pi() -> None:
+    # pi's applyReplacementsPreservingUnchangedLines refuses this input too.
     source = "a = “x”\n   "
-    result = apply_edits(source, [Edit('a = "x"', 'a = "y"')], "file.txt")
-    assert result.new_content == 'a = "y"\n   '
+    with pytest.raises(ValueError, match="different line count"):
+        apply_edits(source, [Edit('a = "x"', 'a = "y"')], "file.txt")
+
+
+def test_overlapping_occurrences_count_like_pi() -> None:
+    # pi counts with split(), so "aa" occurs once in "aaa" and the first match is replaced.
+    assert apply_edits("aaa\n", [Edit("aa", "new")], "file.txt").new_content == "newa\n"
 
 
 @pytest.mark.parametrize(
@@ -120,9 +124,8 @@ def test_fuzzy_preserves_last_whitespace_only_line() -> None:
     [
         ('x = "same"\nx = “same”\n', [Edit('x = "same"', 'x = "new"')], "Found 2"),
         ("hello world   \nhello world\n", [Edit("hello world\n", "new\n")], "Found 2"),
-        ("aaa\n", [Edit("aa", "new")], "Found 2"),
         ("alpha = “x”\n", [Edit('alpha = "x"', "a"), Edit('= "x"', "b")], "overlap"),
-        ("alpha = “x”   \n", [Edit("   ", "\t"), Edit('alpha = "x"', 'alpha = "y"')], "empty after fuzzy"),
+        ("alpha = “x”   \n", [Edit("   ", "\t"), Edit('alpha = "x"', 'alpha = "y"')], "Found 11"),
         ("x = 1\n", [Edit("x = 1", "x = 1")], "No changes"),
         ("x = 1\n", [Edit("missing", "new")], "Could not find"),
         ("x = 1\n", [Edit("", "new")], "must not be empty"),
@@ -152,7 +155,7 @@ async def test_fuzzy_bom_crlf_and_patch_apply(tmp_path: Path) -> None:
     patch_root = tmp_path / "patch-check"
     patch_root.mkdir()
     (patch_root / path.name).write_text(source.replace("\r\n", "\n"), encoding="utf-8")
-    patch = result.structured_content["patch"]
+    patch = result.details["patch"]
     applied = subprocess.run(
         ["git", "apply", "--no-index", "-p0", "-"],
         cwd=patch_root,
@@ -162,7 +165,7 @@ async def test_fuzzy_bom_crlf_and_patch_apply(tmp_path: Path) -> None:
     )
     assert applied.returncode == 0, applied.stderr
     assert (patch_root / path.name).read_text() == expected.replace("\r\n", "\n")
-    assert result.details["first_changed_line"] == 2
+    assert result.details["firstChangedLine"] == 2
 
 
 @pytest.mark.parametrize(
@@ -198,4 +201,4 @@ def test_patch_without_final_newline_is_applicable(tmp_path: Path, source: str, 
     ],
 )
 def test_first_changed_line(old: str, new: str, line: int | None) -> None:
-    assert first_changed_line(old, new) == line
+    assert generate_diff_string(old, new)[1] == line

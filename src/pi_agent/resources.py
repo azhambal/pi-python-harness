@@ -116,21 +116,37 @@ class ResourceSnapshot:
         return ResourceSnapshot(self.settings, self.skills, tuple(diagnostics[:MAX_SKILLS]))
 
     def prompt_section(self, tool_names: set[str]) -> str | None:
+        """Pi's ``formatSkillsForPrompt(...).trim()``; the prompt builder adds the tag."""
         reader = "read" if "read" in tool_names else "bash" if "bash" in tool_names else None
         visible = [skill for skill in self.skills if not skill.disable_model_invocation]
         if not reader or not visible:
             return None
-        start = f"<skills>\nUse {reader} to load SKILL.md when its description matches the task. Resolve references against the skill directory.\n<available_skills>\n"
-        end = "</available_skills>\n</skills>"
-        notice = "Catalog truncated; explicit skill commands and the skill list still include every discovered skill.\n"
+        lines = [
+            "The following skills provide specialized instructions for specific tasks.",
+            "Use the read tool to load a skill's file when the task matches its description."
+            if reader == "read"
+            else "Use bash to load a skill's file when the task matches its description.",
+            "When a skill file references a relative path, resolve it against the skill directory (parent of "
+            "SKILL.md / dirname of the path) and use that absolute path in tool commands.",
+            "",
+            "<available_skills>",
+        ]
+        end = "</available_skills>"
+        # Not in Pi: a byte budget keeps very large catalogs out of every request.
+        notice = "Catalog truncated; explicit skill commands and the skill list still include every discovered skill."
         budget = self.settings.prompt_max_bytes
-        rendered: list[str] = []
         for skill in visible:
-            row = f"<skill><name>{escape(skill.name)}</name><description>{escape(skill.description)}</description><location>{escape(skill.file_path)}</location></skill>\n"
-            if len((start + "".join(rendered) + row + end + notice).encode("utf-8")) > budget:
-                return start + "".join(rendered) + end + notice
-            rendered.append(row)
-        return start + "".join(rendered) + end
+            rows = [
+                "  <skill>",
+                f"    <name>{_escape_xml(skill.name)}</name>",
+                f"    <description>{_escape_xml(skill.description)}</description>",
+                f"    <location>{_escape_xml(skill.file_path)}</location>",
+                "  </skill>",
+            ]
+            if len("\n".join([*lines, *rows, end, notice]).encode("utf-8")) > budget:
+                return "\n".join([*lines, end, notice])
+            lines.extend(rows)
+        return "\n".join([*lines, end])
 
     def expand(self, text: str) -> str:
         if not text.startswith("/skill:"):
@@ -149,3 +165,14 @@ class ResourceSnapshot:
             raise ValueError("Skill file is unavailable; reload resources") from error
         block = f'<skill name="{escape(skill.name, quote=True)}" location="{escape(skill.file_path, quote=True)}">\nReferences are relative to {skill.base_dir}.\n\n{body}\n</skill>'
         return block + ("\n\n" + arguments.strip() if arguments.strip() else "")
+
+
+def _escape_xml(text: str) -> str:
+    """Pi's ``escapeXml`` (``'`` becomes ``&apos;``, unlike ``html.escape``)."""
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&apos;")
+    )

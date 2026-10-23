@@ -4,16 +4,19 @@ from __future__ import annotations
 
 import codecs
 import os
+import secrets
 import tempfile
 from dataclasses import dataclass
 from typing import BinaryIO, Literal
 
+from pi_agent._js import to_fixed, utf16_length, utf16_slice
 from pi_agent.types import JsonValue
 
 from ._spill import SpillRegistry
 
 DEFAULT_MAX_LINES = 2000
 DEFAULT_MAX_BYTES = 50 * 1024
+GREP_MAX_LINE_LENGTH = 500
 
 TruncatedBy = Literal["lines", "bytes"]
 
@@ -22,8 +25,15 @@ def format_size(num_bytes: int) -> str:
     if num_bytes < 1024:
         return f"{num_bytes}B"
     if num_bytes < 1024 * 1024:
-        return f"{num_bytes / 1024:.1f}KB"
-    return f"{num_bytes / (1024 * 1024):.1f}MB"
+        return f"{to_fixed(num_bytes / 1024, 1)}KB"
+    return f"{to_fixed(num_bytes / (1024 * 1024), 1)}MB"
+
+
+def truncate_line(line: str, max_chars: int = GREP_MAX_LINE_LENGTH) -> tuple[str, bool]:
+    """Pi's ``truncateLine``; lengths count UTF-16 code units as JavaScript does."""
+    if utf16_length(line) <= max_chars:
+        return line, False
+    return f"{utf16_slice(line, max_chars)}... [truncated]", True
 
 
 def _split_lines_for_counting(content: str) -> list[str]:
@@ -227,7 +237,7 @@ class OutputAccumulator:
         self,
         max_lines: int = DEFAULT_MAX_LINES,
         max_bytes: int = DEFAULT_MAX_BYTES,
-        temp_file_prefix: str = "pi-agent-output",
+        temp_file_prefix: str = "pi-output",
         spill_registry: SpillRegistry | None = None,
     ) -> None:
         self.max_lines = max_lines
@@ -397,7 +407,9 @@ class OutputAccumulator:
     def _ensure_temp_file(self) -> None:
         if self._temp_file_path is not None:
             return
-        descriptor, path = tempfile.mkstemp(prefix=f"{self.temp_file_prefix}-", suffix=".log")
+        # Pi's createOutputFilePath: `<tmpdir>/<prefix>-<16 hex>.log`, created exclusively.
+        path = os.path.join(tempfile.gettempdir(), f"{self.temp_file_prefix}-{secrets.token_hex(8)}.log")
+        descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0), 0o600)
         try:
             os.fchmod(descriptor, 0o600)
             if self._spill_registry is not None:

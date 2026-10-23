@@ -153,8 +153,6 @@ async def test_async_factory_passes_shared_options_once(tmp_path, providers, mon
             "low",
             "--tool-execution",
             "parallel",
-            "--max-parallel-tools",
-            "2",
             "--no-session",
         )
     )
@@ -167,7 +165,7 @@ async def test_async_factory_passes_shared_options_once(tmp_path, providers, mon
         assert options["mcp_tools"] == ("fixture/echo",) and not options["refresh_mcp"]
         assert options["mcp_config"].servers[0].cwd == tmp_path
         assert options["tool_names"] == ("read",) and options["permission_policy"].read_only
-        assert options["config"].thinking_level == "low" and options["config"].max_parallel_tools == 2
+        assert options["config"].thinking_level == "low" and options["config"].tool_execution == "parallel"
         assert settings.model.id == "offline" and not switched and not resumed
     finally:
         await session.aclose()

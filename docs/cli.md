@@ -44,9 +44,11 @@ tool call is never executed; it receives an error result, after which the model
 may re-issue a complete call, matching the core Pi behavior.
 
 HTTP read timeout is an inactivity limit, not a whole-run or spend budget.
-There is no model catalog: auto-compaction by token threshold requires a known
-`--context-window`; without it the context size defaults to 0 (unknown).
-`--max-tokens` defaults to 8192 per request and does not bound a whole tool loop.
+Models in pi's catalog (Anthropic, DeepSeek; see [providers](providers.md#model-catalog))
+bring their context window and output cap. For other models, auto-compaction by
+token threshold requires a known `--context-window`; without it the context size
+is 0 (unknown) and `--max-tokens` defaults to 8192. The output cap applies per
+request and does not bound a whole tool loop.
 
 Use `--tools=+grep,-write` to edit defaults, or the recorded builtin set on resume.
 An absolute list replaces the builtin set; `--tools=''` clears it. MCP tools use

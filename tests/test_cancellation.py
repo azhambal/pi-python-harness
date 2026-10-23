@@ -15,6 +15,7 @@ from pi_agent.events import (
 )
 from pi_agent.provider import ProviderOptions, ProviderRequest
 from pi_agent.providers import FauxProvider
+from pi_agent.providers._normalize import transform_messages
 from pi_agent.tools import Tool, ToolResult, ToolUpdateCallback
 from pi_agent.types import AssistantMessage, JsonValue, TextBlock, ToolCallBlock, ToolResultMessage
 
@@ -95,19 +96,17 @@ async def test_cancelled_bare_agent_pairs_calls_before_next_request(model, mode,
         with pytest.raises(asyncio.CancelledError):
             await task
         assert agent.is_idle and not agent.pending_tool_calls
+        # Sequential batches stop after the running call, as in pi; parallel calls all ran.
+        ran = [call.id for call in (calls if mode == "parallel" else calls[:1])]
         results = [message for message in agent.messages if isinstance(message, ToolResultMessage)]
-        assert [result.tool_call_id for result in results] == [call.id for call in calls]
-        assert results[0].interrupted and results[0].is_error
-        assert "outcome unknown" in results[0].content[0].text
-        assert all(result.is_error for result in results)
-        assert all(not result.interrupted for result in results[1:])
-        assert [event.tool_call_id for event in events if isinstance(event, ToolExecutionEnd)] == [
-            call.id for call in calls
-        ]
+        assert [result.tool_call_id for result in results] == ran
+        assert all(result.interrupted and result.is_error for result in results)
+        assert all("outcome unknown" in result.content[0].text for result in results)
+        assert [event.tool_call_id for event in events if isinstance(event, ToolExecutionEnd)] == ran
         assert len(provider.requests) == 1
 
         await agent.prompt("inspect the outcome")
-        transcript = provider.requests[-1].messages
+        transcript = transform_messages(provider.requests[-1].messages, model)
         requested = [
             block.id
             for message in transcript
@@ -116,8 +115,9 @@ async def test_cancelled_bare_agent_pairs_calls_before_next_request(model, mode,
             if isinstance(block, ToolCallBlock)
         ]
         completed = [message.tool_call_id for message in transcript if isinstance(message, ToolResultMessage)]
+        # The projection answers calls without a result ("No result provided").
         assert requested == completed == [call.id for call in calls]
-        assert tool.calls == ["call_0"]
+        assert tool.calls == ran
     finally:
         task.cancel()
         await asyncio.gather(task, return_exceptions=True)

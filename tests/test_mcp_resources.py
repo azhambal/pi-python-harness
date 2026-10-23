@@ -72,7 +72,7 @@ async def test_resource_lists_templates_reads_and_binary_notices(tmp_path, monke
             [result.to_json() for result in (page, second, templates, text, json_resource, binary)]
         )
         assert "synthetic-private" not in serialized and "c3ludGhldGlj" not in serialized
-        assert not listing.parallel_safe and listing.provenance.kind == "mcp"
+        assert listing.execution_mode is None and listing.provenance.kind == "mcp"
         assert len(McpManifest.from_tools(tools).bindings) == 4
     finally:
         await client.aclose()
@@ -271,7 +271,8 @@ async def test_compaction_preserves_resource_manifest(config, monkeypatch, trans
     settings = configuration(config.cwd) if peer else stdio_config(config.cwd)
     env = {"MCP_TOKEN": "synthetic-auth"} if peer else {}
     session = await create_harness(
-        FauxProvider([call_resource(), done(), done(), done()]),
+        # keep_recent_tokens=0 splits the last turn: history and turn-prefix summaries.
+        FauxProvider([call_resource(), done(), done(), done(), done()]),
         config=replace(config, compaction=replace(config.compaction, keep_recent_tokens=0)),
         session="new",
         mcp_config=settings,

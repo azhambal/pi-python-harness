@@ -6,7 +6,7 @@ import httpx
 import pytest
 
 from pi_agent import AgentConfig, CompactionSettings, cli, create_agent_session
-from pi_agent.events import StreamDone, StreamError
+from pi_agent.events import StreamDone
 from pi_agent.provider import ProviderOptions, ProviderRequest
 from pi_agent.providers import OpenAICompatProvider, OpenAIRequestSettings
 from pi_agent.runtime_config import _ENV_NAMES, resolve_runtime
@@ -31,7 +31,7 @@ def response_body(usage: dict) -> str:
         ({"reasoning_tokens": 104, "completion_tokens_details": {"reasoning_tokens": 0}}, 0),
         ({"reasoning_tokens": 104, "completion_tokens_details": {}}, 104),
         ({"reasoning_tokens": 104, "completion_tokens_details": None}, 104),
-        ({}, None),
+        ({}, 0),
     ],
 )
 async def test_reasoning_usage_formats_and_standard_precedence(extra: dict, expected: int | None) -> None:
@@ -59,9 +59,10 @@ async def test_reasoning_usage_formats_and_standard_precedence(extra: dict, expe
     assert events[-1].message.usage.total_tokens == 1036
 
 
-@pytest.mark.parametrize("value", [-1, True, 1.5, "104", None])
+@pytest.mark.parametrize("value", [True, 1.5, "104", None])
 @pytest.mark.parametrize("nested", [False, True])
-async def test_invalid_reasoning_count_is_protocol_error(value: object, nested: bool) -> None:
+async def test_unusable_reasoning_count_reads_as_zero(value: object, nested: bool) -> None:
+    # Pi reads usage leniently (``|| 0``); a count that is not an integer is not an error.
     usage = (
         {"completion_tokens_details": {"reasoning_tokens": value}} if nested else {"reasoning_tokens": value}
     )
@@ -76,11 +77,11 @@ async def test_invalid_reasoning_count_is_protocol_error(value: object, nested: 
         events = [
             event
             async for event in provider.stream(
-                ProviderRequest(ModelInfo("test", "test", "openai")), ProviderOptions()
+                ProviderRequest(ModelInfo("test", "test", "sglang")), ProviderOptions()
             )
         ]
-    assert isinstance(events[-1], StreamError)
-    assert "non-negative integer" in events[-1].error.error_message
+    assert isinstance(events[-1], StreamDone)
+    assert events[-1].message.usage.reasoning == 0
 
 
 @pytest.mark.parametrize("level", ["off", "low", "high"])
@@ -103,10 +104,8 @@ def test_sglang_thinking_overrides_template_default(level: ThinkingLevel) -> Non
         "nested": {"value": 1},
     }
     assert payload["temperature"] == 0 and payload["seed"] == 12345 and payload["max_tokens"] == 4096
-    if level == "off":
-        assert "reasoning_effort" not in payload
-    else:
-        assert payload["reasoning_effort"] == level
+    # Pi's chat-template thinking format switches thinking only through the template.
+    assert "reasoning_effort" not in payload
     payload["chat_template_kwargs"]["nested"]["value"] = 2
     assert provider.payload(request, ProviderOptions())["chat_template_kwargs"]["nested"]["value"] == 1
 
@@ -114,7 +113,8 @@ def test_sglang_thinking_overrides_template_default(level: ThinkingLevel) -> Non
 @pytest.mark.parametrize("provider_name", ["openai", "deepseek"])
 def test_sglang_options_are_not_injected_for_other_providers(provider_name: str) -> None:
     provider = OpenAICompatProvider(api_key="synthetic", base_url="https://unit.test")
-    payload = provider.payload(ProviderRequest(ModelInfo("test", "test", provider_name)), ProviderOptions())
+    model = ModelInfo("test", "test", provider_name, reasoning=True)
+    payload = provider.payload(ProviderRequest(model), ProviderOptions())
     assert "chat_template_kwargs" not in payload
     assert "temperature" not in payload and "seed" not in payload
     if provider_name == "deepseek":
@@ -181,7 +181,7 @@ async def test_cli_settings_override_and_sglang_thinking_survive_resume(
                 "provider": "sglang",
                 "model": "local-model",
                 "thinking_level": "low",
-                "context_window": 8192,
+                "context_window": 32768,
                 "max_tokens": 4096,
                 "temperature": 1,
                 "seed": 99,
@@ -233,7 +233,6 @@ async def test_cli_settings_override_and_sglang_thinking_survive_resume(
         assert payloads[-1]["temperature"] == 1 and payloads[-1]["seed"] == 99
         assert await cli._cmd_run(parser.parse_args(argv + ["--continue", "--thinking", "high"])) == 0
         assert payloads[-1]["chat_template_kwargs"]["enable_thinking"] is True
-        assert payloads[-1]["reasoning_effort"] == "high"
     assert not capsys.readouterr().err
 
 
@@ -355,21 +354,27 @@ async def test_sglang_tool_loop_keeps_request_settings(config: AgentConfig, leve
                 assert payload["max_tokens"] == 4096
             assert requests[1]["messages"][-1]["role"] == "tool"
             assistant = next(m for m in requests[1]["messages"] if m["role"] == "assistant")
-            assert assistant["reasoning_content"] == (
-                "Use write to create the requested file." if level != "off" else ""
-            )
+            if level == "off":
+                assert "reasoning_content" not in assistant
+            else:
+                assert assistant["reasoning_content"] == "Use write to create the requested file."
         finally:
             await session.aclose()
 
 
 @pytest.mark.parametrize("provider_name", ["sglang", "deepseek", "openai"])
-def test_reasoning_replay_uses_only_supported_vendor_fields(provider_name: str) -> None:
+@pytest.mark.parametrize("signature", ["reasoning_content", None])
+def test_reasoning_replay_follows_the_streamed_field(provider_name: str, signature: str | None) -> None:
+    # As in Pi, a thinking block replays into the field it streamed in (its signature).
     model = ModelInfo("fixture", "fixture", provider_name, api="openai-completions", reasoning=True)
     message = AssistantMessage(
         provider=provider_name,
         api=model.api,
         model=model.id,
-        content=[ThinkingBlock(thinking="Saved plan"), TextBlock(text="Result")],
+        content=[
+            ThinkingBlock(thinking="Saved plan", thinking_signature=signature),
+            TextBlock(text="Result"),
+        ],
         stop_reason="stop",
     )
     provider = OpenAICompatProvider(api_key="synthetic", base_url="https://unit.test")
@@ -378,8 +383,10 @@ def test_reasoning_replay_uses_only_supported_vendor_fields(provider_name: str) 
         ProviderOptions(thinking_level="low"),
     )
     assistant = next(m for m in payload["messages"] if m["role"] == "assistant")
-    if provider_name in ("sglang", "deepseek"):
+    if signature:
         assert assistant["reasoning_content"] == "Saved plan"
+    elif provider_name == "deepseek":
+        assert assistant["reasoning_content"] == ""  # requiresReasoningContentOnAssistantMessages
     else:
         assert "reasoning_content" not in assistant
     assert message.content[0].thinking == "Saved plan"

@@ -17,16 +17,25 @@
     "compaction": {"$ref": "#/$defs/compaction", "description": "History compaction thresholds; these do not cap summary output."},
     "retry": {"$ref": "#/$defs/retry", "description": "Bounded transient-error retries for conversation and summary requests."},
     "bash_default_timeout_s": {"type": ["number", "null"], "exclusiveMinimum": 0, "default": null, "description": "Default Bash timeout in seconds; null leaves it unset."},
-    "tool_execution": {"enum": ["sequential", "parallel"], "default": "sequential", "description": "Tool batch scheduling mode."},
-    "max_parallel_tools": {"type": "integer", "minimum": 1, "default": 4, "description": "Maximum admitted concurrent tool calls in parallel mode."},
+    "tool_execution": {"enum": ["sequential", "parallel"], "default": "parallel", "description": "Tool batch scheduling mode, as Pi's toolExecution: parallel prepares calls in order, then runs them concurrently."},
     "permissions": {"$ref": "#/$defs/permissions", "description": "Admission policy, not an OS sandbox. Replaces the whole lower-priority policy."},
     "tools": {"type": "array", "uniqueItems": true, "items": {"enum": ["read", "bash", "edit", "write", "grep", "find", "ls"]}, "description": "Absolute builtin selection for new sessions. An empty list disables builtins; relative edits belong in CLI --tools."},
     "skills": {"$ref": "#/$defs/skills", "description": "Trusted Markdown skill discovery and prompt budget."},
     "temperature": {"type": ["number", "null"], "minimum": 0, "maximum": 2, "description": "OpenAI-compatible sampling temperature; runtime-only."},
     "seed": {"type": ["integer", "null"], "description": "OpenAI-compatible sampling seed; runtime-only."},
-    "chat_template_kwargs": {"type": ["object", "null"], "description": "OpenAI-compatible template arguments. SGLang enable_thinking follows the selected level."}
+    "chat_template_kwargs": {"type": ["object", "null"], "description": "OpenAI-compatible template arguments. SGLang enable_thinking follows the selected level."},
+    "thinking_budgets": {"$ref": "#/$defs/thinking_budgets", "description": "Pi's thinkingBudgets: token budgets per thinking level for budget-based thinking; runtime-only."}
   },
   "$defs": {
+    "thinking_budgets": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "minimal": {"type": "integer", "minimum": 0, "default": 1024, "description": "Thinking token budget for the minimal level."},
+        "low": {"type": "integer", "minimum": 0, "default": 2048, "description": "Thinking token budget for the low level."},
+        "medium": {"type": "integer", "minimum": 0, "default": 8192, "description": "Thinking token budget for the medium level."},
+        "high": {"type": "integer", "minimum": 0, "default": 16384, "description": "Thinking token budget for the high level, also used for xhigh and max."}
+      }
+    },
     "compaction": {
       "type": "object", "additionalProperties": false,
       "properties": {

@@ -17,24 +17,23 @@ The bash tool observes leader exit independently of pipe EOF and drains output
 until the pipe closes or stays idle for one second. Each chunk re-arms the idle
 deadline. Abort and timeout remain active during draining and kill the process
 group; a normal exit keeps background descendants alive for later tool calls.
-`session.dispose()` terminates the groups owned by its BashTool instances
-and removes their spill files. Spill paths are temporary: copy output needed
-for later inspection before disposal. Journal records retain the paths and
-recorded output, but reopening a disposed session does not recreate those files.
+`session.dispose()` terminates the groups owned by its BashTool instances.
+Full-output files (`pi-bash-*.log` in the temporary directory) stay, as in pi.
 Standalone BashTool users call `tool.close()` themselves. Processes that start
 a new session (`setsid`) are outside this ownership. All auxiliary tasks are
-joined, and spill files are closed even when finishing fails. File tools check
-cancellation before and after their synchronous filesystem operations.
+joined, and full-output files are closed even when finishing fails. File tools
+check cancellation before and after their synchronous filesystem operations.
 
-After a run settles, any tool call that ended up unanswered is answered with
-a recorded interruption result (see below), so the transcript stays
-provider-valid.
+A tool call left without a result (a call never started, a crash) gets none in
+the journal; each provider request answers it with `"No result provided"`, as pi
+does. A tool interrupted by Python task cancellation while running is recorded
+with an error result saying its outcome is unknown.
 
 ## Sessions
 
 Core contracts are maintained in [core invariants](invariants.md).
-`session.py` keeps the public facade; construction, projection, recovery,
-recovery decisions and observer delivery live in `_session_*` modules.
+`session.py` keeps the public facade and pi's retry/compaction decisions;
+construction, projection and observer delivery live in `_session_*` modules.
 `SessionStore.header`, `.entries`, `.get_entry()`, `session.messages` and
 `build_projection()` return independent snapshots. Mutating them does not
 change committed history. Session observers also receive independent events;
@@ -47,12 +46,8 @@ For an offline timing fixture, run
 `.venv/bin/python scripts/benchmark_projection.py` (no provider or dotenv access).
 
 `dispose()` rejects active work, including direct agent runs. Cleanup attempts
-all owned BashTools and releases the journal lock even if deletion fails;
-errors are grouped and another `dispose()` can retry failed cleanup. Only
-files registered by the tool during creation are removed, with device/inode
-checks; journal-supplied paths are never ownership evidence. A process crash
-without disposal leaves spill cleanup to the temporary-directory lifecycle.
-Standalone `OutputAccumulator` without a registry is caller-owned.
+every owned resource and releases the journal lock even if one fails; errors are
+grouped and another `dispose()` can retry failed cleanup.
 
 One JSON object per line; first line is a versioned header (`version: 1`,
 UUID, timestamp, cwd, model identity, non-secret config), then `message`,
@@ -87,23 +82,22 @@ projection.
 - Contention: both `create` and `open` hold an exclusive `flock` for the
   store's lifetime, taken *before* the file is read; a second writer gets
   `SessionLockError`, and locks are released when construction fails.
-- Interrupted tool batches: never replayed. Unanswered tool calls of any
-  assistant message receive `is_error` results that state the outcome is
-  **unknown** ("the call may or may not have run to completion; inspect the
-  affected files before re-issuing"). The results are recorded at the end of
-  the raw journal and the projection builds one contiguous result batch per
-  assistant in call order — real and interruption results together — so
-  pairing is adjacent, ordered, and each call ID has exactly one projected
-  result. Every finalized tool-call ID is unique across **raw session
+- Interrupted tool batches: never replayed. Unanswered tool calls get no
+  journal record; the provider projection answers them with
+  `"No result provided"` (pi's `transformMessages`). Journals written by
+  earlier versions may hold recorded interruption results; the projection
+  still places them, with any real results, in one contiguous batch per
+  assistant in call order. Every finalized tool-call ID is unique across **raw session
   history**, including omitted attempts and pre-compaction entries. The loop
   reassigns conflicting IDs before persistence and execution, preserving the
   original IDs in `AssistantMessage.provider_data.pi_original_tool_call_ids`.
   Journal validation still rejects duplicate canonical IDs. Malformed names or
   non-object arguments produce an explicit assistant error and never execute.
-- Failed-attempt retries: before a transient error or context-overflow error
-  is retried, the failed assistant attempt is durably omitted from the
-  projection (`context_omission` record; the raw history keeps it), so the
-  retry request leaves from the last user/tool-result message. Reused provider
+- Failed-attempt retries: before a transient error, context overflow or
+  recoverable length stop is retried, the failed assistant attempt and its tool
+  results are durably omitted from the projection (`context_omission` records;
+  the raw history keeps them), so the retry request leaves from the last
+  user/tool-result message. Reused provider
   IDs are reassigned, including IDs reserved by omitted attempts.
   Completed tools are never re-executed, and an unrecordable omission stops
   the session instead of risking a blind retry.
@@ -114,25 +108,31 @@ projection.
 
 ## Compaction
 
-When projected context exceeds `context_window - reserve_tokens` (checked
-before every provider request and before each new prompt), or when a
-response fails with a context-overflow error, the older history is
+Automatic compaction follows pi's `_checkCompaction`. It runs after each agent
+run and before each new prompt (on the last response), and as a threshold check
+before every further turn inside a run. A context overflow (error text, or a
+completed response whose input exceeds the window), or a length stop below the
+model's own output limit, omits the failed attempt, compacts and re-requests
+once; a completed overflowing answer is compacted without a retry. Responses
+from another model, or older than the latest checkpoint, trigger nothing. When
+projected context exceeds `context_window - reserve_tokens`, the older history is
 summarized through the same injected provider — with **no executable tools**
 — and only a *completed* checkpoint is persisted: the summary, the first
 kept entry, the replayed system message (prompt + tool declarations), and
-the summarizer usage. Only a stream that terminates with `done` and a final
-`stop_reason` of exactly `"stop"` may become a checkpoint; errors, length
-stops, aborts, tool-call attempts, empty summaries, and unterminated streams
-all fail the compaction without touching prior context. The summary format
+the summarizer usage. Errors, length stops, aborts, tool-call attempts and
+unterminated streams fail the compaction without touching prior context, with
+pi's messages (`Summarization failed: ...`, `... hit the token cap and the
+summary is incomplete`). The summary format
 (Goal / Constraints / Progress / Key Decisions / Next Steps / Critical
 Context) is preserved on update so task goals are not weakened; file paths,
 names, and error messages are required to survive.
 
 Summary input excludes thinking while retaining visible messages, tool calls and
 results. The raw journal keeps original thinking. `reserve_tokens` controls when
-compaction starts, not its output cap: summaries use the model's output limit
-(8192 when unknown), reduced for estimated available context. They request thinking
-off, or the lowest explicitly supported level if the model cannot disable it.
+compaction starts, not its output cap: summaries send no `max_tokens`, so the
+provider applies the model's limit. As in pi, they use the session's thinking
+level on reasoning models (none otherwise), disable prompt-cache writes, and get
+a fresh routing session ID per request.
 
 Summary requests use the session's bounded transient-error retry policy and
 cancellable backoff. They never execute tools or record failed summary attempts.
@@ -140,11 +140,13 @@ Length stops, invalid summaries, billing errors and context overflow are not bli
 retried. Compaction start/end events cover the entire operation; conversational
 auto-retry events are not emitted for individual summary attempts.
 
-Long tool turns can be split at a retained assistant message: the older history
-and the turn prefix receive separate summaries, combined with a Turn Context
-section and summed usage. A failure in either request prevents the checkpoint.
-Tool calls and their results remain together in the retained tail. Simple
-completed exchanges are kept whole. File-operation lists accumulate across
+The cut point is pi's: walking back from the newest entry with a chars/4
+estimate until `keep_recent_tokens`, it lands on the nearest user or assistant
+message, never a tool result. A cut at an assistant message splits its turn: the
+older history and the turn prefix receive separate summaries (the prefix with
+pi's turn-prefix prompt), combined with a Turn Context section and summed usage.
+A failure in either request prevents the checkpoint. Tool calls and their results
+remain together in the retained tail. File-operation lists accumulate across
 checkpoints as typed `read_files` / `modified_files`, including empty arrays,
 independent of model-written tags. Legacy checkpoints import their existing
 summary tags; new ones use their recorded lists. These lists track requested
@@ -152,13 +154,14 @@ file operations, as Pi does, and are not proof that a denied operation changed
 the filesystem. The journal version remains 1 with backward-compatible optional
 fields; no tool-result checkpoint pointer is introduced.
 
-Overflow recovery performs at most one compact-and-retry per failing request
-(completed answers and generic output-length stops are not overflow
-retries); there are no compaction/retry cycles, and the single retry layer
-(in the session) never re-runs completed tools. The request projection is
-re-read after any checkpoint; a threshold compaction after a completed final
-answer never triggers another request on its own. Token estimates use
-provider-reported usage only from the last *valid* response recorded after
-the latest checkpoint (pre-checkpoint usage is discarded even when its
-message is retained), falling back to an explicit chars/3.5 approximation —
-sizes are approximate, not exact token accounting.
+Overflow recovery performs at most one compact-and-retry per failing request;
+there are no compaction/retry cycles, and the single retry layer (in the
+session) never re-runs completed tools. With compaction disabled, overflows are
+not recovered. When there is nothing to compact, automatic compaction does
+nothing and emits no events. The request projection is re-read after any
+checkpoint; a threshold compaction after a completed final answer only starts
+another run for queued input. Token estimates follow pi's
+`estimateProjectedContextTokens`: provider usage counts only when recorded after
+the latest omission or checkpoint (a model switch keeps it), otherwise pi's
+chars/4 approximation applies — sizes are approximate, not exact token
+accounting.

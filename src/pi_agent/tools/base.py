@@ -3,24 +3,23 @@
 Translated from ``packages/agent/src/types.ts`` (AgentTool / AgentToolResult)
 and ``packages/ai/src/utils/validation.ts`` (argument validation).
 
-Argument validation uses JSON Schema (``jsonschema==4.26.0``).
-The error text mirrors Pi: the failing paths and the
-received arguments are included so the model can correct itself.
+Argument validation follows Pi's ``validateToolArguments`` (see
+``_validation``): optional nulls are dropped, primitives are coerced like
+TypeBox ``Value.Convert`` (built-in tools) or ``coerceWithJsonSchema``
+(plain JSON schemas), and failures use TypeBox's messages.
 """
 
 from __future__ import annotations
 
 import abc
-import json
 from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING
-
-import jsonschema
+from typing import TYPE_CHECKING, Literal
 
 from pi_agent.cancellation import Cancellation
-from pi_agent.types import JsonValue, TextBlock, ToolDeclaration, Usage
+from pi_agent.tools._validation import ArgumentValidationError, ConversionMode, validate_arguments
+from pi_agent.types import ImageBlock, JsonValue, TextBlock, ToolDeclaration, Usage
 
 if TYPE_CHECKING:
     from pi_agent.tool_hooks import ToolProvenance
@@ -35,7 +34,7 @@ def error_tool_result(message: str) -> ToolResult:
 class ToolResult:
     """Final or partial result of one tool execution."""
 
-    content: list[TextBlock] = field(default_factory=list)
+    content: list[TextBlock | ImageBlock] = field(default_factory=list)
     details: JsonValue = None
     structured_content: JsonValue = None
     usage: Usage | None = None
@@ -78,10 +77,18 @@ class Tool(abc.ABC):
     prompt_snippet: str | None = None
     #: Guideline bullets contributed to the system prompt's rules section.
     guidelines: tuple[str, ...] = ()
-    #: Custom tools opt into batch concurrency; otherwise they act as barriers.
-    parallel_safe: bool = False
+    #: Pi's ``executionMode``: a call to a "sequential" tool runs its whole
+    #: batch sequentially; None follows the agent's tool_execution setting.
+    execution_mode: Literal["sequential", "parallel"] | None = None
     #: Host-only identity for hooks/permissions; never part of the declaration.
     provenance: ToolProvenance | None = None
+    #: How arguments are coerced before validation: Pi's built-in tools use
+    #: TypeBox schemas (``Value.Convert``); other tools use plain JSON schemas.
+    argument_conversion: ConversionMode = "json_schema"
+
+    def prepare_arguments(self, args: dict[str, JsonValue]) -> dict[str, JsonValue]:
+        """Repair raw model arguments before validation (Pi's ``prepareArguments``)."""
+        return args
 
     def schema(self) -> dict[str, JsonValue]:
         return self.parameters or {"type": "object"}
@@ -118,20 +125,11 @@ def validate_tool_arguments(tool: Tool, args: Mapping[str, JsonValue]) -> dict[s
 
 
 def _validate_tool_arguments(tool: Tool, args: Mapping[str, JsonValue]) -> dict[str, JsonValue]:
-    value = dict(args)
-    validator = jsonschema.Draft202012Validator(tool.schema())
-    errors = sorted(validator.iter_errors(value), key=lambda error: list(error.absolute_path))
-    if errors:
-        lines = []
-        for error in errors:
-            path = ".".join(str(part) for part in error.absolute_path) or "root"
-            lines.append(f"  - {path}: {error.message}")
-        detail = "\n".join(lines)
-        received = json.dumps(dict(args), indent=2, default=str)
-        raise ToolValidationError(
-            f'Validation failed for tool "{tool.name}":\n{detail}\n\nReceived arguments:\n{received}'
-        )
-    return value
+    try:
+        value = validate_arguments(tool.name, tool.schema(), dict(args), mode=tool.argument_conversion)
+    except ArgumentValidationError as error:
+        raise ToolValidationError(str(error)) from None
+    return value  # type: ignore[return-value]
 
 
 def resolve_path(path: str, cwd: Path | str) -> Path:

@@ -8,8 +8,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install search backend
+      - name: Install search backends
         run: sudo apt-get update && sudo apt-get install --yes ripgrep
+      # The parity fixtures were produced with fd 10.5.0; apt ships an older fd.
+      - name: Install fd 10.5.0
+        run: |
+          curl -fsSL -o fd.tar.gz https://github.com/sharkdp/fd/releases/download/v10.5.0/fd-v10.5.0-x86_64-unknown-linux-gnu.tar.gz
+          echo "a1259cd129636efbc3fef123525c1b49e88fe5088c012630983c310e52fdfa95  fd.tar.gz" | sha256sum -c -
+          tar -xzf fd.tar.gz
+          sudo install fd-v10.5.0-x86_64-unknown-linux-gnu/fd /usr/local/bin/fd
       - run: python -m venv .venv
       - run: .venv/bin/python -m pip install -e '.[dev,mcp-reference]'
       - run: .venv/bin/python -m pip check
